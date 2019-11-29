@@ -18,3 +18,9 @@
 
 
 
+## [Final Release] - 2019-11-29
+### Added
+- Bug fixes 
+- Extend Resource Allocation by managing VLAN connections 
+
+
