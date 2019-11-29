@@ -27,3 +27,7 @@ It contains the plugin for MEC  domains:
 ## 4. RADIO
 It contains the plugin for radio domains:
 - **_Radio Plugin_** (used to control Ericcson Radio Equipment. Released with [Apachev2](https://www.apache.org/licenses/LICENSE-2.0) license.
+
+## 5. Cloudify
+It contains the plugin to be used in Cloudify to interacts with the MTP via NBI. Please refer to [Cloudify documentation](https://cloudify.co/plugins/) on how to install itEquipment. Released with [Apachev2](https://www.apache.org/licenses/LICENSE-2.0) license.
+
