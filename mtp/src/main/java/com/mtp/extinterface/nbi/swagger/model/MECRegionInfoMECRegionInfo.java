@@ -1,5 +1,6 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.LocationInfo;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class MECRegionInfoMECRegionInfo   {
+public class MECRegionInfoMecRegionInfo   {
   
   private @Valid String regionId = null;
   private @Valid LocationInfo locationInfo = null;
@@ -17,14 +18,14 @@ public class MECRegionInfoMECRegionInfo   {
   /**
    * Identifier of the region.
    **/
-  public MECRegionInfoMECRegionInfo regionId(String regionId) {
+  public MECRegionInfoMecRegionInfo regionId(String regionId) {
     this.regionId = regionId;
     return this;
   }
 
   
   @ApiModelProperty(value = "Identifier of the region.")
-  @JsonProperty("RegionId")
+  @JsonProperty("regionId")
   public String getRegionId() {
     return regionId;
   }
@@ -34,14 +35,14 @@ public class MECRegionInfoMECRegionInfo   {
 
   /**
    **/
-  public MECRegionInfoMECRegionInfo locationInfo(LocationInfo locationInfo) {
+  public MECRegionInfoMecRegionInfo locationInfo(LocationInfo locationInfo) {
     this.locationInfo = locationInfo;
     return this;
   }
 
   
   @ApiModelProperty(value = "")
-  @JsonProperty("LocationInfo")
+  @JsonProperty("locationInfo")
   public LocationInfo getLocationInfo() {
     return locationInfo;
   }
@@ -58,9 +59,9 @@ public class MECRegionInfoMECRegionInfo   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MECRegionInfoMECRegionInfo meCRegionInfoMECRegionInfo = (MECRegionInfoMECRegionInfo) o;
-    return Objects.equals(regionId, meCRegionInfoMECRegionInfo.regionId) &&
-        Objects.equals(locationInfo, meCRegionInfoMECRegionInfo.locationInfo);
+    MECRegionInfoMecRegionInfo meCRegionInfoMecRegionInfo = (MECRegionInfoMecRegionInfo) o;
+    return Objects.equals(regionId, meCRegionInfoMecRegionInfo.regionId) &&
+        Objects.equals(locationInfo, meCRegionInfoMecRegionInfo.locationInfo);
   }
 
   @Override
@@ -71,7 +72,7 @@ public class MECRegionInfoMECRegionInfo   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class MECRegionInfoMECRegionInfo {\n");
+    sb.append("class MECRegionInfoMecRegionInfo {\n");
     
     sb.append("    regionId: ").append(toIndentedString(regionId)).append("\n");
     sb.append("    locationInfo: ").append(toIndentedString(locationInfo)).append("\n");

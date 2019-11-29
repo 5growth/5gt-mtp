@@ -1,5 +1,8 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface;
+import com.mtp.extinterface.nbi.swagger.model.VirtualComputeVirtualCpu;
+import com.mtp.extinterface.nbi.swagger.model.VirtualComputeVirtualMemory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

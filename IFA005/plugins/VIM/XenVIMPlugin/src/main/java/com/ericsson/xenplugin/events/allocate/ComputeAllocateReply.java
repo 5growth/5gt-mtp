@@ -5,7 +5,9 @@
  */
 package com.ericsson.xenplugin.events.allocate;
 
-import com.mtp.extinterface.nbi.swagger.model.VirtualCompute;
+import com.ericsson.xenplugin.nbi.swagger.model.VIMVirtualCompute;
+
+
 
 /**
  *
@@ -13,7 +15,7 @@ import com.mtp.extinterface.nbi.swagger.model.VirtualCompute;
  */
 public class ComputeAllocateReply {
     private long reqid;
-    private VirtualCompute reply; //TODO: Change according IFA005
+    private VIMVirtualCompute reply; //TODO: Change according IFA005
 
     /*
      * TODO: Create object for allocation request of virtual resources according 
@@ -25,7 +27,7 @@ public class ComputeAllocateReply {
         reply = null;
     }
     
-    public ComputeAllocateReply(long id, VirtualCompute str) {
+    public ComputeAllocateReply(long id, VIMVirtualCompute str) {
         reqid = id;
 
         reply = str;
@@ -39,10 +41,10 @@ public class ComputeAllocateReply {
     public void setReqId( long reqval) {
         reqid = reqval;
     }
-    public VirtualCompute getReply() {
+    public VIMVirtualCompute getReply() {
         return reply;
     }
-    public void setReply(VirtualCompute reply) {
+    public void setReply(VIMVirtualCompute reply) {
         this.reply = reply;
     }
 }

@@ -32,7 +32,7 @@ import java.util.List;
  * Information specifying additional attributes of the network resource that has been reserved.
  */
 @ApiModel(description = "Information specifying additional attributes of the network resource that has been reserved.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class ReservedVirtualNetworkNetworkAttributes {
   @SerializedName("bandwidth")
   private BigDecimal bandwidth = null;

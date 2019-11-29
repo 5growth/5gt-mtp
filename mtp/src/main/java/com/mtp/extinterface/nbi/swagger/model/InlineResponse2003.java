@@ -1,5 +1,7 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.LogicalLinkInterNfviPops;
+import com.mtp.extinterface.nbi.swagger.model.NfviPops;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 

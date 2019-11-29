@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class NetworkAllocateWIMReq {
 
     private long reqid;
-    private long servid; //service identifiers
+    private String servid; //service identifiers
     private long logicalPathId;
     private InterNfviPopConnectivityRequest networkRequest;
     private ArrayList<Long> wimdomlist;
@@ -20,10 +20,12 @@ public class NetworkAllocateWIMReq {
     private ArrayList<Long> wanLinks;
     private ArrayList<Long> wimPopList;
     private ArrayList<String> wimNetworkType;
+    private ArrayList<Long> vlans;
+    private ArrayList<String> ips;
 
     public NetworkAllocateWIMReq() {
         reqid = 0;
-        servid = 0;
+        servid = "";
         logicalPathId = 0;
         networkRequest = new InterNfviPopConnectivityRequest();
         wimdomlist = new ArrayList();
@@ -33,7 +35,7 @@ public class NetworkAllocateWIMReq {
         wimNetworkType = new ArrayList();
     }
 
-    public NetworkAllocateWIMReq(long reqid, long servid, long logicalPathId, InterNfviPopConnectivityRequest networkRequest, ArrayList<Long> wimdomlist, ArrayList<Long> interdomainLinks, ArrayList<Long> wanLinks, ArrayList<Long> wimPopList, ArrayList<String> wimNetworkType) {
+    public NetworkAllocateWIMReq(long reqid, String servid, long logicalPathId, InterNfviPopConnectivityRequest networkRequest, ArrayList<Long> wimdomlist, ArrayList<Long> interdomainLinks, ArrayList<Long> wanLinks, ArrayList<Long> wimPopList, ArrayList<String> wimNetworkType, ArrayList<Long> vlans, ArrayList<String> ips) {
         this.reqid = reqid;
         this.servid = servid;
         this.logicalPathId = logicalPathId;
@@ -43,6 +45,26 @@ public class NetworkAllocateWIMReq {
         this.wanLinks = wanLinks;
         this.wimPopList = wimPopList;
         this.wimNetworkType = wimNetworkType;
+        this.vlans = vlans;
+        this.ips = ips;
+    }
+
+    public ArrayList<String> getIps() {
+        return ips;
+    }
+
+    public void setIps(ArrayList<String> ips) {
+        this.ips = ips;
+    }
+
+   
+
+    public ArrayList<Long> getVlans() {
+        return vlans;
+    }
+
+    public void setVlans(ArrayList<Long> vlans) {
+        this.vlans = vlans;
     }
 
     public ArrayList<String> getWimNetworkType() {
@@ -69,11 +91,11 @@ public class NetworkAllocateWIMReq {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
     public InterNfviPopConnectivityRequest getNetworkRequest() {

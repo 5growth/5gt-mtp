@@ -1,5 +1,7 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.Gateways;
+import com.mtp.extinterface.nbi.swagger.model.VirtualLinks;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DomainInfo>
+    <NVFIPopList>
+        <NfviPop>
+            <ConnectivityEndpoints>10.7.1.20;10.7.2.20</ConnectivityEndpoints>
+            <geographicalLocationInfo>Pisa</geographicalLocationInfo>
+            <popId>3</popId>
+            <vimId>3</vimId>
+        </NfviPop>
+    </NVFIPopList>
+    <Zonelist> 
+        <Zone>
+            <id>3</id>
+            <popId>3</popId>
+            <name>dummyWIM</name>
+            <status>enable</status>
+            <property>power</property>
+        </Zone>
+    </Zonelist>
+    <ResourceList>
+<!--        <ComputeList>            
+            <Compute>    
+            </Compute>
+        </ComputeList>-->
+    <NetworkList>
+        <Network>
+            <id>101</id>
+            <bandwidth>1000</bandwidth>
+            <type>vxlan</type>
+            <delay>50</delay>
+            <srcip>10.7.1.20</srcip>
+            <dstip>10.7.2.20</dstip>
+            <localid>10</localid>
+            <remoteid>20</remoteid>     
+            <total>1000000</total>
+            <available>1000000</available>
+            <reserved>0</reserved>
+            <allocated>0</allocated>
+        </Network>
+        <Network>
+            <id>103</id>
+            <bandwidth>1000</bandwidth>
+            <type>vxlan</type>
+            <delay>50</delay>
+            <srcip>10.7.2.20</srcip>
+            <dstip>10.7.1.20</dstip>
+            <localid>20</localid>
+            <remoteid>10</remoteid>    
+            <total>1000000</total>
+            <available>1000000</available>
+            <reserved>0</reserved>
+            <allocated>0</allocated>
+        </Network>  
+    </NetworkList>
+    </ResourceList>
+</DomainInfo>
+

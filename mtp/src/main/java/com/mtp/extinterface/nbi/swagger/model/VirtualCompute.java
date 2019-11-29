@@ -1,5 +1,8 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface;
+import com.mtp.extinterface.nbi.swagger.model.VirtualComputeVirtualCpu;
+import com.mtp.extinterface.nbi.swagger.model.VirtualComputeVirtualMemory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;
@@ -25,7 +28,7 @@ public class VirtualCompute   {
   private @Valid VirtualComputeVirtualMemory virtualMemory = null;
   private @Valid List<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface> virtualNetworkInterface = new ArrayList<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface>();
   private @Valid String zoneId = null;
-  private @Valid String meCappID = null;
+  private @Valid String mecappID = null;
 
   /**
    * Selected acceleration capabilities (e.g. crypto, GPU) from the set of capabilities offered by the compute node acceleration resources. The cardinality can be 0, if no particular acceleration capability is provided.
@@ -256,20 +259,20 @@ public class VirtualCompute   {
   /**
    * If present, it identifies the reference MEC AppD reference Descritptor to apply for the allocated compute resources
    **/
-  public VirtualCompute meCappID(String meCappID) {
-    this.meCappID = meCappID;
+  public VirtualCompute mecappID(String mecappID) {
+    this.mecappID = mecappID;
     return this;
   }
 
   
   @ApiModelProperty(required = true, value = "If present, it identifies the reference MEC AppD reference Descritptor to apply for the allocated compute resources")
-  @JsonProperty("MECappID")
+  @JsonProperty("mecappID")
   @NotNull
-  public String getMeCappID() {
-    return meCappID;
+  public String getMecappID() {
+    return mecappID;
   }
-  public void setMeCappID(String meCappID) {
-    this.meCappID = meCappID;
+  public void setMecappID(String mecappID) {
+    this.mecappID = mecappID;
   }
 
 
@@ -294,12 +297,12 @@ public class VirtualCompute   {
         Objects.equals(virtualMemory, virtualCompute.virtualMemory) &&
         Objects.equals(virtualNetworkInterface, virtualCompute.virtualNetworkInterface) &&
         Objects.equals(zoneId, virtualCompute.zoneId) &&
-        Objects.equals(meCappID, virtualCompute.meCappID);
+        Objects.equals(mecappID, virtualCompute.mecappID);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(accelerationCapability, computeId, computeName, flavourId, hostId, operationalState, vcImageId, virtualCpu, virtualDisks, virtualMemory, virtualNetworkInterface, zoneId, meCappID);
+    return Objects.hash(accelerationCapability, computeId, computeName, flavourId, hostId, operationalState, vcImageId, virtualCpu, virtualDisks, virtualMemory, virtualNetworkInterface, zoneId, mecappID);
   }
 
   @Override
@@ -319,7 +322,7 @@ public class VirtualCompute   {
     sb.append("    virtualMemory: ").append(toIndentedString(virtualMemory)).append("\n");
     sb.append("    virtualNetworkInterface: ").append(toIndentedString(virtualNetworkInterface)).append("\n");
     sb.append("    zoneId: ").append(toIndentedString(zoneId)).append("\n");
-    sb.append("    meCappID: ").append(toIndentedString(meCappID)).append("\n");
+    sb.append("    mecappID: ").append(toIndentedString(mecappID)).append("\n");
     sb.append("}");
     return sb.toString();
   }

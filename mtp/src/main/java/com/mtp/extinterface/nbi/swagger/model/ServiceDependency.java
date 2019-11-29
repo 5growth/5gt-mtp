@@ -1,5 +1,7 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.CategoryRef;
+import com.mtp.extinterface.nbi.swagger.model.TransportDependency;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

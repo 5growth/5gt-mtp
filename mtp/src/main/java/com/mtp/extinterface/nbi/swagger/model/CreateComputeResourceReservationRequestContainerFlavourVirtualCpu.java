@@ -1,5 +1,6 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.CreateComputeResourceReservationRequestContainerFlavourVirtualCpuPinning;
 import java.math.BigDecimal;
 import javax.validation.constraints.*;
 import javax.validation.Valid;

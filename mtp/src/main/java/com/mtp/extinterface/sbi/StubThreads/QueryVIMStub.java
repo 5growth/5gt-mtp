@@ -243,9 +243,9 @@ public class QueryVIMStub extends Thread {
                     el.setCapacityElem(caprep);
                     ev.setComputeResElem(el);
                     //create element in map
-                    MapResources mapel = new MapResources(Long.valueOf(zonelist.get(i).getNfviPopId()),
-                                Long.valueOf(zonelist.get(i).getZoneId()),
-                                Long.valueOf(resinfolist.get(j).getComputeResourceTypeId()));
+                    MapResources mapel = new MapResources(zonelist.get(i).getNfviPopId(),
+                                zonelist.get(i).getZoneId(),
+                                resinfolist.get(j).getComputeResourceTypeId());
                     ev.setCompMapElem(mapel);
                 }
                 if (resinfolist.get(j).getVirtualMemory() != null) {
@@ -281,9 +281,9 @@ public class QueryVIMStub extends Thread {
                     el.setCapacityElem(caprep);
                     ev.setComputeResElem(el);
                     //create element in map
-                    MapResources mapel = new MapResources(Long.valueOf(zonelist.get(i).getNfviPopId()),
-                                Long.valueOf(zonelist.get(i).getZoneId()),
-                                Long.valueOf(resinfolist.get(j).getComputeResourceTypeId()));
+                    MapResources mapel = new MapResources(zonelist.get(i).getNfviPopId(),
+                                zonelist.get(i).getZoneId(),
+                                resinfolist.get(j).getComputeResourceTypeId());
                     ev.setCompMapElem(mapel);
                 }  
             }
@@ -370,9 +370,9 @@ public class QueryVIMStub extends Thread {
                 netel.setCapacityElem(caprep);
                 ev.setNetworkResElem(netel);
                 //create element in map
-                MapResources mapel = new MapResources(Long.valueOf(zonelist.get(i).getNfviPopId()),
-                        Long.valueOf(zonelist.get(i).getZoneId()),
-                        Long.valueOf(netinfolist.get(j).getNetworkResourceTypeId()));
+                MapResources mapel = new MapResources(zonelist.get(i).getNfviPopId(),
+                        zonelist.get(i).getZoneId(),
+                        netinfolist.get(j).getNetworkResourceTypeId());
                 ev.setNetworkMapElem(mapel); 
             }    
         }

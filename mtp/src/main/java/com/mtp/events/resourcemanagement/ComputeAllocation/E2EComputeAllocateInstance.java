@@ -10,14 +10,14 @@ import com.mtp.common.objects.*;
 public class E2EComputeAllocateInstance {
 
     private long reqid;
-    private long servid; //service identifiers 
+    private String servid; //service identifiers 
     private long domid; //id of vim domain to contact
     //private long computeservid;
     //private VIMAbstractElem vimelem;
     private long nfvipopid;
     private ComputeAllocateElem compAllocElem;
 
-    public E2EComputeAllocateInstance(long reqid, long servid, long domid, long nfvipopid, ComputeAllocateElem compAllocElem) {
+    public E2EComputeAllocateInstance(long reqid, String servid, long domid, long nfvipopid, ComputeAllocateElem compAllocElem) {
         this.reqid = reqid;
         this.servid = servid;
         this.domid = domid;
@@ -33,11 +33,11 @@ public class E2EComputeAllocateInstance {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

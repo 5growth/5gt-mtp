@@ -12,11 +12,27 @@ package com.mtp.abstraction;
 public class TableReference {
     private long interdomainLinkId;
     private long networkResourcesId;
+    private long fed_interdomainLinkId;
+    
+    
+    
+    
+    public long getFed_interdomainLinkId() {
+        return fed_interdomainLinkId;
+    }
 
-    public TableReference(long interdomainLinkId, long networkResourcesId) {
+    public void setFed_interdomainLinkId(long fed_interdomainLinkId) {
+        this.fed_interdomainLinkId = fed_interdomainLinkId;
+    }
+  
+
+    public TableReference(long interdomainLinkId, long networkResourcesId,  long fed_interdomainLinkId) {
         this.interdomainLinkId = interdomainLinkId;
+        this.fed_interdomainLinkId = fed_interdomainLinkId;
         this.networkResourcesId = networkResourcesId;
     }
+
+   
 
     public long getInterdomainLinkId() {
         return interdomainLinkId;

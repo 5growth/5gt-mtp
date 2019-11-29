@@ -1,5 +1,10 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.MECRegionInfo;
+import com.mtp.extinterface.nbi.swagger.model.NfviPopsInnerNfviPopAttributesNetworkConnectivityEndpoint;
+import com.mtp.extinterface.nbi.swagger.model.NfviPopsInnerNfviPopAttributesRadioCoverageAreas;
+import com.mtp.extinterface.nbi.swagger.model.NfviPopsInnerNfviPopAttributesResourceZoneAttributes;
+import com.mtp.extinterface.nbi.swagger.model.PNFlist;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;
@@ -13,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class NfviPopsInnerNfviPopAttributes   {
   
+  private @Valid PNFlist pnflist = null;
   private @Valid String geographicalLocationInfo = null;
   private @Valid String vimId = null;
   private @Valid List<NfviPopsInnerNfviPopAttributesNetworkConnectivityEndpoint> networkConnectivityEndpoint = new ArrayList<NfviPopsInnerNfviPopAttributesNetworkConnectivityEndpoint>();
@@ -22,6 +28,24 @@ public class NfviPopsInnerNfviPopAttributes   {
   private @Valid List<MECRegionInfo> mecRegions = new ArrayList<MECRegionInfo>();
   private @Valid String radioCapable = null;
   private @Valid List<NfviPopsInnerNfviPopAttributesRadioCoverageAreas> radioCoverageAreas = new ArrayList<NfviPopsInnerNfviPopAttributesRadioCoverageAreas>();
+
+  /**
+   **/
+  public NfviPopsInnerNfviPopAttributes pnflist(PNFlist pnflist) {
+    this.pnflist = pnflist;
+    return this;
+  }
+
+  
+  @ApiModelProperty(required = true, value = "")
+  @JsonProperty("pnflist")
+  @NotNull
+  public PNFlist getPnflist() {
+    return pnflist;
+  }
+  public void setPnflist(PNFlist pnflist) {
+    this.pnflist = pnflist;
+  }
 
   /**
    * It provides information about the geographic location (e.g. geographic coordinates or address of the building, etc.) of the NFVI resources that the VIM manages.
@@ -199,7 +223,8 @@ public class NfviPopsInnerNfviPopAttributes   {
       return false;
     }
     NfviPopsInnerNfviPopAttributes nfviPopsInnerNfviPopAttributes = (NfviPopsInnerNfviPopAttributes) o;
-    return Objects.equals(geographicalLocationInfo, nfviPopsInnerNfviPopAttributes.geographicalLocationInfo) &&
+    return Objects.equals(pnflist, nfviPopsInnerNfviPopAttributes.pnflist) &&
+        Objects.equals(geographicalLocationInfo, nfviPopsInnerNfviPopAttributes.geographicalLocationInfo) &&
         Objects.equals(vimId, nfviPopsInnerNfviPopAttributes.vimId) &&
         Objects.equals(networkConnectivityEndpoint, nfviPopsInnerNfviPopAttributes.networkConnectivityEndpoint) &&
         Objects.equals(nfviPopId, nfviPopsInnerNfviPopAttributes.nfviPopId) &&
@@ -212,7 +237,7 @@ public class NfviPopsInnerNfviPopAttributes   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(geographicalLocationInfo, vimId, networkConnectivityEndpoint, nfviPopId, resourceZoneAttributes, mecCapable, mecRegions, radioCapable, radioCoverageAreas);
+    return Objects.hash(pnflist, geographicalLocationInfo, vimId, networkConnectivityEndpoint, nfviPopId, resourceZoneAttributes, mecCapable, mecRegions, radioCapable, radioCoverageAreas);
   }
 
   @Override
@@ -220,6 +245,7 @@ public class NfviPopsInnerNfviPopAttributes   {
     StringBuilder sb = new StringBuilder();
     sb.append("class NfviPopsInnerNfviPopAttributes {\n");
     
+    sb.append("    pnflist: ").append(toIndentedString(pnflist)).append("\n");
     sb.append("    geographicalLocationInfo: ").append(toIndentedString(geographicalLocationInfo)).append("\n");
     sb.append("    vimId: ").append(toIndentedString(vimId)).append("\n");
     sb.append("    networkConnectivityEndpoint: ").append(toIndentedString(networkConnectivityEndpoint)).append("\n");

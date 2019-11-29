@@ -7,6 +7,7 @@ package com.ericsson.xenplugin.nbi.swagger.api;
 
 
 
+
 import com.ericsson.xenplugin.events.abstraction.StartServer;
 import com.ericsson.xenplugin.events.abstraction.StopServer;
 import com.google.common.eventbus.Subscribe;
@@ -39,7 +40,7 @@ public class MTPIF {
     private HttpServer server;
     
     public MTPIF(String ip, String port ) {
-        String uri_str = "http://" + ip + ":" + port + "/xenbase/";
+        String uri_str = "http://" + ip + ":" + port;
         BASE_URI = URI.create(uri_str);
         System.out.println("NBIIF --> Create web server...");
         System.out.flush();

@@ -13,12 +13,12 @@ import com.mtp.common.objects.ComputeAllocateElem;
  */
 public class PAComputeRequest {
     private long reqid;
-    private long servid;
+    private String servid;
     private long domid;
     private long nfvipopid;    
     private ComputeAllocateElem compel;
 
-    public PAComputeRequest(long reqid, long zoneid, long domid, long nfvipopid, ComputeAllocateElem compel) {
+    public PAComputeRequest(long reqid, String zoneid, long domid, long nfvipopid, ComputeAllocateElem compel) {
         this.reqid = reqid;
         this.servid = zoneid;
         this.nfvipopid = nfvipopid;
@@ -35,11 +35,11 @@ public class PAComputeRequest {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long zoneid) {
+    public void setServid(String zoneid) {
         this.servid = zoneid;
     }
 

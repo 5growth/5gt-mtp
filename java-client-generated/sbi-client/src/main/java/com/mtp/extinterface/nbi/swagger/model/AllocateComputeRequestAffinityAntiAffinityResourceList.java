@@ -30,7 +30,7 @@ import java.util.List;
  * Consumer-managed list of identifiers of virtualised resources with which the actual resource is requested to be affine or anti-affine. Either affinityAntiAffinityResourceList or affinityAntiAffinityResourceGroup but not both shall be present.
  */
 @ApiModel(description = "Consumer-managed list of identifiers of virtualised resources with which the actual resource is requested to be affine or anti-affine. Either affinityAntiAffinityResourceList or affinityAntiAffinityResourceGroup but not both shall be present.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class AllocateComputeRequestAffinityAntiAffinityResourceList {
   @SerializedName("resource")
   private List<String> resource = new ArrayList<String>();

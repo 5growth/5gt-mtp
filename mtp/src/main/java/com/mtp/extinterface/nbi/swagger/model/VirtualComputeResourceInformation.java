@@ -1,5 +1,7 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.VirtualComputeResourceInformationVirtualCPU;
+import com.mtp.extinterface.nbi.swagger.model.VirtualComputeResourceInformationVirtualMemory;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 

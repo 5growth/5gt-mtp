@@ -2,11 +2,11 @@ package com.ericsson.xenplugin.nbi.swagger.api;
 
 
 
-import com.mtp.extinterface.nbi.swagger.model.CreateComputeResourceQuotaRequest;
-import com.mtp.extinterface.nbi.swagger.model.CreateNetworkResourceQuotaRequest;
-import com.mtp.extinterface.nbi.swagger.model.ResourceGroupIds;
-import com.mtp.extinterface.nbi.swagger.model.VirtualComputeQuota;
-import com.mtp.extinterface.nbi.swagger.model.VirtualNetworkQuota;
+import com.ericsson.xenplugin.nbi.swagger.model.CreateComputeResourceQuotaRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.CreateNetworkResourceQuotaRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.ResourceGroupIds;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualComputeQuota;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualNetworkQuota;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 

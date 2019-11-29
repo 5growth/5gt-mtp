@@ -10,9 +10,9 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-D"STUB_ENABLE=no" -classpath %classpath com.mtp.mtp domainlist.xml 127.0.0.1 50000</exec.args>
+                <exec.args>-D"stub_enable=no" -classpath %classpath com.mtp.mtp domainlist5gtonic.xml 127.0.0.1 50000</exec.args>
                 <exec.executable>java</exec.executable>
-                <exec.workingdir>C:\Users\efabuba\Desktop\mtp_git\5g-transformer.5gt-mtp\mtp\xml_domain</exec.workingdir>
+                <exec.workingdir>xml_domain</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -25,10 +25,10 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -D"STUB_ENABLE=no" -classpath %classpath com.mtp.mtp domainlist.xml 127.0.0.1 50000</exec.args>
+                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -D"stub_enable=no" -classpath %classpath com.mtp.mtp domainlist5gtonic.xml 127.0.0.1 50000</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
-                <exec.workingdir>C:\Users\efabuba\Desktop\mtp_git\5g-transformer.5gt-mtp\mtp\xml_domain</exec.workingdir>
+                <exec.workingdir>xml_domain</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -41,9 +41,9 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-D"STUB_ENABLE=no" -classpath %classpath com.mtp.mtp domainlist.xml 127.0.0.1 50000</exec.args>
+                <exec.args>-D"stub_enable=no" -classpath %classpath com.mtp.mtp domainlist5gtonic.xml 127.0.0.1 50000</exec.args>
                 <exec.executable>java</exec.executable>
-                <exec.workingdir>C:\Users\efabuba\Desktop\mtp_git\5g-transformer.5gt-mtp\mtp\xml_domain</exec.workingdir>
+                <exec.workingdir>xml_domain</exec.workingdir>
             </properties>
         </action>
     </actions>

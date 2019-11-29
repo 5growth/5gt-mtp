@@ -110,7 +110,7 @@ public class TrafficFilter   {
 
   
   @ApiModelProperty(value = "Specifies the protocol of the traffic rule.")
-  @JsonProperty("Protocol")
+  @JsonProperty("protocol")
   public List<String> getProtocol() {
     return protocol;
   }
@@ -128,7 +128,7 @@ public class TrafficFilter   {
 
   
   @ApiModelProperty(value = "Used for token based traffic rule.")
-  @JsonProperty("Token")
+  @JsonProperty("token")
   public List<String> getToken() {
     return token;
   }

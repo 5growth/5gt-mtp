@@ -25,7 +25,7 @@ from netaddr import EUI
 from netaddr import IPAddress
 
 from vim_manager.api.schema import VirtualStorage
-
+from vim_manager.api.schema import KeyValuePair
 
 class VirtualMemory(Schema):
     virtualMemSize = fields.Number(
@@ -54,6 +54,7 @@ class VirtualCpuPinning(Schema):
                     'decided by the VIM.')
     cpuPinningRules = fields.Str(
         required=True,
+        many=True,
         description='A list of rules that should be considered during the '
                     'allocation of the virtual CPUs to physical CPUs in case '
                     'of "static" cpuPinningPolicy.')
@@ -117,6 +118,7 @@ class VirtualNetworkInterface(Schema):
                     'network port attachment.')
     ipAddress = fields.Str(
         required=True,
+        many=True,
         description='The virtual network interface can be configured with '
                     'specific IP address(es) associated to the network to be '
                     'attached to. The cardinality can be 0 in the case that a '
@@ -130,6 +132,7 @@ class VirtualNetworkInterface(Schema):
                     'virtual NIC, with direct PCI passthrough, etc.')
     typeConfiguration = fields.Str(
         required=True,
+        many=True,
         description='Extra configuration that the virtual network interface '
                     'supports based on the type of virtual network interface, '
                     'including support for SR-IOV with configuration of '
@@ -137,23 +140,25 @@ class VirtualNetworkInterface(Schema):
     macAddress = fields.Str(
         required=True,
         description='The MAC address of the virtual network interface.')
-    bandwidth = fields.Str(
+    bandwidth = fields.Number(
         required=True,
         description='The bandwidth of the virtual network interface (in '
                     'Mbps).')
     accelerationCapability = fields.Str(
         required=True,
+        many=True,
         description='Shows the acceleration capabilities utilized by the '
                     'virtual network interface. The cardinality can be 0, if '
                     'no acceleration capability is utilized.')
     operationalState = fields.Str(
         required=True,
         description='The operational state of the virtual network interface.')
-    metadata = fields.Str(
-        required=True,
-        description='List of metadata key-value pairs used by the consumer to '
-                    'associate meaningful metadata to the related virtualised '
-                    'resource.')
+    metadata = fields.Nested(
+        KeyValuePair,
+        required=False,
+        description='List of metadata key-value pairs used by the consumer '
+        'to associate meaningful metadata to the related '
+        'virtualised resource.')
 
 
 class VirtualCompute(Schema):
@@ -213,14 +218,18 @@ class VirtualCompute(Schema):
     operationalState = fields.Str(
         required=True,
         description='Operational state of the compute resource.')
-    # metadata = fields.Nested(KeyValuePair, many=True
-    #     required=True, description='List of metadata key-value pairs used by'
-    #                                'the consumer to associate meaningful '
-    #                                'metadata to the related virtualised '
-    #                                'resource.')
+    metadata = fields.Nested(
+        KeyValuePair,
+        required=False,
+        description='List of metadata key-value pairs used by the consumer '
+        'to associate meaningful metadata to the related '
+        'virtualised resource.')
 
 
 class VirtualComputeFlavour(Schema):
+    flavourName = fields.Str(
+        required=False,
+        description='Name of the flavour !! These field is not compliant IFA005 !!')
     flavourId = fields.Str(
         required=True,
         description='Identifier given to the compute flavour.')

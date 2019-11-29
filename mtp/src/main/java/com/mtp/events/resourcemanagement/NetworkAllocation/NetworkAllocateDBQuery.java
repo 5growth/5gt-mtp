@@ -6,6 +6,7 @@
 package com.mtp.events.resourcemanagement.NetworkAllocation;
 
 import com.mtp.extinterface.nbi.swagger.model.InterNfviPopConnectivityRequest;
+import com.mtp.extinterface.nbi.swagger.model.LogicalLinkPathListInner;
 
 
 
@@ -13,22 +14,23 @@ import com.mtp.extinterface.nbi.swagger.model.InterNfviPopConnectivityRequest;
 public class NetworkAllocateDBQuery {
 
     private long reqid;
-    private long servid; //service identifiers
-    private InterNfviPopConnectivityRequest networkreq; //contains vim computation info
+    private String servid; //service identifiers
+    //private InterNfviPopConnectivityRequest networkreq; //contains vim computation info
+    private LogicalLinkPathListInner networkreq; //contains vim computation info
     private long logicalpath; //selected logical path
 
-    public NetworkAllocateDBQuery(long reqid, long servid, InterNfviPopConnectivityRequest networkreq, long logicalpath) {
+    public NetworkAllocateDBQuery(long reqid, String servid, LogicalLinkPathListInner networkreq, long logicalpath) {
         this.reqid = reqid;
         this.servid = servid;
         this.networkreq = networkreq;
         this.logicalpath = logicalpath;
     }
 
-    public InterNfviPopConnectivityRequest getNetworkreq() {
+    public LogicalLinkPathListInner getNetworkreq() {
         return networkreq;
     }
 
-    public void setNetworkreq(InterNfviPopConnectivityRequest networkreq) {
+    public void setNetworkreq(LogicalLinkPathListInner networkreq) {
         this.networkreq = networkreq;
     }
 
@@ -42,11 +44,11 @@ public class NetworkAllocateDBQuery {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

@@ -1,5 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.LogicalLinkInterNfviPops;
+import com.ericsson.dummyplugin.nbi.swagger.model.NfviPops;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 

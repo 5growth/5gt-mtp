@@ -1,7 +1,7 @@
 package com.ericsson.radioplugin.nbi.swagger.model;
 
-import io.swagger.annotations.ApiModel;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import javax.validation.Valid;
 
 

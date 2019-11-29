@@ -63,16 +63,18 @@ class NetworkSubnetData(Schema):
                     'network/subnetwork, or false otherwise.')
     addressPool = fields.Str(
         required=True,
+        many=True,
         description='Address pools for the network/subnetwork. The '
                     'cardinality can be 0 when VIM is allowed to allocate all'
                     'addresses in the CIDR except for the address of the '
                     'network/subnetwork gateway.')
-    # metadata = fields.Str(
-    #     required=True,
-    #     many=True,
-    #     description='List of metadata key-value pairs used by the consumer '
-    #                 'to associate meaningful metadata to the related '
-    #                 'virtualised resource.')
+    metadata = fields.Nested(
+        KeyValuePair,
+        required=False,
+        many=True,
+        description='List of metadata key-value pairs used by the consumer '
+        'to associate meaningful metadata to the related '
+        'virtualised ressource.')
 
 
 class VirtualNetworkPortData(Schema):
@@ -102,11 +104,11 @@ class VirtualNetworkPortData(Schema):
                     'ports without any specified bandwidth requirements.')
     metadata = fields.Nested(
         KeyValuePair,
-        required=True,
+        required=False,
         many=True,
         description='List of metadata key-value pairs used by the consumer '
-                    'to associate meaningful metadata to the related '
-                    'virtualised resource.')
+        'to associate meaningful metadata to the related '
+        'virtualised ressource.')
 
 
 class VirtualNetworkData(Schema):
@@ -136,7 +138,7 @@ class VirtualNetworkData(Schema):
                     'attributes that the network shall support. The '
                     'cardinality can be "0" to allow for networks without any '
                     'specified QoS requirements.')
-    isShared = fields.Str(
+    isShared = fields.Bool(
         required=True,
         description='It defines whether the virtualised network is shared '
                     'among consumers.')
@@ -153,12 +155,13 @@ class VirtualNetworkData(Schema):
                     'defined layer 3 connectivity. See clause 8.4.4.4 for '
                     'further information on the attributes required for layer '
                     '3 connectivity.')
-    # metadata = fields.Str(
-    #     required=True,
-    #     many=True,
-    #     description='List of metadata key-value pairs used by the consumer '
-    #                 'to associate meaningful metadata to the related '
-    #                 'virtualised resource.')
+    metadata = fields.Nested(
+        KeyValuePair,
+        required=False,
+        many=True,
+        description='List of metadata key-value pairs used by the consumer '
+        'to associate meaningful metadata to the related '
+        'virtualised ressource.')
 
 
 class VirtualNetworkPort(Schema):
@@ -202,8 +205,8 @@ class VirtualNetworkPort(Schema):
         required=False,
         many=True,
         description='List of metadata key-value pairs used by the consumer '
-                    'to associate meaningful metadata to the related '
-                    'virtualised resource.')
+        'to associate meaningful metadata to the related '
+        'virtualised ressource.')
 
 
 class VirtualNetwork(Schema):
@@ -267,12 +270,14 @@ class VirtualNetwork(Schema):
     operationalState = fields.String(
         required=True,
         description='The operational state of the virtualised network.')
-    # metadata = fields.Str(
-    #     required=True,
-    #     many=True,
-    #     description='List of metadata key-value pairs used by the consumer
-    #                 'to associate meaningful metadata to the related '
-    #                 'virtualised resource.')
+
+    metadata = fields.Nested(
+        KeyValuePair,
+        required=False,
+        many=True,
+        description='List of metadata key-value pairs used by the consumer '
+        'to associate meaningful metadata to the related '
+        'virtualised ressource.')
 
 
 class NetworkSubnet(Schema):
@@ -303,20 +308,18 @@ class NetworkSubnet(Schema):
                     'or false otherwise.')
     addressPool = fields.Str(
         required=True,
+        many=True,
         description='Address pools for the network/subnetwork. The '
                     'cardinality can be 0 when VIM is allowed to allocate all '
                     'addresses in the CIDR except for the address of the '
                     'network/subnetwork gateway.')
-    operationalState = fields.Str(
-        required=True,
-        description='The operational state of the virtualised sub-network.')
     metadata = fields.Nested(
         KeyValuePair,
         required=False,
         many=True,
         description='List of metadata key-value pairs used by the consumer '
-                    'to associate meaningful metadata to the related '
-                    'virtualised resource.')
+        'to associate meaningful metadata to the related '
+        'virtualised ressource.')
 
 
 class VirtualNetworkResourceInformation(Schema):

@@ -1,5 +1,6 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.ReservedVirtualComputeComputePoolReservedComputeAttributes;
 import java.math.BigDecimal;
 import javax.validation.constraints.*;
 import javax.validation.Valid;

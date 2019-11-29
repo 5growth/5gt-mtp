@@ -1,5 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.ReservedVirtualComputeComputePoolReserved;
+import com.ericsson.dummyplugin.nbi.swagger.model.ReservedVirtualComputeVirtualisationContainerReserved;
 import java.util.Date;
 import javax.validation.constraints.*;
 import javax.validation.Valid;

@@ -1,5 +1,8 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.AllocateComputeRequestAffinityOrAntiAffinityConstraints;
+import com.ericsson.dummyplugin.nbi.swagger.model.CreateComputeResourceReservationRequestComputePoolReservation;
+import com.ericsson.dummyplugin.nbi.swagger.model.CreateComputeResourceReservationRequestVirtualisationContainerReservation;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

@@ -17,6 +17,7 @@ import com.mtp.extinterface.nbi.swagger.model.VirtualNetwork;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.WimNetworkResourcesApi;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,15 +65,31 @@ public class AllocateWIMNetworkThread extends Thread {
             param.setEgressPointPortAddress(endpoints.get(i).getEgressPort());
             param.setIngressPointIPAddress(endpoints.get(i).getIngressIp());
             param.setIngressPointPortAddress(endpoints.get(i).getIngressPort());
-            param.setMetadata(Long.toString(request.getServid()));            
-            param.setSegmentType(request.getNetworkRequest().getInterNfviPopNetworkType());
+            param.setMetadata(request.getServid());            
+            param.setSegmentType(request.getNetworkRequest().getNetworkLayer());
             param.setWanLinkId(request.getWanLinks().get(i).toString());
             
+            //if present take the vlan and set in the request. Acouple of value are present for each wimelem
+            switch (request.getNetworkRequest().getNetworkLayer()) {
+                case "VLAN":
+                    String vlans = request.getVlans().get(2*i) + ";" + request.getVlans().get(2*i + 1);
+                    param.setSegmentId(vlans);
+                    break;
+                case "VXLAN":
+                    String ips = request.getIps().get(2*i) + ";" + request.getIps().get(2*i + 1);;
+                    param.setSegmentId(ips);
+                    break;
+                
+            }
+            
 
-            AllocateReply networkresponse; //TODO:fix with networkAllocateoutput in swagger
+            AllocateReply networkresponse; 
             try {
                 //Filter nfviPopComputeInformationRequest = null;
+                System.out.println("WIM network allocate request time:" + ZonedDateTime.now());
                 networkresponse = api.allocateNetwork(param);
+                System.out.println("WIM network allocate response time:" + ZonedDateTime.now());
+                
             } catch (ApiException e) {
                 System.out.println("ApiException inside allocateNetwork().");
                 System.out.println("Val= " + e.getCode() + ";Message = " + e.getMessage());

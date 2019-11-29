@@ -12,10 +12,10 @@ import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequest;
 public class ComputeAllocateDBQuery {
 
     private long reqid;
-    private long servid; //service identifiers
+    private String servid; //service identifiers
     private AllocateComputeRequest computereq; //contains vim computation info
 
-    public ComputeAllocateDBQuery(long reqid, long servid, AllocateComputeRequest computereq) {
+    public ComputeAllocateDBQuery(long reqid, String servid, AllocateComputeRequest computereq) {
         this.reqid = reqid;
         this.servid = servid;
         this.computereq = computereq;
@@ -29,11 +29,11 @@ public class ComputeAllocateDBQuery {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

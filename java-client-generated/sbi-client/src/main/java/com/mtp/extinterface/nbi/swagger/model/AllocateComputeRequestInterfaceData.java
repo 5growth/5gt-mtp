@@ -27,13 +27,37 @@ import java.io.IOException;
 /**
  * AllocateComputeRequestInterfaceData
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T12:37:44.587Z")
 public class AllocateComputeRequestInterfaceData {
+  @SerializedName("networkId")
+  private String networkId = null;
+
   @SerializedName("ipAddress")
   private String ipAddress = null;
 
   @SerializedName("macAddress")
   private String macAddress = null;
+  
+  @SerializedName("floatingIP")
+  private String floatingIP = null;
+
+  public AllocateComputeRequestInterfaceData networkId(String networkId) {
+    this.networkId = networkId;
+    return this;
+  }
+
+   /**
+   * Associated network id
+   * @return networkId
+  **/
+  @ApiModelProperty(required = true, value = "Associated network id")
+  public String getNetworkId() {
+    return networkId;
+  }
+
+  public void setNetworkId(String networkId) {
+    this.networkId = networkId;
+  }
 
   public AllocateComputeRequestInterfaceData ipAddress(String ipAddress) {
     this.ipAddress = ipAddress;
@@ -53,6 +77,23 @@ public class AllocateComputeRequestInterfaceData {
     this.ipAddress = ipAddress;
   }
 
+   public AllocateComputeRequestInterfaceData floatingIP(String floatingIP) {
+    this.floatingIP = floatingIP;
+    return this;
+  }
+
+   /**
+   * The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to. The cardinality can be 0 in the case that a network interface is created without being attached to any specific network, or when an IP address can be automatically configured, e.g. by DHCP.
+   * @return ipAddress
+  **/
+  @ApiModelProperty(required = true, value = "The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to. The cardinality can be 0 in the case that a network interface is created without being attached to any specific network, or when an IP address can be automatically configured, e.g. by DHCP.")
+  public String getfloatingIP() {
+    return floatingIP;
+  }
+
+  public void setfloatingIP(String floatingIP) {
+    this.floatingIP = floatingIP;
+  }
   public AllocateComputeRequestInterfaceData macAddress(String macAddress) {
     this.macAddress = macAddress;
     return this;
@@ -81,13 +122,15 @@ public class AllocateComputeRequestInterfaceData {
       return false;
     }
     AllocateComputeRequestInterfaceData allocateComputeRequestInterfaceData = (AllocateComputeRequestInterfaceData) o;
-    return Objects.equals(this.ipAddress, allocateComputeRequestInterfaceData.ipAddress) &&
-        Objects.equals(this.macAddress, allocateComputeRequestInterfaceData.macAddress);
+    return Objects.equals(this.networkId, allocateComputeRequestInterfaceData.networkId) &&
+        Objects.equals(this.ipAddress, allocateComputeRequestInterfaceData.ipAddress) &&
+        Objects.equals(this.macAddress, allocateComputeRequestInterfaceData.macAddress) &&
+        Objects.equals(this.floatingIP, allocateComputeRequestInterfaceData.floatingIP);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(ipAddress, macAddress);
+    return Objects.hash(networkId, ipAddress, macAddress);
   }
 
 
@@ -96,8 +139,10 @@ public class AllocateComputeRequestInterfaceData {
     StringBuilder sb = new StringBuilder();
     sb.append("class AllocateComputeRequestInterfaceData {\n");
     
+    sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
     sb.append("    ipAddress: ").append(toIndentedString(ipAddress)).append("\n");
     sb.append("    macAddress: ").append(toIndentedString(macAddress)).append("\n");
+    sb.append("    floatingIP: ").append(toIndentedString(floatingIP)).append("\n");
     sb.append("}");
     return sb.toString();
   }

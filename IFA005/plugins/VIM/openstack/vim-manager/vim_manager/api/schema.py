@@ -44,6 +44,7 @@ class AffinityOrAntiAffinityResourceList(Schema):
     resource = fields.List(
         fields.Str(),
         required=True,
+        many=True,
         description='List of identifiers of virtualised resources.')
 
 
@@ -118,8 +119,9 @@ class VirtualStorage(Schema):
         required=True,
         description='Size of virtualised storage resource (e.g. size of '
                     'volume, in GB).')
-    # rdmaEnabled = fields.Bool(description='Indicates if the storage '
-    #                                       'supports RDMA.')
+    rdmaEnabled = fields.Bool(
+        required=False,
+        description='Indicates if the storage supports RDMA.')
     ownerId = fields.Str(
         required=True,
         description='Identifier of the virtualised resource that owns and '
@@ -138,11 +140,16 @@ class VirtualStorage(Schema):
     operationalState = fields.Str(
         required=True,
         description='Operational state of the resource.')
-    # metadata = fields.Str( description='')
+    metadata = fields.Nested(
+        KeyValuePair,
+        required=False,
+        description='List of metadata key-value pairs used by the consumer '
+        'to associate meaningful metadata to the related '
+        'virtualised resource.')
 
 
 class ResourceZone(Schema):
-    zoneId = fields.Str(
+    zoneId = fields.Number(
         required=True,
         description='The identifier of the Resource Zone.')
     zoneName = fields.Str(
@@ -152,7 +159,7 @@ class ResourceZone(Schema):
         required=True,
         description='Information about the current state of the Resource '
                     'Zone, e.g. if the Resource Zone is available.')
-    nfviPopId = fields.Str(
+    nfviPopId = fields.Number(
         required=True,
         description='The identifier of the NFVI-PoP the Resource Zone belongs '
                     'to.')
@@ -168,15 +175,17 @@ class ResourceZone(Schema):
                     'sub-systems), etc.')
     metadata = fields.Nested(
         KeyValuePair,
-        many=True,
-        description='Other metadata associated to the Resource Zone.')
+        required=False,
+        description='List of metadata key-value pairs used by the consumer '
+        'to associate meaningful metadata to the related '
+        'Resource Zone.')
 
 
 class NfviPop(Schema):
-    nfviPopId = fields.Str(
+    nfviPopId = fields.Number(
         required=True,
         description='Identification of the NFVI-PoP.')
-    vimId = fields.Str(
+    vimId = fields.Number(
         required=True,
         description='Identification of the VIM.')
     geographicalLocationInfo = fields.Str(
@@ -186,6 +195,7 @@ class NfviPop(Schema):
                     'etc.) of the NFVI resources that the VIM manages.')
     networkConnectivityEndpoint = fields.Str(
         required=True,
+        many=True,
         description='Information about network connectivity endpoints to the '
                     'NFVI-PoP that the VIM manages which helps build topology '
                     'information relative to NFVI-PoP connectivity to other '

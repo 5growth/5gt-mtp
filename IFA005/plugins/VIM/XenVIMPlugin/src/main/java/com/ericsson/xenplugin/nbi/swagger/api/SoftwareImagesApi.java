@@ -1,7 +1,7 @@
 package com.ericsson.xenplugin.nbi.swagger.api;
 
-import com.mtp.extinterface.nbi.swagger.model.SoftwareImageAddQuery;
-import com.mtp.extinterface.nbi.swagger.model.SoftwareImageInformation;
+import com.ericsson.xenplugin.nbi.swagger.model.SoftwareImageAddQuery;
+import com.ericsson.xenplugin.nbi.swagger.model.SoftwareImageInformation;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 

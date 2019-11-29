@@ -14,8 +14,6 @@
 package io.swagger.client.api;
 
 import io.swagger.client.ApiException;
-import io.swagger.client.api.DefaultApi;
-import io.swagger.client.api.DefaultApi;
 import org.junit.Test;
 import org.junit.Ignore;
 

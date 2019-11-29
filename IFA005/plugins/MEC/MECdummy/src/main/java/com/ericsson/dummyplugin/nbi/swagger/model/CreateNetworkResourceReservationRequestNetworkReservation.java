@@ -1,6 +1,8 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
 import io.swagger.annotations.ApiModel;
+import com.ericsson.dummyplugin.nbi.swagger.model.CreateNetworkResourceReservationRequestNetworkReservationNetworkAttributes;
+import com.ericsson.dummyplugin.nbi.swagger.model.CreateNetworkResourceReservationRequestNetworkReservationNetworkPorts;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

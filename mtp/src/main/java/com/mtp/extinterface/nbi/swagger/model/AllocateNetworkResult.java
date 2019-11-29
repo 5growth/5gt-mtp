@@ -1,5 +1,8 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResultNetworkData;
+import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResultNetworkPortData;
+import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResultSubnetData;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 

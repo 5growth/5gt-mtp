@@ -26,17 +26,17 @@ import com.mtp.extinterface.nbi.swagger.model.LocationInfo;
 import java.io.IOException;
 
 /**
- * MECRegionInfoMECRegionInfo
+ * MECRegionInfoMecRegionInfo
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
-public class MECRegionInfoMECRegionInfo {
-  @SerializedName("RegionId")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
+public class MECRegionInfoMecRegionInfo {
+  @SerializedName("regionId")
   private String regionId = null;
 
-  @SerializedName("LocationInfo")
+  @SerializedName("locationInfo")
   private LocationInfo locationInfo = null;
 
-  public MECRegionInfoMECRegionInfo regionId(String regionId) {
+  public MECRegionInfoMecRegionInfo regionId(String regionId) {
     this.regionId = regionId;
     return this;
   }
@@ -54,7 +54,7 @@ public class MECRegionInfoMECRegionInfo {
     this.regionId = regionId;
   }
 
-  public MECRegionInfoMECRegionInfo locationInfo(LocationInfo locationInfo) {
+  public MECRegionInfoMecRegionInfo locationInfo(LocationInfo locationInfo) {
     this.locationInfo = locationInfo;
     return this;
   }
@@ -81,9 +81,9 @@ public class MECRegionInfoMECRegionInfo {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MECRegionInfoMECRegionInfo meCRegionInfoMECRegionInfo = (MECRegionInfoMECRegionInfo) o;
-    return Objects.equals(this.regionId, meCRegionInfoMECRegionInfo.regionId) &&
-        Objects.equals(this.locationInfo, meCRegionInfoMECRegionInfo.locationInfo);
+    MECRegionInfoMecRegionInfo meCRegionInfoMecRegionInfo = (MECRegionInfoMecRegionInfo) o;
+    return Objects.equals(this.regionId, meCRegionInfoMecRegionInfo.regionId) &&
+        Objects.equals(this.locationInfo, meCRegionInfoMecRegionInfo.locationInfo);
   }
 
   @Override
@@ -95,7 +95,7 @@ public class MECRegionInfoMECRegionInfo {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class MECRegionInfoMECRegionInfo {\n");
+    sb.append("class MECRegionInfoMecRegionInfo {\n");
     
     sb.append("    regionId: ").append(toIndentedString(regionId)).append("\n");
     sb.append("    locationInfo: ").append(toIndentedString(locationInfo)).append("\n");

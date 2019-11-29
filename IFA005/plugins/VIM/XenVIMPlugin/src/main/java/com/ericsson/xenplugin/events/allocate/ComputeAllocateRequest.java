@@ -5,7 +5,9 @@
  */
 package com.ericsson.xenplugin.events.allocate;
 
-import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.VIMAllocateComputeRequest;
+
+
 
 
 
@@ -16,7 +18,7 @@ import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequest;
 public class ComputeAllocateRequest {
     private long reqid;
 
-    private AllocateComputeRequest request; //contains vim computation info 
+    private VIMAllocateComputeRequest request; //contains vim computation info 
     /*
      * TODO: Create object for allocation request of virtual resources according 
      * IFA005
@@ -27,7 +29,7 @@ public class ComputeAllocateRequest {
         request = null;
     }
 
-    public ComputeAllocateRequest(long reqid, AllocateComputeRequest request) {
+    public ComputeAllocateRequest(long reqid, VIMAllocateComputeRequest request) {
         this.reqid = reqid;
         this.request = request;
     }
@@ -42,10 +44,10 @@ public class ComputeAllocateRequest {
         reqid = reqval;
     }
 
-    public AllocateComputeRequest getRequest() {
+    public VIMAllocateComputeRequest getRequest() {
         return request;
     }
-    public void setRequest(AllocateComputeRequest request) {
+    public void setRequest(VIMAllocateComputeRequest request) {
         this.request = request;
     }
 }

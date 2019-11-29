@@ -1,5 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.Gateways;
+import com.ericsson.dummyplugin.nbi.swagger.model.VirtualLinks;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 

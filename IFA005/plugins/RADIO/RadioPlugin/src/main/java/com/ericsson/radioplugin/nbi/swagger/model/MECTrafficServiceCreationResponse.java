@@ -23,7 +23,7 @@ public class MECTrafficServiceCreationResponse   {
 
   
   @ApiModelProperty(required = true, value = "Request identifier assigned by the MEC plugin. This will be used for future queries or service deletion requests.")
-  @JsonProperty("RequestId")
+  @JsonProperty("requestId")
   @NotNull
   public String getRequestId() {
     return requestId;

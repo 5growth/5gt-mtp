@@ -27,48 +27,48 @@ import java.io.IOException;
 /**
  * MECAppDInfoInnerAppDAttributes
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class MECAppDInfoInnerAppDAttributes {
-  @SerializedName("APPDInfo")
-  private String apPDInfo = null;
+  @SerializedName("appDInfo")
+  private String appDInfo = null;
 
-  @SerializedName("MECAppDId")
-  private String meCAppDId = null;
+  @SerializedName("mecAppDId")
+  private String mecAppDId = null;
 
-  public MECAppDInfoInnerAppDAttributes apPDInfo(String apPDInfo) {
-    this.apPDInfo = apPDInfo;
+  public MECAppDInfoInnerAppDAttributes appDInfo(String appDInfo) {
+    this.appDInfo = appDInfo;
     return this;
   }
 
    /**
    * It provides information about MEC APPD (TBD)
-   * @return apPDInfo
+   * @return appDInfo
   **/
   @ApiModelProperty(required = true, value = "It provides information about MEC APPD (TBD)")
-  public String getApPDInfo() {
-    return apPDInfo;
+  public String getAppDInfo() {
+    return appDInfo;
   }
 
-  public void setApPDInfo(String apPDInfo) {
-    this.apPDInfo = apPDInfo;
+  public void setAppDInfo(String appDInfo) {
+    this.appDInfo = appDInfo;
   }
 
-  public MECAppDInfoInnerAppDAttributes meCAppDId(String meCAppDId) {
-    this.meCAppDId = meCAppDId;
+  public MECAppDInfoInnerAppDAttributes mecAppDId(String mecAppDId) {
+    this.mecAppDId = mecAppDId;
     return this;
   }
 
    /**
    * Identification of the MEC APPdId
-   * @return meCAppDId
+   * @return mecAppDId
   **/
   @ApiModelProperty(required = true, value = "Identification of the MEC APPdId")
-  public String getMeCAppDId() {
-    return meCAppDId;
+  public String getMecAppDId() {
+    return mecAppDId;
   }
 
-  public void setMeCAppDId(String meCAppDId) {
-    this.meCAppDId = meCAppDId;
+  public void setMecAppDId(String mecAppDId) {
+    this.mecAppDId = mecAppDId;
   }
 
 
@@ -81,13 +81,13 @@ public class MECAppDInfoInnerAppDAttributes {
       return false;
     }
     MECAppDInfoInnerAppDAttributes meCAppDInfoInnerAppDAttributes = (MECAppDInfoInnerAppDAttributes) o;
-    return Objects.equals(this.apPDInfo, meCAppDInfoInnerAppDAttributes.apPDInfo) &&
-        Objects.equals(this.meCAppDId, meCAppDInfoInnerAppDAttributes.meCAppDId);
+    return Objects.equals(this.appDInfo, meCAppDInfoInnerAppDAttributes.appDInfo) &&
+        Objects.equals(this.mecAppDId, meCAppDInfoInnerAppDAttributes.mecAppDId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(apPDInfo, meCAppDId);
+    return Objects.hash(appDInfo, mecAppDId);
   }
 
 
@@ -96,8 +96,8 @@ public class MECAppDInfoInnerAppDAttributes {
     StringBuilder sb = new StringBuilder();
     sb.append("class MECAppDInfoInnerAppDAttributes {\n");
     
-    sb.append("    apPDInfo: ").append(toIndentedString(apPDInfo)).append("\n");
-    sb.append("    meCAppDId: ").append(toIndentedString(meCAppDId)).append("\n");
+    sb.append("    appDInfo: ").append(toIndentedString(appDInfo)).append("\n");
+    sb.append("    mecAppDId: ").append(toIndentedString(mecAppDId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * VirtualCompute
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class VirtualCompute {
   @SerializedName("accelerationCapability")
   private List<String> accelerationCapability = new ArrayList<String>();
@@ -70,8 +70,8 @@ public class VirtualCompute {
   @SerializedName("zoneId")
   private String zoneId = null;
 
-  @SerializedName("MECappID")
-  private String meCappID = null;
+  @SerializedName("mecappID")
+  private String mecappID = null;
 
   public VirtualCompute accelerationCapability(List<String> accelerationCapability) {
     this.accelerationCapability = accelerationCapability;
@@ -299,22 +299,22 @@ public class VirtualCompute {
     this.zoneId = zoneId;
   }
 
-  public VirtualCompute meCappID(String meCappID) {
-    this.meCappID = meCappID;
+  public VirtualCompute mecappID(String mecappID) {
+    this.mecappID = mecappID;
     return this;
   }
 
    /**
    * If present, it identifies the reference MEC AppD reference Descritptor to apply for the allocated compute resources
-   * @return meCappID
+   * @return mecappID
   **/
   @ApiModelProperty(required = true, value = "If present, it identifies the reference MEC AppD reference Descritptor to apply for the allocated compute resources")
-  public String getMeCappID() {
-    return meCappID;
+  public String getMecappID() {
+    return mecappID;
   }
 
-  public void setMeCappID(String meCappID) {
-    this.meCappID = meCappID;
+  public void setMecappID(String mecappID) {
+    this.mecappID = mecappID;
   }
 
 
@@ -339,12 +339,12 @@ public class VirtualCompute {
         Objects.equals(this.virtualMemory, virtualCompute.virtualMemory) &&
         Objects.equals(this.virtualNetworkInterface, virtualCompute.virtualNetworkInterface) &&
         Objects.equals(this.zoneId, virtualCompute.zoneId) &&
-        Objects.equals(this.meCappID, virtualCompute.meCappID);
+        Objects.equals(this.mecappID, virtualCompute.mecappID);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(accelerationCapability, computeId, computeName, flavourId, hostId, operationalState, vcImageId, virtualCpu, virtualDisks, virtualMemory, virtualNetworkInterface, zoneId, meCappID);
+    return Objects.hash(accelerationCapability, computeId, computeName, flavourId, hostId, operationalState, vcImageId, virtualCpu, virtualDisks, virtualMemory, virtualNetworkInterface, zoneId, mecappID);
   }
 
 
@@ -365,7 +365,7 @@ public class VirtualCompute {
     sb.append("    virtualMemory: ").append(toIndentedString(virtualMemory)).append("\n");
     sb.append("    virtualNetworkInterface: ").append(toIndentedString(virtualNetworkInterface)).append("\n");
     sb.append("    zoneId: ").append(toIndentedString(zoneId)).append("\n");
-    sb.append("    meCappID: ").append(toIndentedString(meCappID)).append("\n");
+    sb.append("    mecappID: ").append(toIndentedString(mecappID)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -92,13 +92,22 @@ class CapacityQueryAPI(SwaggerView):
     types of consumable virtualised compute resources available in the
     Virtualised Compute Resources Information Management Interface.
     """
+    # TODO replace get by post
+    # parameters = [{
+    #     "in": "body",
+    #     "name": "QueryComputeCapacityRequest",
+    #     "schema": QueryComputeCapacityRequest,
+    #     "required": True
+    # }]
 
     parameters = [{
-        "in": "body",
-        "name": "QueryComputeCapacityRequest",
-        "schema": QueryComputeCapacityRequest,
+        "name": "ComputeResourceTypeId",
+        "in": "path",
+        "type": "string",
+        "description": "The type of ressource requested: VirtualCpuResourceInformation,VirtualMemoryResourceInformation,VirtualStorageResourceInformation",
         "required": True
     }]
+
     responses = {
         OK: {
             'description': 'The capacity during the requested time period. '
@@ -119,17 +128,62 @@ class CapacityQueryAPI(SwaggerView):
     tags = ['virtualisedComputeResources']
     operationId = "queryComputeCapacity"
 
-    def post(self):
-        data = flask.request.get_json()
-        resource_type_input = data.get('computeResourceTypeId')
+    # TODO replace get by post
+    # def post(self):
+    #     data = flask.request.get_json()
+    #     resource_type_input = data.get('computeResourceTypeId')
 
-        resource_types = {
-            'VirtualCpuResourceInformation': 'VCPU',
-            'VirtualMemoryResourceInformation': 'MEMORY_MB',
-            'VirtualStorageResourceInformation': 'DISK_GB'
-        }
+    #     resource_types = {
+    #         'VirtualCpuResourceInformation': 'VCPU',
+    #         'VirtualMemoryResourceInformation': 'MEMORY_MB',
+    #         'VirtualStorageResourceInformation': 'DISK_GB'
+    #     }
 
-        resource_type = resource_types.get(resource_type_input)
+    #     resource_type = resource_types.get(resource_type_input)
+    #     config = flask.current_app.osloconfig
+    #     session = OpenStackClients(config).session
+
+    #     response = session.get('/resource_providers', endpoint_filter={'service_type': 'placement', 'interface': 'public', 'region_name': 'RegionOne' })
+    #     resource_providers = json.loads(response.__dict__['_content'].decode("utf-8"))
+
+    #     available_capacity = 0
+    #     total_capacity = 0
+    #     allocated_capacity = 0
+    #     # check all the compute nodes
+    #     for resource_provider in resource_providers['resource_providers']:
+    #         links = resource_provider['links']
+    #         for link in links:
+    #             if link['rel'] == 'inventories':
+    #                 response = session.get(link['href'], endpoint_filter={'service_type': 'placement', 'interface': 'public', 'region_name': 'RegionOne' })
+    #                 data = json.loads(response.__dict__['_content'].decode("utf-8"))
+    #                 inventories = data['inventories'][resource_type]
+    #                 available_capacity = available_capacity + ( inventories['total'] - inventories['reserved'] )
+    #                 total_capacity = total_capacity + inventories['total']
+    #                 allocated_capacity = allocated_capacity + inventories['reserved']
+
+    #     capacity_information = {
+    #         'availableCapacity': available_capacity,
+    #         'reservedCapacity': None,  # May be use blazar lib
+    #         'totalCapacity': total_capacity,
+    #         'allocatedCapacity': allocated_capacity
+    #     }
+
+    #     return flask.jsonify(capacity_information), OK
+
+    # def get(self, ComputeResourceTypeId):
+    def get(self):
+
+        # resource_types = {
+        #     'VirtualCpuResourceInformation': 'VCPU',
+        #     'VirtualMemoryResourceInformation': 'MEMORY_MB',
+        #     'VirtualStorageResourceInformation': 'DISK_GB'
+        # }
+        resource_types = ['MEMORY_MB', 'VCPU']
+
+        data = flask.request.args.getlist('ComputeResourceTypeId')
+        # import ipdb; ipdb.set_trace()
+        resource_type = resource_types[int(data[0])]
+
         config = flask.current_app.osloconfig
         session = OpenStackClients(config).session
 
@@ -160,21 +214,28 @@ class CapacityQueryAPI(SwaggerView):
 
         return flask.jsonify(capacity_information), OK
 
-
 class ComputeResourceZoneQueryAPI(SwaggerView):
     """Query Compute Resource Zone operation.
 
     This operation enables the NFVO to query information about a Resource
     Zone, e.g. listing the properties of the Resource Zone, and other metadata.
     """
+    # TODO replace get by post
+    # parameters = [{
+    #     "name": "filter",
+    #     "in": "body",
+    #     "schema": Filter,
+    #     "description": "Input filter for selecting information to query. "
+    #                    "For instance, based on identifier of the Resource "
+    #                    "Zone, identifier of the NFVI-PoP, properties of "
+    #                    "the Resource Zone, or other meta-data.",
+    #     "required": True
+    # }]
     parameters = [{
-        "name": "filter",
-        "in": "body",
-        "schema": Filter,
-        "description": "Input filter for selecting information to query. "
-                       "For instance, based on identifier of the Resource "
-                       "Zone, identifier of the NFVI-PoP, properties of "
-                       "the Resource Zone, or other meta-data.",
+        "name": "nfviPopId",
+        "in": "path",
+        "type": "string",
+        "description": "The nfviPopId related to a zone",
         "required": True
     }]
 
@@ -201,10 +262,80 @@ class ComputeResourceZoneQueryAPI(SwaggerView):
     tags = ['virtualisedComputeResources']
     operationId = "queryComputeResourceZone"
 
-    def post(self):
+    # TODO fix this the post should be used for this type of resquet
+    # def post(self):
 
-        return flask.jsonify(''), OK
+    #     return flask.jsonify(''), OK
 
+    # def get(self, nfviPopId):
+    def get(self):
+        #import ipdb; ipdb.set_trace()
+        config = flask.current_app.osloconfig
+        nova = OpenStackClients(config).nova()
+        #neutron = OpenStackClients(config).neutron()
+
+        availabilityZones =  nova.availability_zones.list()
+        resourceZones = []
+        for availabilityZone in availabilityZones:
+            if availabilityZone.zoneName == 'internal':
+                continue
+
+            resourceZone = {
+                'zoneId'   : conf.cfg.CONF.ressource_zone.zoneId,
+                'zoneName' : availabilityZone.zoneName,
+                'zoneState' : 'available' if availabilityZone.zoneState['available'] else 'unavailable',
+                'nfviPopId' : conf.cfg.CONF.ressource_zone.nfviPopId,
+                'zoneProperty' : conf.cfg.CONF.ressource_zone.zoneProperty
+            }
+            resourceZones.append(resourceZone)
+
+        return flask.jsonify(resourceZones), OK
+
+# class ComputeResourceZoneQueryAPI_withoutID(SwaggerView):
+#     """Query Compute Resource Zone operation.
+
+#     This operation enables the NFVO to query information about a Resource
+#     Zone, e.g. listing the properties of the Resource Zone, and other metadata.
+#     """
+#     # TODO delete this is a stubbed
+
+#     responses = {
+#         OK: {
+#             'description': 'The filtered information that has been retrieved '
+#                            'about the Resource Zone. The cardinality can be 0 '
+#                            'if no matching information exist.',
+#             'schema': {
+#                 'type': 'array',
+#                 'items': ResourceZone
+#             },
+#         },
+#         UNAUTHORIZED: {
+#             "description": "Unauthorized",
+#         },
+#         FORBIDDEN: {
+#             "description": "Forbidden",
+#         },
+#         BAD_REQUEST: {
+#             "description": "Bad request",
+#         },
+#     }
+#     tags = ['virtualisedComputeResources']
+#     operationId = "queryComputeResourceZone"
+
+#     # TODO fix this the post should be used for this type of resquet
+#     # def post(self):
+
+#     #     return flask.jsonify(''), OK
+
+#     def get(self):
+#         resourceZones = {
+#             'zoneId'   : conf.cfg.CONF.ressource_zone.zoneId,
+#             'zoneName' : conf.cfg.CONF.ressource_zone.zoneName,
+#             'zoneState' : conf.cfg.CONF.ressource_zone.zoneState,
+#             'nfviPopId' : conf.cfg.CONF.ressource_zone.nfviPopId,
+#             'zoneProperty' : conf.cfg.CONF.ressource_zone.zoneProperty
+#         }
+#         return flask.jsonify(resourceZones), OK
 
 class NfviPopComputeInformationQueryAPI(SwaggerView):
     """Query NFVI-PoP Compute Information operation.
@@ -215,14 +346,14 @@ class NfviPopComputeInformationQueryAPI(SwaggerView):
     endpoints to reach VNFs instantiated making use of virtualised compute
     resources in the NFVI as specified by the exchanged information elements.
     """
-
-    parameters = [{
-        "name": "filter",
-        "in": "body",
-        "schema": Filter,
-        "description": "Input filter for selecting information to query.",
-        "required": True
-    }]
+    # TODO replace get by post
+    # parameters = [{
+    #     "name": "filter",
+    #     "in": "body",
+    #     "schema": Filter,
+    #     "description": "Input filter for selecting information to query.",
+    #     "required": True
+    # }]
 
     responses = {
         OK: {
@@ -246,32 +377,63 @@ class NfviPopComputeInformationQueryAPI(SwaggerView):
     }
     tags = ['virtualisedComputeResources']
     operationId = "queryNFVIPoPComputeInformation"
+    # TODO replace get by post
+    # def post(self):
+    #     nfvi_pop_param = {
+    #         'nfviPopId' : conf.cfg.CONF.nfvi_pop.nfviPopId,
+    #         'vimId' : conf.cfg.CONF.nfvi_pop.vimId,
+    #         'geographicalLocationInfo' : conf.cfg.CONF.nfvi_pop.geographicalLocationInfo,
+    #         'networkConnectivityEndpoint' : conf.cfg.CONF.nfvi_pop.networkConnectivityEndpoint
+    #     }
+    #     return flask.jsonify(nfvi_pop_param), OK
 
-    def post(self):
-        nfvi_pop_param = {
+    def get(self):
+        nfvi_pop_param = [{
             'nfviPopId' : conf.cfg.CONF.nfvi_pop.nfviPopId,
             'vimId' : conf.cfg.CONF.nfvi_pop.vimId,
             'geographicalLocationInfo' : conf.cfg.CONF.nfvi_pop.geographicalLocationInfo,
             'networkConnectivityEndpoint' : conf.cfg.CONF.nfvi_pop.networkConnectivityEndpoint
-        }
+        }]
         return flask.jsonify(nfvi_pop_param), OK
 
-blueprint.add_url_rule(
-    '/v1/compute_resources/capacities/query',
-    strict_slashes=False,
-    view_func=CapacityQueryAPI.as_view('queryComputeCapacity'),
-    methods=['POST'])
 
 blueprint.add_url_rule(
-    '/v1/compute_resources/resource_zones/query',
+    # TODO replace get by post
+    # '/v1/compute_resources/capacities/query',
+    # '/v1/compute_resources/capacities/<ComputeResourceTypeId>',
+    '/v1/compute_resources/capacities',
+    strict_slashes=False,
+    view_func=CapacityQueryAPI.as_view('queryComputeCapacity'),
+    # TODO replace get by post
+    # methods=['POST'])
+    methods=['GET'])
+
+blueprint.add_url_rule(
+    # TODO replace get by post
+    # '/v1/compute_resources/resource_zones/query',
+    # '/v1/compute_resources/resource_zones/<nfviPopId>',
+    '/v1/compute_resources/resource_zones/',
     strict_slashes=False,
     view_func=ComputeResourceZoneQueryAPI.as_view(
         'queryComputeResourceZoneQuery'),
-    methods=['POST'])
+    # methods=['POST'])
+    methods=['GET'])
+
+# blueprint.add_url_rule(
+#     # TODO delete this function it's a stubbed one
+#     '/v1/compute_resources/resource_zones',
+#     strict_slashes=False,
+#     view_func=ComputeResourceZoneQueryAPI_withoutID.as_view(
+#         'queryComputeResourceZoneQuery_withoutID'),
+#     methods=['GET'])
 
 blueprint.add_url_rule(
-    '/v1/compute_resources/nfvi_pop_compute_information/query',
+    # TODO replace get by post
+    # '/v1/compute_resources/nfvi_pop_compute_information/query',
+    '/v1/compute_resources/nfvi_pop_compute_information',
     strict_slashes=False,
     view_func=NfviPopComputeInformationQueryAPI.as_view(
         'queryNfviPopComputeInformation'),
-    methods=['POST'])
+    # TODO replace get by post
+    # methods=['POST'])
+    methods=['GET'])

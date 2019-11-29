@@ -23,7 +23,7 @@ public class MECAppDInfoInner   {
 
   
   @ApiModelProperty(required = true, value = "")
-  @JsonProperty("AppDAttributes")
+  @JsonProperty("appDAttributes")
   @NotNull
   public MECAppDInfoInnerAppDAttributes getAppDAttributes() {
     return appDAttributes;

@@ -46,32 +46,54 @@ public class TerminateVIMNetworkThread extends Thread {
             for (int i = 0; i < dominfoMap.get(j).size(); i++) { 
 //                String basepath = "http://" + dominfoMap.get(j).get(i).getIp() + ":" 
 //                        + dominfoMap.get(j).get(i).getPort() + "/" + dominfoMap.get(j).get(i).getName();
-                String basepath = "http://" + dominfoMap.get(j).get(i).getIp() + ":" 
-                       + dominfoMap.get(j).get(i).getPort();
-                ApiClient capi = new ApiClient();
-                capi.setBasePath(basepath);
-                VimNetworkResourcesApi api = new VimNetworkResourcesApi(capi);
-
-                List<String> netlist = new ArrayList();
-                List<String> resplist = new ArrayList();
-                String idel = new String();
-                idel = Long.toString(request.getIntraPopLinksMap().get(j).get(i));
-                netlist.add(idel);
-
-                try {
-                    //Filter nfviPopComputeInformationRequest = null;
-                    resplist = api.vIMterminateNetworks(netlist);
-                } catch (ApiException e) {
-                    System.out.println("ApiException inside termianteNetwork() VIM.");
-                    System.out.println("Val= " + e.getCode() + ";Message = " + e.getMessage());
-                    outcomeList.add(Boolean.FALSE);
-                    errorcodeList.add(e.getCode());
-                    errormsgList.add(e.getMessage());
-                    break;
+//                String basepath = "http://" + dominfoMap.get(j).get(i).getIp() + ":" 
+//                       + dominfoMap.get(j).get(i).getPort();
+                
+                String basepath = null;
+                if (dominfoMap.get(j).get(i).getName().contains("OpenStack") == true) {
+                    basepath = "http://" + dominfoMap.get(j).get(i).getIp() + ":" + dominfoMap.get(j).get(i).getPort() + "/v1";
+                } else {
+                    basepath = "http://" + dominfoMap.get(j).get(i).getIp() + ":" + dominfoMap.get(j).get(i).getPort();
                 }
-                outcomeList.add(Boolean.TRUE);
-                errorcodeList.add(0);
-                errormsgList.add("");
+                
+//
+                    String osid = new String();
+                    //osid = Long.toString(request.getIntraPopLinksMap().get(j).get(i));
+                    osid = request.getIntraPopLinksMap().get(j).get(i);
+                    if (osid.compareTo("dummy") == 0) {
+                        //nothing to do
+                        outcomeList.add(Boolean.TRUE);
+                        errorcodeList.add(0);
+                        errormsgList.add("");
+                    } else {
+                        //TODO: Remove VLAN update resource
+                        ApiClient capi = new ApiClient();
+                        capi.setBasePath(basepath);
+                        VimNetworkResourcesApi api = new VimNetworkResourcesApi(capi);
+
+                        List<String> netlist = new ArrayList();
+                        List<String> resplist = new ArrayList();
+                        String idel = new String();
+                        //idel = Long.toString(request.getIntraPopLinksMap().get(j).get(i));
+                        idel = request.getIntraPopLinksMap().get(j).get(i);
+                        netlist.add(idel);
+
+                        try {
+                            //Filter nfviPopComputeInformationRequest = null;
+                            resplist = api.vIMterminateNetworks(netlist);
+                        } catch (ApiException e) {
+                            System.out.println("ApiException inside termianteNetwork() VIM.");
+                            System.out.println("Val= " + e.getCode() + ";Message = " + e.getMessage());
+                            outcomeList.add(Boolean.FALSE);
+                            errorcodeList.add(e.getCode());
+                            errormsgList.add(e.getMessage());
+                            break;
+                        }
+                        outcomeList.add(Boolean.TRUE);
+                        errorcodeList.add(0);
+                        errormsgList.add("");
+                }
+   
             }//END loop on domIds
 
             outcomeListMap.put(j, outcomeList);

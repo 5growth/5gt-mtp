@@ -1,5 +1,9 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequestAffinityOrAntiAffinityConstraints;
+import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequestInterfaceData;
+import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequestUserData;
+import com.mtp.extinterface.nbi.swagger.model.MetaDataInner;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;
@@ -23,7 +27,7 @@ public class AllocateComputeRequest   {
   private @Valid String resourceGroupId = null;
   private @Valid AllocateComputeRequestUserData userData = null;
   private @Valid String vcImageId = null;
-  private @Valid String meCAppDId = null;
+  private @Valid String mecAppDId = null;
 
   /**
    * A list of elements with affinity or anti affinity information of the virtualised compute resource to allocate. There should be a relation between the constraints defined in the different elements of the list.
@@ -217,20 +221,20 @@ public class AllocateComputeRequest   {
   /**
    * Identifier of the MEC AppD reference identifier. Cardinality can be 0 if an VM is not allocated for a MEC application. 
    **/
-  public AllocateComputeRequest meCAppDId(String meCAppDId) {
-    this.meCAppDId = meCAppDId;
+  public AllocateComputeRequest mecAppDId(String mecAppDId) {
+    this.mecAppDId = mecAppDId;
     return this;
   }
 
   
   @ApiModelProperty(required = true, value = "Identifier of the MEC AppD reference identifier. Cardinality can be 0 if an VM is not allocated for a MEC application. ")
-  @JsonProperty("MECAppDId")
+  @JsonProperty("mecAppDId")
   @NotNull
-  public String getMeCAppDId() {
-    return meCAppDId;
+  public String getMecAppDId() {
+    return mecAppDId;
   }
-  public void setMeCAppDId(String meCAppDId) {
-    this.meCAppDId = meCAppDId;
+  public void setMecAppDId(String mecAppDId) {
+    this.mecAppDId = mecAppDId;
   }
 
 
@@ -253,12 +257,12 @@ public class AllocateComputeRequest   {
         Objects.equals(resourceGroupId, allocateComputeRequest.resourceGroupId) &&
         Objects.equals(userData, allocateComputeRequest.userData) &&
         Objects.equals(vcImageId, allocateComputeRequest.vcImageId) &&
-        Objects.equals(meCAppDId, allocateComputeRequest.meCAppDId);
+        Objects.equals(mecAppDId, allocateComputeRequest.mecAppDId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(affinityOrAntiAffinityConstraints, computeFlavourId, computeName, interfaceData, locationConstraints, metadata, reservationId, resourceGroupId, userData, vcImageId, meCAppDId);
+    return Objects.hash(affinityOrAntiAffinityConstraints, computeFlavourId, computeName, interfaceData, locationConstraints, metadata, reservationId, resourceGroupId, userData, vcImageId, mecAppDId);
   }
 
   @Override
@@ -276,7 +280,7 @@ public class AllocateComputeRequest   {
     sb.append("    resourceGroupId: ").append(toIndentedString(resourceGroupId)).append("\n");
     sb.append("    userData: ").append(toIndentedString(userData)).append("\n");
     sb.append("    vcImageId: ").append(toIndentedString(vcImageId)).append("\n");
-    sb.append("    meCAppDId: ").append(toIndentedString(meCAppDId)).append("\n");
+    sb.append("    mecAppDId: ").append(toIndentedString(mecAppDId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

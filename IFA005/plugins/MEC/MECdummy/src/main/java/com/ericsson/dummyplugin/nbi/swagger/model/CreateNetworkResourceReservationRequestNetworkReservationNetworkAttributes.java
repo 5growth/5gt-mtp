@@ -1,6 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
 import io.swagger.annotations.ApiModel;
+import com.ericsson.dummyplugin.nbi.swagger.model.MetaDataInner;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

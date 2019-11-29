@@ -10,11 +10,11 @@ import com.mtp.extinterface.nbi.swagger.model.VirtualCompute;
 public class E2EComputeAllocateInstanceOutcome {
 
     private long reqid;
-    private long servid; //service identifiers 
+    private String servid; //service identifiers 
     private VirtualCompute computereply;
     private boolean outcome;
 
-    public E2EComputeAllocateInstanceOutcome(long reqid, long servid, VirtualCompute computereply, boolean outcome) {
+    public E2EComputeAllocateInstanceOutcome(long reqid, String servid, VirtualCompute computereply, boolean outcome) {
         this.reqid = reqid;
         this.servid = servid;
         this.computereply = computereply;
@@ -29,11 +29,11 @@ public class E2EComputeAllocateInstanceOutcome {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

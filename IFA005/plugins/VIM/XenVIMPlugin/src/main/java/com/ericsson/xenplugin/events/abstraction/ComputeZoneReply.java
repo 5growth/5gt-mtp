@@ -6,7 +6,8 @@
 package com.ericsson.xenplugin.events.abstraction;
 
 
-import com.mtp.extinterface.nbi.swagger.model.ResourceZone;
+
+import com.ericsson.xenplugin.nbi.swagger.model.ResourceZone;
 import java.util.List;
 
 /**

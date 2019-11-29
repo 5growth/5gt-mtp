@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class PANetworkReply {
     private long reqid;
-    private long servid;
+    private String servid;
     private long logicalpathid;
     private String interNfviConnectivityId;
     private BigDecimal reqBw;
@@ -26,7 +26,7 @@ public class PANetworkReply {
     private List<CompRouteOutputWanPaths> wanPaths;
     private List<CompRouteOutputNfviPopResp> nfviPopResp;
 
-    public PANetworkReply(long reqid, long servid, long logicalpathid, String interNfviConnectivityId, BigDecimal reqBw, List<CompRouteOutputInterWanLinks> interWanLinks, List<CompRouteOutputWanPaths> wanPaths, List<CompRouteOutputNfviPopResp> nfviPopResp) {
+    public PANetworkReply(long reqid, String servid, long logicalpathid, String interNfviConnectivityId, BigDecimal reqBw, List<CompRouteOutputInterWanLinks> interWanLinks, List<CompRouteOutputWanPaths> wanPaths, List<CompRouteOutputNfviPopResp> nfviPopResp) {
         this.reqid = reqid;
         this.servid = servid;
         this.logicalpathid = logicalpathid;
@@ -46,11 +46,11 @@ public class PANetworkReply {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

@@ -22,8 +22,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import com.mtp.extinterface.nbi.swagger.model.MetaDataInner;
-import com.mtp.extinterface.nbi.swagger.model.SubnetData;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,7 @@ import java.util.List;
 /**
  * AllocateNetworkRequest
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-09T12:07:32.444Z")
 public class AllocateNetworkRequest {
   @SerializedName("affinityOrAntiAffinityConstraints")
   private String affinityOrAntiAffinityConstraints = null;

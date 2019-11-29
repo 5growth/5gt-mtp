@@ -66,7 +66,7 @@ public class AllocateVIMNetworkStub extends Thread {
         //send event with string OK
 //        allwimrep = new NetworkAllocateWIMReply( request.getReqId(),request.getServId(), 
 //                        request.getDomId(), networkresponse, true);
-        allvimrep = new NetworkAllocateVIMReply(request.getReqid(), request.getServid(), true,
+        allvimrep = new NetworkAllocateVIMReply(request.getReqId(), request.getServId(), true,
                 0, null, vimnetlist, request.getLogicalPathId());
 
         SingletonEventBus.getBus().post(allvimrep);

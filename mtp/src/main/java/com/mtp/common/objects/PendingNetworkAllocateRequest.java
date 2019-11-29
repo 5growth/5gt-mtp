@@ -17,13 +17,13 @@ import java.util.ArrayList;
 public class PendingNetworkAllocateRequest {
 
     private long reqid;
-    private long servid; //service identifiers
+    private String servid; //service identifiers
     private long logicalLinkId;
     private InterNfviPopConnectivityRequest networkRequest; // wimelem renamed 
     private ArrayList<Long> wimdomlist;
     private ArrayList<Long> vimdomlist; //contains domain managing the VIM abstract resources
     private ArrayList<Long> interdomainLinks;
-    private ArrayList<Long> intraPopLinks;
+    private ArrayList<String> intraPopLinks;
     private ArrayList<Long> wanLinks;
     private ArrayList<Long> wimPopList;
     private ArrayList<Long> vimPopList;
@@ -31,8 +31,9 @@ public class PendingNetworkAllocateRequest {
     private ArrayList<String> vimNetworkType;
     private ArrayList<VirtualNetwork> wimnetlist;
     private ArrayList<VirtualNetwork> vimnetlist;
+    private ArrayList<Long> vlanlist;
 
-    public PendingNetworkAllocateRequest(long reqid, long servid, long logicalLinkId, InterNfviPopConnectivityRequest networkRequest, ArrayList<Long> wimdomlist, ArrayList<Long> vimdomlist, ArrayList<Long> interdomainLinks, ArrayList<Long> intraPopLinks, ArrayList<Long> wanLinks, ArrayList<Long> wimPopList, ArrayList<Long> vimPopList, ArrayList<String> wimNetworkType, ArrayList<String> vimNetworkType) {
+    public PendingNetworkAllocateRequest(long reqid, String servid, long logicalLinkId, InterNfviPopConnectivityRequest networkRequest, ArrayList<Long> wimdomlist, ArrayList<Long> vimdomlist, ArrayList<Long> interdomainLinks, ArrayList<String> intraPopLinks, ArrayList<Long> wanLinks, ArrayList<Long> wimPopList, ArrayList<Long> vimPopList, ArrayList<String> wimNetworkType, ArrayList<String> vimNetworkType, ArrayList<Long> vlanlist) {
         this.reqid = reqid;
         this.servid = servid;
         this.logicalLinkId = logicalLinkId;
@@ -46,9 +47,17 @@ public class PendingNetworkAllocateRequest {
         this.vimPopList = vimPopList;
         this.wimNetworkType = wimNetworkType;
         this.vimNetworkType = vimNetworkType;
-        this.wimnetlist = new ArrayList();
-        this.vimnetlist = new ArrayList();
+        this.vlanlist = vlanlist;
     }
+
+    public ArrayList<Long> getVlanlist() {
+        return vlanlist;
+    }
+
+    public void setVlanlist(ArrayList<Long> vlanlist) {
+        this.vlanlist = vlanlist;
+    }
+
 
     public long getReqid() {
         return reqid;
@@ -58,11 +67,11 @@ public class PendingNetworkAllocateRequest {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 
@@ -106,11 +115,11 @@ public class PendingNetworkAllocateRequest {
         this.interdomainLinks = interdomainLinks;
     }
 
-    public ArrayList<Long> getIntraPopLinks() {
+    public ArrayList<String> getIntraPopLinks() {
         return intraPopLinks;
     }
 
-    public void setIntraPopLinks(ArrayList<Long> intraPopLinks) {
+    public void setIntraPopLinks(ArrayList<String> intraPopLinks) {
         this.intraPopLinks = intraPopLinks;
     }
 

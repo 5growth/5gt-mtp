@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  */
 public class PANetworkRequest {
     private long reqid;
-    private long servid;
+    private String servid;
     private InterNfviPopConnectivityRequest networkreq; 
     private long logicalpathid;
     private BigDecimal reqbw;
@@ -22,7 +22,7 @@ public class PANetworkRequest {
     private String PEsrc;
     private String PEdst;
 
-    public PANetworkRequest(long reqid, long servid, InterNfviPopConnectivityRequest networkreq, long logicalpathid, BigDecimal reqbw, BigDecimal reqlatency, String PEsrc, String PEdst) {
+    public PANetworkRequest(long reqid, String servid, InterNfviPopConnectivityRequest networkreq, long logicalpathid, BigDecimal reqbw, BigDecimal reqlatency, String PEsrc, String PEdst) {
         this.reqid = reqid;
         this.servid = servid;
         this.networkreq = networkreq;
@@ -43,11 +43,11 @@ public class PANetworkRequest {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

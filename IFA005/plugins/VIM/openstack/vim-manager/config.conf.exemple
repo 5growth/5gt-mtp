@@ -19,13 +19,47 @@ user_domain_name = Default
 insecure = True
 [nfvi_pop]
 # Identification of the NFVI-PoP.
-nfviPopId = BCOM
+nfviPopId = 321
 # Identification of the VIM.
 vimId = 123456
 # It provides information about the geographic location 
 geographicalLocationInfo = Rennes
 # Information about network connectivity endpoints to the NFVI-PoP
 networkConnectivityEndpoint = stuff
+[ressource_zone]
+# The identifier of the Resource Zone
+zoneId = 123
+# The name of the Resource Zone
+zoneName = Twilight
+# Information about the current state of the Resource
+zoneState = available
+# The identifier of the NFVI-PoP the Resource Zone belongs
+nfviPopId = 321
+# Set of properties that define the capabilities
+zoneProperty = cpu
+[compute_information]
+# Identifier of the consumable virtualised compute resource type.
+computeResourceTypeMemory =  0
+# Identifier of the consumable virtualised compute resource type.
+computeResourceTypeCpu =  1
+# Amount of virtual memory (e.g. in MB)
+virtualMemSize = 1024
+# The memory core oversubscription policy
+virtualMemOversubscriptionPolicy = theWhat
+# It specifies if the memory allocation can be cognisant of the relevant process/core allocation.
+numaSupported = true
+# CPU architecture type. Examples are x86, ARM
+cpuArchitecture = x86
+# Number of virtual CPUs
+numVirtualCpu = 4
+# 'Minimum CPU clock rate (e.g. in MHz)
+cpuClock = 2
+# The CPU core oversubscription policy
+virtualCpuOversubscriptionPolicy = noIdea
+# It defines whether CPU pinning capability is available
+virtualCpuPinningSupported = True
+# Acceleration capabilities (e.g. crypto, GPU)
+accelerationCapability = crypto
 [vtep]
 # The name of the vtep vm
 vtep_name = vm_vtep_bridge

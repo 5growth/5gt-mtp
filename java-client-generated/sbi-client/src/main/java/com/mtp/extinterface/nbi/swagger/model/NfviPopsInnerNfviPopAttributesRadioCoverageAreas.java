@@ -30,21 +30,21 @@ import java.math.BigDecimal;
  * Information about Mec Specific parameters.
  */
 @ApiModel(description = "Information about Mec Specific parameters.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class NfviPopsInnerNfviPopAttributesRadioCoverageAreas {
-  @SerializedName("CoverageAreaId")
+  @SerializedName("coverageAreaId")
   private String coverageAreaId = null;
 
-  @SerializedName("CovrageLocationInfo")
+  @SerializedName("covrageLocationInfo")
   private NfviPopsInnerNfviPopAttributesCovrageLocationInfo covrageLocationInfo = null;
 
-  @SerializedName("MinBandwidth")
+  @SerializedName("minBandwidth")
   private BigDecimal minBandwidth = null;
 
-  @SerializedName("MaxBandwidth")
+  @SerializedName("maxBandwidth")
   private BigDecimal maxBandwidth = null;
 
-  @SerializedName("Delay")
+  @SerializedName("delay")
   private BigDecimal delay = null;
 
   public NfviPopsInnerNfviPopAttributesRadioCoverageAreas coverageAreaId(String coverageAreaId) {
@@ -56,7 +56,7 @@ public class NfviPopsInnerNfviPopAttributesRadioCoverageAreas {
    * Coverage Area Identifier supported by Radio PoP
    * @return coverageAreaId
   **/
-  @ApiModelProperty(required = true, value = "Coverage Area Identifier supported by Radio PoP")
+  @ApiModelProperty(value = "Coverage Area Identifier supported by Radio PoP")
   public String getCoverageAreaId() {
     return coverageAreaId;
   }
@@ -74,7 +74,7 @@ public class NfviPopsInnerNfviPopAttributesRadioCoverageAreas {
    * Get covrageLocationInfo
    * @return covrageLocationInfo
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(value = "")
   public NfviPopsInnerNfviPopAttributesCovrageLocationInfo getCovrageLocationInfo() {
     return covrageLocationInfo;
   }
@@ -92,7 +92,7 @@ public class NfviPopsInnerNfviPopAttributesRadioCoverageAreas {
    * Minimummum bandwidth provided by the coverage area
    * @return minBandwidth
   **/
-  @ApiModelProperty(required = true, value = "Minimummum bandwidth provided by the coverage area")
+  @ApiModelProperty(value = "Minimummum bandwidth provided by the coverage area")
   public BigDecimal getMinBandwidth() {
     return minBandwidth;
   }
@@ -110,7 +110,7 @@ public class NfviPopsInnerNfviPopAttributesRadioCoverageAreas {
    * Maximum bandwidth provided by the coverage area
    * @return maxBandwidth
   **/
-  @ApiModelProperty(required = true, value = "Maximum bandwidth provided by the coverage area")
+  @ApiModelProperty(value = "Maximum bandwidth provided by the coverage area")
   public BigDecimal getMaxBandwidth() {
     return maxBandwidth;
   }
@@ -128,7 +128,7 @@ public class NfviPopsInnerNfviPopAttributesRadioCoverageAreas {
    * minimum delay guaranteed by the coverage area
    * @return delay
   **/
-  @ApiModelProperty(required = true, value = "minimum delay guaranteed by the coverage area")
+  @ApiModelProperty(value = "minimum delay guaranteed by the coverage area")
   public BigDecimal getDelay() {
     return delay;
   }

@@ -9,7 +9,7 @@ arrow # Apache-2.0
 daiquiri # Apache-2.0
 flasgger==0.9.1 # MIT
 flask # BSD License (3 clause)
-marshmallow # MIT
+marshmallow==2.20.2 # MIT
 marshmallow-enum # MIT
 oslo.config # Apache-2.0
 python-neutronclient # Apache-2.0

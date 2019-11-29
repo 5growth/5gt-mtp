@@ -13,6 +13,8 @@ public class AllocateComputeRequestInterfaceData   {
   
   private @Valid String ipAddress = null;
   private @Valid String macAddress = null;
+  private @Valid String networkId = null;
+  private @Valid String floatingIP = null;
 
   /**
    * The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to. The cardinality can be 0 in the case that a network interface is created without being attached to any specific network, or when an IP address can be automatically configured, e.g. by DHCP.
@@ -36,11 +38,28 @@ public class AllocateComputeRequestInterfaceData   {
   /**
    * The MAC address desired for the virtual network interface. The cardinality can be 0 to allow for network interface without specific MAC address configuration.
    **/
+  public AllocateComputeRequestInterfaceData floatingIP(String floatingIP) {
+    this.floatingIP = floatingIP;
+    return this;
+  }
+
+  @ApiModelProperty(required = true, value = "The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to. The cardinality can be 0 in the case that a network interface is created without being attached to any specific network, or when an IP address can be automatically configured, e.g. by DHCP.")
+  @JsonProperty("floatingIP")
+  @NotNull
+  public String getfloatingIP() {
+    return floatingIP;
+  }
+  public void setfloatingIP(String floatingIP) {
+    this.floatingIP = floatingIP;
+  }
+
+  /**
+   * The MAC address desired for the virtual network interface. The cardinality can be 0 to allow for network interface without specific MAC address configuration.
+   **/
   public AllocateComputeRequestInterfaceData macAddress(String macAddress) {
     this.macAddress = macAddress;
     return this;
   }
-
   
   @ApiModelProperty(required = true, value = "The MAC address desired for the virtual network interface. The cardinality can be 0 to allow for network interface without specific MAC address configuration.")
   @JsonProperty("macAddress")
@@ -52,6 +71,24 @@ public class AllocateComputeRequestInterfaceData   {
     this.macAddress = macAddress;
   }
 
+   /**
+   * The MAC address desired for the virtual network interface. The cardinality can be 0 to allow for network interface without specific MAC address configuration.
+   **/
+  public AllocateComputeRequestInterfaceData networkId(String macAddress) {
+    this.macAddress = macAddress;
+    return this;
+  }
+
+  
+  @ApiModelProperty(required = true, value = "The MAC address desired for the virtual network interface. The cardinality can be 0 to allow for network interface without specific MAC address configuration.")
+  @JsonProperty("networkId")
+  @NotNull
+  public String getnetworkId() {
+    return networkId;
+  }
+  public void setnetworkId(String networkId) {
+    this.networkId = networkId;
+  }
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -63,12 +100,14 @@ public class AllocateComputeRequestInterfaceData   {
     }
     AllocateComputeRequestInterfaceData allocateComputeRequestInterfaceData = (AllocateComputeRequestInterfaceData) o;
     return Objects.equals(ipAddress, allocateComputeRequestInterfaceData.ipAddress) &&
-        Objects.equals(macAddress, allocateComputeRequestInterfaceData.macAddress);
+        Objects.equals(macAddress, allocateComputeRequestInterfaceData.macAddress) &&
+        Objects.equals(networkId, allocateComputeRequestInterfaceData.networkId) &&
+        Objects.equals(floatingIP, allocateComputeRequestInterfaceData.floatingIP)    ;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(ipAddress, macAddress);
+    return Objects.hash(ipAddress, macAddress, networkId);
   }
 
   @Override
@@ -78,6 +117,8 @@ public class AllocateComputeRequestInterfaceData   {
     
     sb.append("    ipAddress: ").append(toIndentedString(ipAddress)).append("\n");
     sb.append("    macAddress: ").append(toIndentedString(macAddress)).append("\n");
+    sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
+    sb.append("    networkId: ").append(toIndentedString(floatingIP)).append("\n");
     sb.append("}");
     return sb.toString();
   }

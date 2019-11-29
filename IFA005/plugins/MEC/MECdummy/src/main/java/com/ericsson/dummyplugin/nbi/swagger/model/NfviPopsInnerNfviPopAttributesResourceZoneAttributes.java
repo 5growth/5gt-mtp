@@ -1,5 +1,8 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.NfviPopsInnerNfviPopAttributesCpuResourceAttributes;
+import com.ericsson.dummyplugin.nbi.swagger.model.NfviPopsInnerNfviPopAttributesMemoryResourceAttributes;
+import com.ericsson.dummyplugin.nbi.swagger.model.NfviPopsInnerNfviPopAttributesStorageResourceAttributes;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 

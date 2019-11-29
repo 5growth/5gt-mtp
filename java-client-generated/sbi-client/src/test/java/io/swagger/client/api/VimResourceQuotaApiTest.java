@@ -13,16 +13,19 @@
 
 package io.swagger.client.api;
 
+import io.swagger.client.ApiException;
 import com.mtp.extinterface.nbi.swagger.model.CreateComputeResourceQuotaRequest;
 import com.mtp.extinterface.nbi.swagger.model.CreateNetworkResourceQuotaRequest;
 import com.mtp.extinterface.nbi.swagger.model.ResourceGroupIds;
 import com.mtp.extinterface.nbi.swagger.model.VirtualComputeQuota;
 import com.mtp.extinterface.nbi.swagger.model.VirtualNetworkQuota;
-import io.swagger.client.ApiException;
 import org.junit.Test;
 import org.junit.Ignore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * API tests for VimResourceQuotaApi

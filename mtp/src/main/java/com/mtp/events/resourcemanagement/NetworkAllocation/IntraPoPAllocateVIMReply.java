@@ -15,13 +15,13 @@ import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResult;
  */
 public class IntraPoPAllocateVIMReply {
     private long reqid;
-    private long servid;
+    private String servid;
     private long nfvipopid;
     private long vimid;
     private AllocateNetworkRequest intrapopreq;
     private AllocateNetworkResult intrapoprep;
 
-    public IntraPoPAllocateVIMReply(long reqid, long servid, long nfvipopid, long vimid, AllocateNetworkRequest intrapopreq, AllocateNetworkResult intrapoprep) {
+    public IntraPoPAllocateVIMReply(long reqid, String servid, long nfvipopid, long vimid, AllocateNetworkRequest intrapopreq, AllocateNetworkResult intrapoprep) {
         this.reqid = reqid;
         this.servid = servid;
         this.nfvipopid = nfvipopid;
@@ -39,11 +39,11 @@ public class IntraPoPAllocateVIMReply {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

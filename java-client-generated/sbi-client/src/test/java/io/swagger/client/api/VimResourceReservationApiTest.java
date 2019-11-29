@@ -13,15 +13,18 @@
 
 package io.swagger.client.api;
 
+import io.swagger.client.ApiException;
 import com.mtp.extinterface.nbi.swagger.model.CreateComputeResourceReservationRequest;
 import com.mtp.extinterface.nbi.swagger.model.CreateNetworkResourceReservationRequest;
 import com.mtp.extinterface.nbi.swagger.model.ReservedVirtualCompute;
 import com.mtp.extinterface.nbi.swagger.model.ReservedVirtualNetwork;
-import io.swagger.client.ApiException;
 import org.junit.Test;
 import org.junit.Ignore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * API tests for VimResourceReservationApi

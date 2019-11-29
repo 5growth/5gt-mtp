@@ -6,7 +6,7 @@
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (1,1,"accCapability1",11);
+VALUES (1,"flavor_spr2","accCapability1",11);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)
@@ -28,7 +28,7 @@ VALUES (100,"policy1",true, 1);
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (2,2,"accCapability1",11);
+VALUES (2,"flavor_vFCS","accCapability1",11);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)
@@ -49,7 +49,7 @@ VALUES (100,"policy1",true, 2);
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (3,3,"accCapability1",11);
+VALUES (3,"flavor_vEPC","accCapability1",11);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)
@@ -73,7 +73,7 @@ VALUES (100,"policy1",true, 3);
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (4,1,"accCapability1",21);
+VALUES (4,"flavor_vEPC","accCapability1",21);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)
@@ -95,7 +95,7 @@ VALUES (100,"policy1",true, 4);
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (5,2,"accCapability1",21);
+VALUES (5,"flavor_vFCS","accCapability1",21);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)
@@ -116,7 +116,7 @@ VALUES (100,"policy1",true, 5);
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (6,3,"accCapability1",21);
+VALUES (6,"3","accCapability1",21);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)
@@ -141,7 +141,7 @@ VALUES (100,"policy1",true, 6);
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (7,1,"accCapability1",31);
+VALUES (7,"1","accCapability1",31);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)
@@ -163,7 +163,7 @@ VALUES (100,"policy1",true, 7);
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (8,2,"accCapability1",31);
+VALUES (8,"2","accCapability1",31);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)
@@ -184,7 +184,7 @@ VALUES (100,"policy1",true, 8);
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (9,3,"accCapability1",31);
+VALUES (9,"3","accCapability1",31);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)
@@ -209,7 +209,7 @@ VALUES (100,"policy1",true, 9);
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (10,1,"accCapability1",41);
+VALUES (10,"1","accCapability1",41);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)
@@ -231,7 +231,7 @@ VALUES (100,"policy1",true, 10);
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (11,2,"accCapability1",41);
+VALUES (11,"2","accCapability1",41);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)
@@ -252,7 +252,7 @@ VALUES (100,"policy1",true, 11);
 
 INSERT INTO `mtpdomdb`.`computeflavour`
 (`computeFlavourId`,`flavourId`,`accelerationCapability`,`NfviPopId`)
-VALUES (12,3,"accCapability1",41);
+VALUES (12,"3","accCapability1",41);
 
 INSERT INTO `mtpdomdb`.`virtualstoragedata`
 (`typeOfStorage`,`sizeOfStorage`,`computeFlavourId`)

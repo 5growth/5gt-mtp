@@ -29,7 +29,7 @@ import java.math.BigDecimal;
  * Information about network connectivity endpoints to the NFVI-PoP that the WIM manage.
  */
 @ApiModel(description = "Information about network connectivity endpoints to the NFVI-PoP that the WIM manage.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class GatewaysInnerGatewayAttributesNetworkConnectivityEndpoint {
   @SerializedName("netGwIpAddress")
   private String netGwIpAddress = null;

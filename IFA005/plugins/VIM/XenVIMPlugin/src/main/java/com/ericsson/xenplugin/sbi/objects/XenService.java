@@ -7,6 +7,7 @@ package com.ericsson.xenplugin.sbi.objects;
 
 import com.xensource.xenapi.Connection;
 import com.xensource.xenapi.Host;
+import com.xensource.xenapi.PIF;
 import com.xensource.xenapi.SR;
 import com.xensource.xenapi.VM;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public class XenService {
     private String master;
     private String username;
     private String password;
+    private String floatingip;
     //XEN variables
     protected Connection connection;
     /* Maps of Virtual Machine Robots controller system */
@@ -30,16 +32,19 @@ public class XenService {
     private Map <Host, Host.Record> mapHostPool;
     /* record SR in the pool */
     private Map <SR,SR.Record> mapSrPool;
+    /* record PIF in the pool */
+    private Map <PIF,PIF.Record> mapPifPool;
 
-
-    public XenService(String zoneid, String master, String username, String password) {
+    public XenService(String zoneid, String master, String username, String password, String floatingip) {
         this.zoneid = zoneid;
         this.master = master;
         this.username = username;
         this.password = password;
+        this.floatingip = floatingip;
         mapVmPool = new HashMap();
         mapHostPool = new HashMap();
         mapSrPool = new HashMap();
+        mapPifPool = new HashMap();
     }
 
     public String getZoneid() {
@@ -58,6 +63,14 @@ public class XenService {
         return password;
     }
 
+    public String getFloatingip() {
+        return floatingip;
+    }
+
+    public void setFloatingip(String floatingip) {
+        this.floatingip = floatingip;
+    }
+    
     public Connection getConnection() {
         return connection;
     }
@@ -65,7 +78,7 @@ public class XenService {
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
-
+    
     public Map<VM, VM.Record> getMapVmPool() {
         return mapVmPool;
     }
@@ -89,8 +102,15 @@ public class XenService {
     public void setMapSrPool(Map<SR, SR.Record> mapSrPool) {
         this.mapSrPool = mapSrPool;
     }
-    
 
+    public Map<PIF, PIF.Record> getMapPifPool() {
+        return mapPifPool;
+    }
+
+    public void setMapPifPool(Map<PIF, PIF.Record> mapPifPool) {
+        this.mapPifPool = mapPifPool;
+    }
+    
 
     
     

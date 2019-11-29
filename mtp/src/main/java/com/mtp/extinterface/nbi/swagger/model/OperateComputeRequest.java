@@ -47,7 +47,7 @@ public class OperateComputeRequest   {
 
   
   @ApiModelProperty(required = true, value = "Operation Type on the compute resource")
-  @JsonProperty("ComputeOperation")
+  @JsonProperty("computeOperation")
   @NotNull
   public String getComputeOperation() {
     return computeOperation;

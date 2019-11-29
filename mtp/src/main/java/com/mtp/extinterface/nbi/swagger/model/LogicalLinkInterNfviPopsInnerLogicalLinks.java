@@ -1,6 +1,7 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
 import io.swagger.annotations.ApiModel;
+import com.mtp.extinterface.nbi.swagger.model.LogicalLinkInterNfviPopsInnerLogicalLinksNetworkQoS;
 import java.math.BigDecimal;
 import javax.validation.constraints.*;
 import javax.validation.Valid;

@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResultNetworkDataNetworkPort;
 import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResultNetworkDataNetworkQoS;
+import com.mtp.extinterface.nbi.swagger.model.MetaDataInner;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ import java.util.List;
  * If network types are created satisfactorily, it contains the data relative to the instantiated virtualised network resource. Cardinality can be \&quot;0\&quot; if the request did not include creation of such type of resource.
  */
 @ApiModel(description = "If network types are created satisfactorily, it contains the data relative to the instantiated virtualised network resource. Cardinality can be \"0\" if the request did not include creation of such type of resource.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class AllocateNetworkResultNetworkData {
   @SerializedName("bandwidth")
   private BigDecimal bandwidth = null;
@@ -66,10 +67,13 @@ public class AllocateNetworkResultNetworkData {
   private String sharingCriteria = null;
 
   @SerializedName("subnet")
-  private String subnet = null;
+  private List<String> subnet = new ArrayList<String>();
 
   @SerializedName("zoneId")
   private String zoneId = null;
+
+  @SerializedName("metadata")
+  private List<MetaDataInner> metadata = new ArrayList<MetaDataInner>();
 
   public AllocateNetworkResultNetworkData bandwidth(BigDecimal bandwidth) {
     this.bandwidth = bandwidth;
@@ -261,8 +265,13 @@ public class AllocateNetworkResultNetworkData {
     this.sharingCriteria = sharingCriteria;
   }
 
-  public AllocateNetworkResultNetworkData subnet(String subnet) {
+  public AllocateNetworkResultNetworkData subnet(List<String> subnet) {
     this.subnet = subnet;
+    return this;
+  }
+
+  public AllocateNetworkResultNetworkData addSubnetItem(String subnetItem) {
+    this.subnet.add(subnetItem);
     return this;
   }
 
@@ -271,11 +280,11 @@ public class AllocateNetworkResultNetworkData {
    * @return subnet
   **/
   @ApiModelProperty(required = true, value = "Only present if the network provides layer 3 connectivity.")
-  public String getSubnet() {
+  public List<String> getSubnet() {
     return subnet;
   }
 
-  public void setSubnet(String subnet) {
+  public void setSubnet(List<String> subnet) {
     this.subnet = subnet;
   }
 
@@ -295,6 +304,29 @@ public class AllocateNetworkResultNetworkData {
 
   public void setZoneId(String zoneId) {
     this.zoneId = zoneId;
+  }
+
+  public AllocateNetworkResultNetworkData metadata(List<MetaDataInner> metadata) {
+    this.metadata = metadata;
+    return this;
+  }
+
+  public AllocateNetworkResultNetworkData addMetadataItem(MetaDataInner metadataItem) {
+    this.metadata.add(metadataItem);
+    return this;
+  }
+
+   /**
+   * List of metadata key-value pairs used by the consumer to   associate meaningful metadata to the related virtualised resource.
+   * @return metadata
+  **/
+  @ApiModelProperty(required = true, value = "List of metadata key-value pairs used by the consumer to   associate meaningful metadata to the related virtualised resource.")
+  public List<MetaDataInner> getMetadata() {
+    return metadata;
+  }
+
+  public void setMetadata(List<MetaDataInner> metadata) {
+    this.metadata = metadata;
   }
 
 
@@ -318,12 +350,13 @@ public class AllocateNetworkResultNetworkData {
         Objects.equals(this.segmentType, allocateNetworkResultNetworkData.segmentType) &&
         Objects.equals(this.sharingCriteria, allocateNetworkResultNetworkData.sharingCriteria) &&
         Objects.equals(this.subnet, allocateNetworkResultNetworkData.subnet) &&
-        Objects.equals(this.zoneId, allocateNetworkResultNetworkData.zoneId);
+        Objects.equals(this.zoneId, allocateNetworkResultNetworkData.zoneId) &&
+        Objects.equals(this.metadata, allocateNetworkResultNetworkData.metadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(bandwidth, isShared, networkPort, networkQoS, networkResourceId, networkResourceName, networkType, operationalState, segmentType, sharingCriteria, subnet, zoneId);
+    return Objects.hash(bandwidth, isShared, networkPort, networkQoS, networkResourceId, networkResourceName, networkType, operationalState, segmentType, sharingCriteria, subnet, zoneId, metadata);
   }
 
 
@@ -344,6 +377,7 @@ public class AllocateNetworkResultNetworkData {
     sb.append("    sharingCriteria: ").append(toIndentedString(sharingCriteria)).append("\n");
     sb.append("    subnet: ").append(toIndentedString(subnet)).append("\n");
     sb.append("    zoneId: ").append(toIndentedString(zoneId)).append("\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("}");
     return sb.toString();
   }

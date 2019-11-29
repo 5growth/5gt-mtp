@@ -30,24 +30,24 @@ import java.math.BigDecimal;
  * 5GT - Element providing information for Radio Coverage Area supported by PoP.
  */
 @ApiModel(description = "5GT - Element providing information for Radio Coverage Area supported by PoP.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class RadioCoverageAreaListInnerRadioCoverageAreaInfo {
-  @SerializedName("CoverageAreaId")
+  @SerializedName("coverageAreaId")
   private String coverageAreaId = null;
 
-  @SerializedName("CoverageAreaGoegraphicalInfo")
+  @SerializedName("coverageAreaGoegraphicalInfo")
   private String coverageAreaGoegraphicalInfo = null;
 
-  @SerializedName("CoverageAreaMinBandwidth")
+  @SerializedName("coverageAreaMinBandwidth")
   private BigDecimal coverageAreaMinBandwidth = null;
 
-  @SerializedName("CoverageAreaMaxBandwidth")
+  @SerializedName("coverageAreaMaxBandwidth")
   private BigDecimal coverageAreaMaxBandwidth = null;
 
-  @SerializedName("CoverageAreaDelay")
+  @SerializedName("coverageAreaDelay")
   private BigDecimal coverageAreaDelay = null;
 
-  @SerializedName("LocationInfo")
+  @SerializedName("locationInfo")
   private LocationInfo locationInfo = null;
 
   public RadioCoverageAreaListInnerRadioCoverageAreaInfo coverageAreaId(String coverageAreaId) {

@@ -1,6 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
 import io.swagger.annotations.ApiModel;
+import com.ericsson.dummyplugin.nbi.swagger.model.LocationInfo;
 import java.math.BigDecimal;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
   private @Valid BigDecimal coverageAreaMinBandwidth = null;
   private @Valid BigDecimal coverageAreaMaxBandwidth = null;
   private @Valid BigDecimal coverageAreaDelay = null;
+  private @Valid LocationInfo locationInfo = null;
 
   /**
    * (numbered) Identifier of the Radio Coverage Area
@@ -32,7 +34,7 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
 
   
   @ApiModelProperty(required = true, value = "(numbered) Identifier of the Radio Coverage Area")
-  @JsonProperty("CoverageAreaId")
+  @JsonProperty("coverageAreaId")
   @NotNull
   public String getCoverageAreaId() {
     return coverageAreaId;
@@ -50,9 +52,8 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
   }
 
   
-  @ApiModelProperty(required = true, value = "Identifier of the Radio Coverage Area Geographical Information")
-  @JsonProperty("CoverageAreaGoegraphicalInfo")
-  @NotNull
+  @ApiModelProperty(value = "Identifier of the Radio Coverage Area Geographical Information")
+  @JsonProperty("coverageAreaGoegraphicalInfo")
   public String getCoverageAreaGoegraphicalInfo() {
     return coverageAreaGoegraphicalInfo;
   }
@@ -70,7 +71,7 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
 
   
   @ApiModelProperty(required = true, value = "Minimum Bandwidth of the Radio Coverage Area")
-  @JsonProperty("CoverageAreaMinBandwidth")
+  @JsonProperty("coverageAreaMinBandwidth")
   @NotNull
   public BigDecimal getCoverageAreaMinBandwidth() {
     return coverageAreaMinBandwidth;
@@ -89,7 +90,7 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
 
   
   @ApiModelProperty(required = true, value = "Maximum Bandwidth of the Radio Coverage Area")
-  @JsonProperty("CoverageAreaMaxBandwidth")
+  @JsonProperty("coverageAreaMaxBandwidth")
   @NotNull
   public BigDecimal getCoverageAreaMaxBandwidth() {
     return coverageAreaMaxBandwidth;
@@ -108,13 +109,31 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
 
   
   @ApiModelProperty(required = true, value = "Minimum delay supported by the Radio Coverage Area.")
-  @JsonProperty("CoverageAreaDelay")
+  @JsonProperty("coverageAreaDelay")
   @NotNull
   public BigDecimal getCoverageAreaDelay() {
     return coverageAreaDelay;
   }
   public void setCoverageAreaDelay(BigDecimal coverageAreaDelay) {
     this.coverageAreaDelay = coverageAreaDelay;
+  }
+
+  /**
+   **/
+  public RadioCoverageAreaListInnerRadioCoverageAreaInfo locationInfo(LocationInfo locationInfo) {
+    this.locationInfo = locationInfo;
+    return this;
+  }
+
+  
+  @ApiModelProperty(required = true, value = "")
+  @JsonProperty("locationInfo")
+  @NotNull
+  public LocationInfo getLocationInfo() {
+    return locationInfo;
+  }
+  public void setLocationInfo(LocationInfo locationInfo) {
+    this.locationInfo = locationInfo;
   }
 
 
@@ -131,12 +150,13 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
         Objects.equals(coverageAreaGoegraphicalInfo, radioCoverageAreaListInnerRadioCoverageAreaInfo.coverageAreaGoegraphicalInfo) &&
         Objects.equals(coverageAreaMinBandwidth, radioCoverageAreaListInnerRadioCoverageAreaInfo.coverageAreaMinBandwidth) &&
         Objects.equals(coverageAreaMaxBandwidth, radioCoverageAreaListInnerRadioCoverageAreaInfo.coverageAreaMaxBandwidth) &&
-        Objects.equals(coverageAreaDelay, radioCoverageAreaListInnerRadioCoverageAreaInfo.coverageAreaDelay);
+        Objects.equals(coverageAreaDelay, radioCoverageAreaListInnerRadioCoverageAreaInfo.coverageAreaDelay) &&
+        Objects.equals(locationInfo, radioCoverageAreaListInnerRadioCoverageAreaInfo.locationInfo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(coverageAreaId, coverageAreaGoegraphicalInfo, coverageAreaMinBandwidth, coverageAreaMaxBandwidth, coverageAreaDelay);
+    return Objects.hash(coverageAreaId, coverageAreaGoegraphicalInfo, coverageAreaMinBandwidth, coverageAreaMaxBandwidth, coverageAreaDelay, locationInfo);
   }
 
   @Override
@@ -149,6 +169,7 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
     sb.append("    coverageAreaMinBandwidth: ").append(toIndentedString(coverageAreaMinBandwidth)).append("\n");
     sb.append("    coverageAreaMaxBandwidth: ").append(toIndentedString(coverageAreaMaxBandwidth)).append("\n");
     sb.append("    coverageAreaDelay: ").append(toIndentedString(coverageAreaDelay)).append("\n");
+    sb.append("    locationInfo: ").append(toIndentedString(locationInfo)).append("\n");
     sb.append("}");
     return sb.toString();
   }

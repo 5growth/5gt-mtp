@@ -12,6 +12,7 @@ import com.mtp.events.resourcemanagement.ComputeTermination.ComputeTerminateVIMR
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.VimComputeResourcesApi;
+import io.swagger.client.api.VimNetworkResourcesApi;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,30 +61,76 @@ public class TerminateVIMComputeThread extends Thread {
             
             
             //String basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort() + "/" + dominfo.getName();
-            String basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort();
-            ApiClient capi = new ApiClient();
-            capi.setBasePath(basepath);
-            VimComputeResourcesApi api = new VimComputeResourcesApi(capi);
+            String basepath = null;
+            if (dominfo.getName().contains("OpenStack") == true) {
+                basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort() + "/v1";
+            } else {
+                basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort();
+            }
+            
+            if (dominfo.getName().contains("OpenStack") == true) {
+                ApiClient capi = new ApiClient();
+                capi.setBasePath(basepath);
+                capi.setConnectTimeout(600000);
+                capi.setReadTimeout(600000);
+                capi.setWriteTimeout(600000);
+                VimComputeResourcesApi api = new VimComputeResourcesApi(capi);
 
-            List<String> complist = new ArrayList();
-            //List<ComputeIds> dummy = new ArrayList();
+                List<String> complist = new ArrayList();
+                //List<ComputeIds> dummy = new ArrayList();
 
-            //TEST TEST
-            try {
+                //TEST
+                try {
 
-                complist = api.terminateAbstractResources(compid);
-                
-                
+                    complist = api.terminateAbstractResources(compid);
+
+                } catch (ApiException e) {
+                    System.out.println("ApiException inside allocateCompute().");
+                    System.out.println("Val= " + e.getCode() + ";Message = " + e.getMessage());
+                    outcomeList.add(Boolean.FALSE);
+                    errorcodeList.add(e.getCode());
+                    errormsgList.add(e.getMessage());
+                }
+                //terminate network
+                VimNetworkResourcesApi vapi = new VimNetworkResourcesApi(capi);
+                try {
+                    //Filter nfviPopComputeInformationRequest = null;
+                    complist = vapi.vIMterminateNetworks(complist);
+                } catch (ApiException e) {
+                    System.out.println("ApiException inside terminateNetworks() VIM.");
+                    System.out.println("Val= " + e.getCode() + ";Message = " + e.getMessage());
+                    outcomeList.add(Boolean.FALSE);
+                    errorcodeList.add(e.getCode());
+                    errormsgList.add(e.getMessage());
+                    break;
+                }
                 outcomeList.add(Boolean.TRUE);
                 errorcodeList.add(0);
                 errormsgList.add("");
+            } else {
+                ApiClient capi = new ApiClient();
+                capi.setBasePath(basepath);
+                VimComputeResourcesApi api = new VimComputeResourcesApi(capi);
 
-            } catch (ApiException e) {
-                System.out.println("ApiException inside allocateCompute().");
-                System.out.println("Val= " + e.getCode() + ";Message = " + e.getMessage());
-                outcomeList.add(Boolean.FALSE);
-                errorcodeList.add(e.getCode());
-                errormsgList.add(e.getMessage());
+                List<String> complist = new ArrayList();
+                //List<ComputeIds> dummy = new ArrayList();
+
+                //TEST TEST
+                try {
+
+                    complist = api.terminateAbstractResources(compid);
+
+                    outcomeList.add(Boolean.TRUE);
+                    errorcodeList.add(0);
+                    errormsgList.add("");
+
+                } catch (ApiException e) {
+                    System.out.println("ApiException inside allocateCompute().");
+                    System.out.println("Val= " + e.getCode() + ";Message = " + e.getMessage());
+                    outcomeList.add(Boolean.FALSE);
+                    errorcodeList.add(e.getCode());
+                    errormsgList.add(e.getMessage());
+                }
             }
 
         }

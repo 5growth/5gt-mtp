@@ -3,6 +3,8 @@ package com.ericsson.dummyplugin.nbi.swagger.api;
 
 
 import com.ericsson.dummyplugin.SingletonEventBus;
+import com.ericsson.dummyplugin.events.allocate.FreeVlanReply;
+import com.ericsson.dummyplugin.events.allocate.FreeVlanRequest;
 import com.ericsson.dummyplugin.events.allocate.VirtualNetworkAllocateReply;
 import com.ericsson.dummyplugin.events.allocate.VirtualNetworkAllocateRequest;
 import com.ericsson.dummyplugin.events.terminate.VirtualNetworkTerminateReply;
@@ -13,12 +15,15 @@ import com.ericsson.dummyplugin.nbi.swagger.model.CapacityInformation;
 import com.ericsson.dummyplugin.nbi.swagger.model.Filter;
 import com.ericsson.dummyplugin.nbi.swagger.model.NfviPop;
 import com.ericsson.dummyplugin.nbi.swagger.model.QueryNetworkCapacityRequest;
+import com.ericsson.dummyplugin.nbi.swagger.model.VLANInfo;
 import com.ericsson.dummyplugin.nbi.swagger.model.VirtualNetwork;
 import com.google.common.eventbus.Subscribe;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 import io.swagger.annotations.*;
+import java.math.BigDecimal;
+
 
 import java.util.List;
 import java.util.Map;
@@ -43,7 +48,27 @@ public class NetworkResourcesApi {
         //reqid = 0;
 
     }
-    
+    @GET
+    @ManagedAsync
+    @Path("/get_interpop_vlans")
+    @Produces({ "application/json" })
+    @ApiOperation(value = "Retrieve free vlan tag from VIM domain", notes = "Retrieve free vlan tag from VIM domain", response = BigDecimal.class, responseContainer = "List", tags={ "VIMNetworkResources",  })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "The filtered information that has been retrieved. The cardinality can be 0 if no matching information exist.", response = VLANInfo.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Bad request", response = Void.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)
+    })
+    public void freeVlan(@Suspended final AsyncResponse ar) {
+        //return Response.ok().entity("magic!").build();
+        System.out.println("allocateVirtualNetwork ----> query free vlan");
+        System.out.println("allocateVirtualNetwork ----> Calling get");
+        reqid++;
+        System.out.println("allocateVirtualNetwork ----> reqid = " + Long.toString(reqid));
+        suspended.put(Long.toString(reqid), ar);
+        FreeVlanRequest request = new FreeVlanRequest(reqid);
+        SingletonEventBus.getBus().post(request);
+    }
     
     @POST
     @ManagedAsync
@@ -130,6 +155,21 @@ public class NetworkResourcesApi {
     }
     
     ////////////////Guava Event Handlers////////////////////////////////////////
+    //Subscribe Event
+    @Subscribe
+    public void handle_FreeVlanReply(FreeVlanReply ev) throws InterruptedException {
+        System.out.println("allocateVirtualNetwork ----> handle free vlan event");
+        //AsyncResponse asyncResp = suspended.take();
+
+        AsyncResponse asyncResp = suspended.remove(Long.toString(ev.getReqid()));
+        System.out.println("allocateVirtualNetwork ----> reqid = " + ev.getReqid());
+        System.out.println("allocateVirtualNetwork ----> request deblocked");
+        Response resp;
+        resp = Response.ok(ev.getVlanlist(), MediaType.APPLICATION_JSON).build();
+        System.out.println("allocateVirtualNetwork ----> response ok");
+        asyncResp.resume(resp);
+    }
+    
     //Subscribe Event
     @Subscribe
     public void handle_VirtualNetworkAllocateReply(VirtualNetworkAllocateReply ev) throws InterruptedException {

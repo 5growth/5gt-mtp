@@ -14,22 +14,23 @@ import java.util.ArrayList;
 public class NetworkAllocateVIMReq {
 
     private long reqid;
-    private long servid; //service identifiers 
+    private String servid; //service identifiers 
     private long logicalPathId;
     private InterNfviPopConnectivityRequest networkRequest; // wimelem renamed 
     private ArrayList<Long> vimdomlist; //contains domain managing the VIM abstract resources
     private ArrayList<Long> interdomainLinks;
-    private ArrayList<Long> intraPopLinks;
+    private ArrayList<String> intraPopLinks;
     private ArrayList<Long> vimPopList;
     private ArrayList<String> vimNetworkType;
     private ArrayList<VirtualNetwork> wimnetlist;
+    private ArrayList<Long> vlans;
 
     public NetworkAllocateVIMReq() {
         reqid = 0;
-        servid = 0;
+        servid = "";
     }
 
-    public NetworkAllocateVIMReq(long reqid, long servid, long logicalPathId, InterNfviPopConnectivityRequest networkRequest, ArrayList<Long> vimdomlist, ArrayList<Long> interdomainLinks, ArrayList<Long> intraPopLinks, ArrayList<Long> vimPopList, ArrayList<String> vimNetworkType, ArrayList<VirtualNetwork> vimnetlist) {
+    public NetworkAllocateVIMReq(long reqid, String servid, long logicalPathId, InterNfviPopConnectivityRequest networkRequest, ArrayList<Long> vimdomlist, ArrayList<Long> interdomainLinks, ArrayList<String> intraPopLinks, ArrayList<Long> vimPopList, ArrayList<String> vimNetworkType, ArrayList<VirtualNetwork> wimnetlist, ArrayList<Long> vlans) {
         this.reqid = reqid;
         this.servid = servid;
         this.logicalPathId = logicalPathId;
@@ -39,9 +40,19 @@ public class NetworkAllocateVIMReq {
         this.intraPopLinks = intraPopLinks;
         this.vimPopList = vimPopList;
         this.vimNetworkType = vimNetworkType;
-        this.wimnetlist = vimnetlist;
+        this.wimnetlist = wimnetlist;
+        this.vlans = vlans;
     }
 
+    public ArrayList<Long> getVlans() {
+        return vlans;
+    }
+
+    public void setVlans(ArrayList<Long> vlans) {
+        this.vlans = vlans;
+    }
+
+    
     //insert set/get methods
     public long getReqId() {
         return reqid;
@@ -51,28 +62,12 @@ public class NetworkAllocateVIMReq {
         reqid = reqval;
     }
 
-    public long getServId() {
+    public String getServId() {
         return servid;
     }
 
-    public void setServqId(long servval) {
+    public void setServId(String servval) {
         servid = servval;
-    }
-
-    public long getReqid() {
-        return reqid;
-    }
-
-    public void setReqid(long reqid) {
-        this.reqid = reqid;
-    }
-
-    public long getServid() {
-        return servid;
-    }
-
-    public void setServid(long servid) {
-        this.servid = servid;
     }
 
     public long getLogicalPathId() {
@@ -107,11 +102,11 @@ public class NetworkAllocateVIMReq {
         this.interdomainLinks = interdomainLinks;
     }
 
-    public ArrayList<Long> getIntraPopLinks() {
+    public ArrayList<String> getIntraPopLinks() {
         return intraPopLinks;
     }
 
-    public void setIntraPopLinks(ArrayList<Long> intraPopLinks) {
+    public void setIntraPopLinks(ArrayList<String> intraPopLinks) {
         this.intraPopLinks = intraPopLinks;
     }
 

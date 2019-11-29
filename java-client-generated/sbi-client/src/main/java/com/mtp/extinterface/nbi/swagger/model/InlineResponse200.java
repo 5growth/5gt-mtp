@@ -30,9 +30,9 @@ import java.util.List;
 /**
  * InlineResponse200
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class InlineResponse200 {
-  @SerializedName("Regions")
+  @SerializedName("regions")
   private List<MECRegionInfo> regions = null;
 
   public InlineResponse200 regions(List<MECRegionInfo> regions) {

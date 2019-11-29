@@ -1,5 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.InterNfviPopConnnectivityIdList;
+import com.ericsson.dummyplugin.nbi.swagger.model.MetaData;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 

@@ -1,5 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.MetaDataInner;
+import com.ericsson.dummyplugin.nbi.swagger.model.SubnetData;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

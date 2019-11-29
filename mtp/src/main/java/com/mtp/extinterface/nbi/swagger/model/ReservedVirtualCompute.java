@@ -1,5 +1,7 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.ReservedVirtualComputeComputePoolReserved;
+import com.mtp.extinterface.nbi.swagger.model.ReservedVirtualComputeVirtualisationContainerReserved;
 import java.util.Date;
 import javax.validation.constraints.*;
 import javax.validation.Valid;

@@ -1,7 +1,8 @@
 package com.ericsson.xenplugin.nbi.swagger.model;
 
-import com.ericsson.xenplugin.nbi.swagger.model.Gateways;
-import com.ericsson.xenplugin.nbi.swagger.model.VirtualLinks;
+import com.ericsson.xenplugin.nbi.swagger.model.MECRegionInfo;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -13,41 +14,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class InlineResponse200   {
   
-  private @Valid Gateways gateways = null;
-  private @Valid VirtualLinks virtualLinks = null;
+  private @Valid List<MECRegionInfo> regions = new ArrayList<MECRegionInfo>();
 
   /**
    **/
-  public InlineResponse200 gateways(Gateways gateways) {
-    this.gateways = gateways;
+  public InlineResponse200 regions(List<MECRegionInfo> regions) {
+    this.regions = regions;
     return this;
   }
 
   
   @ApiModelProperty(value = "")
-  @JsonProperty("gateways")
-  public Gateways getGateways() {
-    return gateways;
+  @JsonProperty("regions")
+  public List<MECRegionInfo> getRegions() {
+    return regions;
   }
-  public void setGateways(Gateways gateways) {
-    this.gateways = gateways;
-  }
-
-  /**
-   **/
-  public InlineResponse200 virtualLinks(VirtualLinks virtualLinks) {
-    this.virtualLinks = virtualLinks;
-    return this;
-  }
-
-  
-  @ApiModelProperty(value = "")
-  @JsonProperty("virtualLinks")
-  public VirtualLinks getVirtualLinks() {
-    return virtualLinks;
-  }
-  public void setVirtualLinks(VirtualLinks virtualLinks) {
-    this.virtualLinks = virtualLinks;
+  public void setRegions(List<MECRegionInfo> regions) {
+    this.regions = regions;
   }
 
 
@@ -60,13 +43,12 @@ public class InlineResponse200   {
       return false;
     }
     InlineResponse200 inlineResponse200 = (InlineResponse200) o;
-    return Objects.equals(gateways, inlineResponse200.gateways) &&
-        Objects.equals(virtualLinks, inlineResponse200.virtualLinks);
+    return Objects.equals(regions, inlineResponse200.regions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(gateways, virtualLinks);
+    return Objects.hash(regions);
   }
 
   @Override
@@ -74,8 +56,7 @@ public class InlineResponse200   {
     StringBuilder sb = new StringBuilder();
     sb.append("class InlineResponse200 {\n");
     
-    sb.append("    gateways: ").append(toIndentedString(gateways)).append("\n");
-    sb.append("    virtualLinks: ").append(toIndentedString(virtualLinks)).append("\n");
+    sb.append("    regions: ").append(toIndentedString(regions)).append("\n");
     sb.append("}");
     return sb.toString();
   }

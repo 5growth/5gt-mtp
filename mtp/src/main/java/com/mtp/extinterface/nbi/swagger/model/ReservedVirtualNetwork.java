@@ -1,5 +1,7 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.ReservedVirtualNetworkNetworkAttributes;
+import com.mtp.extinterface.nbi.swagger.model.ReservedVirtualNetworkNetworkPorts;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

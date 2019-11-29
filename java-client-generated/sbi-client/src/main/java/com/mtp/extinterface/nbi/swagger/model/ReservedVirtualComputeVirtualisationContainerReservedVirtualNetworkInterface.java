@@ -14,23 +14,18 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
 import java.util.Objects;
-import java.util.Arrays;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface {
   @SerializedName("accelerationCapability")
-  private String accelerationCapability = null;
+  private List<String> accelerationCapability = new ArrayList<String>();
 
   @SerializedName("bandwidth")
   private String bandwidth = null;
@@ -40,9 +35,15 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
 
   @SerializedName("macAddress")
   private String macAddress = null;
+  
+  @SerializedName("networkName")
+  private String networkName = null;
+  
+  @SerializedName("floatingIP")
+  private String floatingIP = null;
 
   @SerializedName("metadata")
-  private String metadata = null;
+  private MetaData metadata = null;
 
   @SerializedName("networkId")
   private String networkId = null;
@@ -65,7 +66,7 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
   @SerializedName("typeVirtualNic")
   private String typeVirtualNic = null;
 
-  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface accelerationCapability(String accelerationCapability) {
+  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface accelerationCapability(List<String> accelerationCapability) {
     this.accelerationCapability = accelerationCapability;
     return this;
   }
@@ -75,11 +76,11 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
    * @return accelerationCapability
   **/
   @ApiModelProperty(required = true, value = "Shows the acceleration capabilities utilized by the virtual network interface. The cardinality can be 0, if no acceleration capability is utilized.")
-  public String getAccelerationCapability() {
+  public List<String> getAccelerationCapability() {
     return accelerationCapability;
   }
 
-  public void setAccelerationCapability(String accelerationCapability) {
+  public void setAccelerationCapability(List<String> accelerationCapability) {
     this.accelerationCapability = accelerationCapability;
   }
 
@@ -137,21 +138,59 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
     this.macAddress = macAddress;
   }
 
-  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface metadata(String metadata) {
+  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface metadata(MetaData metadata) {
     this.metadata = metadata;
     return this;
   }
 
+     /**
+   * The MAC address of the virtual network interface.
+   * @return macAddress
+  **/
+  @ApiModelProperty(required = true, value = "The MAC address of the virtual network interface.")
+  public String getnetworkName() {
+    return networkName;
+  }
+
+  public void setnetworkName(String networkName) {
+    this.networkName = networkName;
+  }
+
+  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface networkName(String networkName) {
+    this.networkName = networkName;
+    return this;
+  }
+  
+     /**
+   * The MAC address of the virtual network interface.
+   * @return macAddress
+  **/
+  @ApiModelProperty(required = true, value = "The MAC address of the virtual network interface.")
+  public String getfloatingIP() {
+    return floatingIP;
+  }
+
+  public void setfloatingIP(String floatingIP) {
+    this.floatingIP = macAddress;
+  }
+
+  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface floatingIP(String floatingIP) {
+    this.floatingIP = floatingIP;
+    return this;
+  }
+  
+  
+  
    /**
    * List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.")
-  public String getMetadata() {
+  public MetaData getMetadata() {
     return metadata;
   }
 
-  public void setMetadata(String metadata) {
+  public void setMetadata(MetaData metadata) {
     this.metadata = metadata;
   }
 
@@ -295,6 +334,8 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
         Objects.equals(this.bandwidth, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.bandwidth) &&
         Objects.equals(this.ipAddress, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.ipAddress) &&
         Objects.equals(this.macAddress, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.macAddress) &&
+        Objects.equals(this.networkName, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.networkName) &&
+        Objects.equals(this.floatingIP, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.floatingIP) &&
         Objects.equals(this.metadata, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.metadata) &&
         Objects.equals(this.networkId, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.networkId) &&
         Objects.equals(this.networkPortId, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.networkPortId) &&
@@ -320,6 +361,8 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
     sb.append("    bandwidth: ").append(toIndentedString(bandwidth)).append("\n");
     sb.append("    ipAddress: ").append(toIndentedString(ipAddress)).append("\n");
     sb.append("    macAddress: ").append(toIndentedString(macAddress)).append("\n");
+    sb.append("    networkName: ").append(toIndentedString(networkName)).append("\n");
+    sb.append("    floatingIP: ").append(toIndentedString(floatingIP)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
     sb.append("    networkPortId: ").append(toIndentedString(networkPortId)).append("\n");

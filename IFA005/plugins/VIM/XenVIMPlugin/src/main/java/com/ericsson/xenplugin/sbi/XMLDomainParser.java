@@ -197,6 +197,9 @@ public class XMLDomainParser {
              //zoneid
             String zoneid = xmlranNode.getChildText("zoneid");
             System.out.println("XMLDomainParser --> zoneid : " + xmlranNode.getChildText("zoneid"));
+            
+            String floatingip = xmlranNode.getChildText("floatingip");
+            System.out.println("XMLDomainParser --> floatingip : " + xmlranNode.getChildText("floatingip"));
             //master
             String master = xmlranNode.getChildText("master");
             System.out.println("XMLDomainParser --> master : " + xmlranNode.getChildText("master"));
@@ -207,7 +210,7 @@ public class XMLDomainParser {
             String password = xmlranNode.getChildText("password");
             System.out.println("XMLDomainParser --> password : " + xmlranNode.getChildText("password"));
             
-            XenService el = new XenService(zoneid, master, username, password);
+            XenService el = new XenService(zoneid, master, username, password, floatingip);
             xeninfolist.put(zoneid, el);
         }
         

@@ -1,6 +1,8 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
-import com.ericsson.dummyplugin.nbi.swagger.model.MECRegionList;
+import com.ericsson.dummyplugin.nbi.swagger.model.MECRegionInfo;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -12,11 +14,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class InlineResponse200   {
   
-  private @Valid MECRegionList regions = null;
+  private @Valid List<MECRegionInfo> regions = new ArrayList<MECRegionInfo>();
 
   /**
    **/
-  public InlineResponse200 regions(MECRegionList regions) {
+  public InlineResponse200 regions(List<MECRegionInfo> regions) {
     this.regions = regions;
     return this;
   }
@@ -24,10 +26,10 @@ public class InlineResponse200   {
   
   @ApiModelProperty(value = "")
   @JsonProperty("Regions")
-  public MECRegionList getRegions() {
+  public List<MECRegionInfo> getRegions() {
     return regions;
   }
-  public void setRegions(MECRegionList regions) {
+  public void setRegions(List<MECRegionInfo> regions) {
     this.regions = regions;
   }
 

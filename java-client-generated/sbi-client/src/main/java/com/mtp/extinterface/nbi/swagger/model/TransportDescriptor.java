@@ -28,7 +28,7 @@ import java.io.IOException;
  * Information about the transport in a transport binding.
  */
 @ApiModel(description = "Information about the transport in a transport binding.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class TransportDescriptor {
   /**
    * Type of the transport, as defined in the TransportTypes type in ETSI GS MEC 011.

@@ -40,6 +40,7 @@ public class NBIIF {
             config.register(AbstractNetworkResourcesApi.class);
             config.register(AbstractRadioCoverageareaApi.class);
             config.register(AbstractResourcesApi.class);
+            config.register(AbstractFederatedResourcesApi.class);
             config.register(ComputeOperateResourcesApi.class);
             config.register(ComputeResourcesApi.class);
             config.register(HealthzApi.class);
@@ -54,7 +55,8 @@ public class NBIIF {
      
             //instance http server
             server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, config, false);
-
+           // Allow Body for http delete operation 
+            server.getServerConfiguration().setAllowPayloadForUndefinedHttpMethods(true);
             //server.start();
         // } catch (IOException ex) {
            // System.out.println("NBIIF --> Error start web service");
@@ -64,7 +66,7 @@ public class NBIIF {
     }
     
     @Subscribe
-    public void handle_startserver(StartServer servreq) {
+    public void handle_StartServer(StartServer servreq) {
         System.out.println("NBIIF --> Start web server...");
         try {
           server.start();  

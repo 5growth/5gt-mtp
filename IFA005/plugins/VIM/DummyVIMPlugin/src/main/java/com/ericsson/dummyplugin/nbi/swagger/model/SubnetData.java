@@ -1,6 +1,5 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
-import com.ericsson.dummyplugin.nbi.swagger.model.MetaData;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -8,6 +7,8 @@ import javax.validation.Valid;
 import io.swagger.annotations.*;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SubnetData   {
@@ -18,7 +19,7 @@ public class SubnetData   {
   private @Valid String gatewayIp = null;
   private @Valid String cidr = null;
   private @Valid Boolean isDhcpEnabled = null;
-  private @Valid String addressPool = null;
+  private @Valid List<Integer> addressPool = new ArrayList<Integer>();
   private @Valid MetaData metadata = null;
 
   /**
@@ -136,21 +137,21 @@ public class SubnetData   {
   }
 
   /**
-   * Address Pool of the subnetwork Resource
+   * optional AddressPool to be used
    **/
-  public SubnetData addressPool(String addressPool) {
+  public SubnetData addressPool(List<Integer> addressPool) {
     this.addressPool = addressPool;
     return this;
   }
 
   
-  @ApiModelProperty(required = true, value = "Address Pool of the subnetwork Resource")
+  @ApiModelProperty(required = true, value = "optional AddressPool to be used")
   @JsonProperty("addressPool")
   @NotNull
-  public String getAddressPool() {
+  public List<Integer> getAddressPool() {
     return addressPool;
   }
-  public void setAddressPool(String addressPool) {
+  public void setAddressPool(List<Integer> addressPool) {
     this.addressPool = addressPool;
   }
 

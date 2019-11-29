@@ -28,9 +28,9 @@ import java.io.IOException;
 /**
  * MECAppDInfoInner
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class MECAppDInfoInner {
-  @SerializedName("AppDAttributes")
+  @SerializedName("appDAttributes")
   private MECAppDInfoInnerAppDAttributes appDAttributes = null;
 
   public MECAppDInfoInner appDAttributes(MECAppDInfoInnerAppDAttributes appDAttributes) {

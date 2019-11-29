@@ -2,7 +2,6 @@ package com.ericsson.xenplugin.nbi.swagger.model;
 
 import com.ericsson.xenplugin.nbi.swagger.model.LogicalLinkPathList;
 import com.ericsson.xenplugin.nbi.swagger.model.MetaData;
-import java.math.BigDecimal;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -15,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class InterNfviPopConnectivityRequest   {
   
   private @Valid LogicalLinkPathList logicalLinkPathList = null;
-  private @Valid BigDecimal reqBandwidth = null;
-  private @Valid BigDecimal reqLatency = null;
   private @Valid String networkLayer = null;
   private @Valid String interNfviPopNetworkType = null;
   private @Valid MetaData metaData = null;
@@ -37,44 +34,6 @@ public class InterNfviPopConnectivityRequest   {
   }
   public void setLogicalLinkPathList(LogicalLinkPathList logicalLinkPathList) {
     this.logicalLinkPathList = logicalLinkPathList;
-  }
-
-  /**
-   * requested bandwidth (in Mbps).
-   **/
-  public InterNfviPopConnectivityRequest reqBandwidth(BigDecimal reqBandwidth) {
-    this.reqBandwidth = reqBandwidth;
-    return this;
-  }
-
-  
-  @ApiModelProperty(required = true, value = "requested bandwidth (in Mbps).")
-  @JsonProperty("reqBandwidth")
-  @NotNull
-  public BigDecimal getReqBandwidth() {
-    return reqBandwidth;
-  }
-  public void setReqBandwidth(BigDecimal reqBandwidth) {
-    this.reqBandwidth = reqBandwidth;
-  }
-
-  /**
-   * 5GT - requested maximum end-to-end latency (expressed in ms)
-   **/
-  public InterNfviPopConnectivityRequest reqLatency(BigDecimal reqLatency) {
-    this.reqLatency = reqLatency;
-    return this;
-  }
-
-  
-  @ApiModelProperty(required = true, value = "5GT - requested maximum end-to-end latency (expressed in ms)")
-  @JsonProperty("reqLatency")
-  @NotNull
-  public BigDecimal getReqLatency() {
-    return reqLatency;
-  }
-  public void setReqLatency(BigDecimal reqLatency) {
-    this.reqLatency = reqLatency;
   }
 
   /**
@@ -142,8 +101,6 @@ public class InterNfviPopConnectivityRequest   {
     }
     InterNfviPopConnectivityRequest interNfviPopConnectivityRequest = (InterNfviPopConnectivityRequest) o;
     return Objects.equals(logicalLinkPathList, interNfviPopConnectivityRequest.logicalLinkPathList) &&
-        Objects.equals(reqBandwidth, interNfviPopConnectivityRequest.reqBandwidth) &&
-        Objects.equals(reqLatency, interNfviPopConnectivityRequest.reqLatency) &&
         Objects.equals(networkLayer, interNfviPopConnectivityRequest.networkLayer) &&
         Objects.equals(interNfviPopNetworkType, interNfviPopConnectivityRequest.interNfviPopNetworkType) &&
         Objects.equals(metaData, interNfviPopConnectivityRequest.metaData);
@@ -151,7 +108,7 @@ public class InterNfviPopConnectivityRequest   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(logicalLinkPathList, reqBandwidth, reqLatency, networkLayer, interNfviPopNetworkType, metaData);
+    return Objects.hash(logicalLinkPathList, networkLayer, interNfviPopNetworkType, metaData);
   }
 
   @Override
@@ -160,8 +117,6 @@ public class InterNfviPopConnectivityRequest   {
     sb.append("class InterNfviPopConnectivityRequest {\n");
     
     sb.append("    logicalLinkPathList: ").append(toIndentedString(logicalLinkPathList)).append("\n");
-    sb.append("    reqBandwidth: ").append(toIndentedString(reqBandwidth)).append("\n");
-    sb.append("    reqLatency: ").append(toIndentedString(reqLatency)).append("\n");
     sb.append("    networkLayer: ").append(toIndentedString(networkLayer)).append("\n");
     sb.append("    interNfviPopNetworkType: ").append(toIndentedString(interNfviPopNetworkType)).append("\n");
     sb.append("    metaData: ").append(toIndentedString(metaData)).append("\n");

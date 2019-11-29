@@ -37,7 +37,12 @@ public class QueryVIMThread extends Thread {
     public void run() {
         
         //String basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort() + "/" + dominfo.getName();
-        String basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort();
+        String basepath = null;
+        if (dominfo.getName().contains("OpenStack") == true) {
+            basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort() + "/v1";
+        } else {
+            basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort();
+        }
         ApiClient capi = new ApiClient();
         capi.setBasePath(basepath);
         VimComputeResourcesApi api = new VimComputeResourcesApi(capi);
@@ -105,9 +110,9 @@ public class QueryVIMThread extends Thread {
                     el.setCapacityElem(caprep);
                     ev.setComputeResElem(el);
                     //create element in map
-                    MapResources mapel = new MapResources(Long.valueOf(zonelist.get(i).getNfviPopId()),
-                                Long.valueOf(zonelist.get(i).getZoneId()),
-                                Long.valueOf(resinfolist.get(j).getComputeResourceTypeId()));
+                    MapResources mapel = new MapResources(zonelist.get(i).getNfviPopId(),
+                                zonelist.get(i).getZoneId(),
+                                resinfolist.get(j).getComputeResourceTypeId());
                     ev.setCompMapElem(mapel);
                 }
                 if (resinfolist.get(j).getVirtualMemory() != null) {
@@ -126,9 +131,9 @@ public class QueryVIMThread extends Thread {
                     el.setCapacityElem(caprep);
                     ev.setComputeResElem(el);
                     //create element in map
-                    MapResources mapel = new MapResources(Long.valueOf(zonelist.get(i).getNfviPopId()),
-                                Long.valueOf(zonelist.get(i).getZoneId()),
-                                Long.valueOf(resinfolist.get(j).getComputeResourceTypeId()));
+                    MapResources mapel = new MapResources(zonelist.get(i).getNfviPopId(),
+                                zonelist.get(i).getZoneId(),
+                                resinfolist.get(j).getComputeResourceTypeId());
                     ev.setCompMapElem(mapel);
                 }  
             }

@@ -18,7 +18,6 @@ import com.ericsson.dummyplugin.nbi.swagger.api.ComputeOperateResourcesApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.ComputeResourcesApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.HealthzApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.InformationApi;
-import com.ericsson.dummyplugin.nbi.swagger.api.InstanceApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.MTPIF;
 import com.ericsson.dummyplugin.nbi.swagger.api.MecappApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.NetworkResourcesApi;
@@ -91,7 +90,6 @@ public class dummyWimplugin {
         evbus.register(new ComputeResourcesApi());
         evbus.register(new HealthzApi());
         evbus.register(new InformationApi());
-        evbus.register(new InstanceApi());
         evbus.register(new MecappApi());
         evbus.register(new NetworkResourcesApi());
         evbus.register(new QuotasApi());

@@ -11,12 +11,12 @@ package com.mtp.events.placement;
  */
 public class PAComputeReply {
     private long reqid;
-    private long servid; //service identifiers
+    private String servid; //service identifiers
     private long nfvipopid;
     private long domid;
     private long zoneid;
 
-    public PAComputeReply(long reqid, long servid, long nfvipopid, long domid, long zoneid) {
+    public PAComputeReply(long reqid, String servid, long nfvipopid, long domid, long zoneid) {
         this.reqid = reqid;
         this.servid = servid;
         this.nfvipopid = nfvipopid;
@@ -33,11 +33,11 @@ public class PAComputeReply {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

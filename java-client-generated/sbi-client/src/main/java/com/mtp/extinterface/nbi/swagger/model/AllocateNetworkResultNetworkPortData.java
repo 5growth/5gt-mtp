@@ -32,7 +32,7 @@ import java.util.List;
  * If network types are created satisfactorily, it contains the data relative to the instantiated virtualised network resource. Cardinality can be \&quot;0\&quot; if the request did not include creation of such type of resource.
  */
 @ApiModel(description = "If network types are created satisfactorily, it contains the data relative to the instantiated virtualised network resource. Cardinality can be \"0\" if the request did not include creation of such type of resource.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class AllocateNetworkResultNetworkPortData {
   @SerializedName("attachedResourceId")
   private String attachedResourceId = null;

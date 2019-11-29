@@ -5,7 +5,9 @@
  */
 package com.ericsson.xenplugin.events.abstraction;
 
-import com.mtp.extinterface.nbi.swagger.model.CapacityInformation;
+import com.ericsson.xenplugin.nbi.swagger.model.CapacityInformation;
+
+
 
 
 /**

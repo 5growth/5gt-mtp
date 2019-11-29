@@ -1,5 +1,6 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.RadioCoverageAreaListInner;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

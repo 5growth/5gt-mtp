@@ -29,7 +29,7 @@ import java.math.BigDecimal;
  * This is used to describe the maximum latency tolerated by the mobile edge application.
  */
 @ApiModel(description = "This is used to describe the maximum latency tolerated by the mobile edge application.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class LatencyDescriptor {
   @SerializedName("timeUnit")
   private String timeUnit = null;

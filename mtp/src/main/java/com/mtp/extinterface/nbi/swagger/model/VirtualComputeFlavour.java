@@ -1,5 +1,9 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.CreateComputeResourceReservationRequestContainerFlavourStorageAttributes;
+import com.mtp.extinterface.nbi.swagger.model.CreateComputeResourceReservationRequestContainerFlavourVirtualCpu;
+import com.mtp.extinterface.nbi.swagger.model.CreateComputeResourceReservationRequestContainerFlavourVirtualMemory;
+import com.mtp.extinterface.nbi.swagger.model.CreateComputeResourceReservationRequestContainerFlavourVirtualNetworkInterface;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

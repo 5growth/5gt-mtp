@@ -1,5 +1,8 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.AllocateNetworkResultNetworkData;
+import com.ericsson.dummyplugin.nbi.swagger.model.AllocateNetworkResultNetworkPortData;
+import com.ericsson.dummyplugin.nbi.swagger.model.AllocateNetworkResultSubnetData;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 

@@ -6,8 +6,9 @@
 package com.ericsson.xenplugin.events.abstraction;
 
 
-import com.mtp.extinterface.nbi.swagger.model.VirtualComputeResourceInformation;
 
+
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualComputeResourceInformation;
 import java.util.ArrayList;
 import java.util.List;
 

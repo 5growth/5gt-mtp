@@ -20,6 +20,8 @@ from oslo_config import cfg
 from vim_manager.conf import clients_auth
 from vim_manager.conf import default
 from vim_manager.conf import nfvi_pop
+from vim_manager.conf import ressource_zone
+from vim_manager.conf import compute_information
 from vim_manager.conf import vtep
 from vim_manager.conf import discovery
 from vim_manager.conf import glance_client
@@ -39,6 +41,8 @@ def register_all_opts(conf):
     neutron_client.register_opts(conf)
     nova_client.register_opts(conf)
     nfvi_pop.register_opts(conf)
+    ressource_zone.register_opts(conf)
+    compute_information.register_opts(conf)
     vtep.register_opts(conf)
 
 

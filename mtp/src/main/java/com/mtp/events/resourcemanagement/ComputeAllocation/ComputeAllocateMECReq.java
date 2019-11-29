@@ -14,12 +14,12 @@ import com.mtp.extinterface.nbi.swagger.model.VirtualCompute;
  */
 public class ComputeAllocateMECReq {
     private long reqid;
-    private long servid;
+    private String servid;
     private long mecdomid;
     private MECTrafficServiceCreationRequest Mecreq;
     private VirtualCompute vmreq;
 
-    public ComputeAllocateMECReq(long reqid, long servid, long mecdomid, MECTrafficServiceCreationRequest Mecreq, VirtualCompute vmreq) {
+    public ComputeAllocateMECReq(long reqid, String servid, long mecdomid, MECTrafficServiceCreationRequest Mecreq, VirtualCompute vmreq) {
         this.reqid = reqid;
         this.servid = servid;
         this.mecdomid = mecdomid;
@@ -35,11 +35,11 @@ public class ComputeAllocateMECReq {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

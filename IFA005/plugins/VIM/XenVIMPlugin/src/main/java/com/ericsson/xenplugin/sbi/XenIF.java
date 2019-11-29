@@ -24,6 +24,23 @@ import com.ericsson.xenplugin.events.terminate.ComputeTerminateReply;
 import com.ericsson.xenplugin.events.terminate.ComputeTerminateRequest;
 import com.ericsson.xenplugin.events.terminate.VirtualNetworkTerminateReply;
 import com.ericsson.xenplugin.events.terminate.VirtualNetworkTerminateRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.AllocateNetworkRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.AllocateNetworkResult;
+import com.ericsson.xenplugin.nbi.swagger.model.AllocateNetworkResultNetworkData;
+import com.ericsson.xenplugin.nbi.swagger.model.AllocateNetworkResultNetworkPortData;
+import com.ericsson.xenplugin.nbi.swagger.model.AllocateNetworkResultSubnetData;
+import com.ericsson.xenplugin.nbi.swagger.model.CapacityInformation;
+import com.ericsson.xenplugin.nbi.swagger.model.MetaDataInner;
+import com.ericsson.xenplugin.nbi.swagger.model.NfviPop;
+import com.ericsson.xenplugin.nbi.swagger.model.ResourceZone;
+import com.ericsson.xenplugin.nbi.swagger.model.VIMAllocateComputeRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.VIMVirtualCompute;
+import com.ericsson.xenplugin.nbi.swagger.model.VIMVirtualComputeVirtualNetworkInterface;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualComputeResourceInformation;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualComputeResourceInformationVirtualCPU;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualComputeResourceInformationVirtualMemory;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualComputeVirtualCpu;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualComputeVirtualMemory;
 import com.ericsson.xenplugin.sbi.objects.ComputeResource;
 import com.ericsson.xenplugin.sbi.objects.ComputeService;
 import com.ericsson.xenplugin.sbi.objects.NFVIPop;
@@ -31,19 +48,6 @@ import com.ericsson.xenplugin.sbi.objects.NetworkService;
 import com.ericsson.xenplugin.sbi.objects.XenService;
 import com.ericsson.xenplugin.sbi.objects.Zone;
 import com.google.common.eventbus.Subscribe;
-import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequest;
-import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResult;
-import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResultNetworkData;
-import com.mtp.extinterface.nbi.swagger.model.CapacityInformation;
-import com.mtp.extinterface.nbi.swagger.model.MetaDataInner;
-import com.mtp.extinterface.nbi.swagger.model.NfviPop;
-import com.mtp.extinterface.nbi.swagger.model.ResourceZone;
-import com.mtp.extinterface.nbi.swagger.model.VirtualCompute;
-import com.mtp.extinterface.nbi.swagger.model.VirtualComputeResourceInformation;
-import com.mtp.extinterface.nbi.swagger.model.VirtualComputeResourceInformationVirtualCPU;
-import com.mtp.extinterface.nbi.swagger.model.VirtualComputeResourceInformationVirtualMemory;
-import com.mtp.extinterface.nbi.swagger.model.VirtualComputeVirtualCpu;
-import com.mtp.extinterface.nbi.swagger.model.VirtualComputeVirtualMemory;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +56,6 @@ import java.util.List;
 import com.xensource.xenapi.*;
 import java.net.URL;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *
@@ -136,6 +139,7 @@ public class XenIF {
             value.setMapVmPool(VM.getAllRecords(conn));
             value.setMapHostPool(Host.getAllRecords(conn));
             value.setMapSrPool(SR.getAllRecords(conn));
+            value.setMapPifPool(PIF.getAllRecords(conn));
         }
 
         System.out.println(
@@ -149,7 +153,7 @@ public class XenIF {
     @Subscribe
     public void handle_ComputeAllocateRequest(ComputeAllocateRequest servallreq) throws Exception {
         System.out.println("XenIF ---> allocate compute service request" );
-        AllocateComputeRequest compreq = servallreq.getRequest();
+        VIMAllocateComputeRequest compreq = servallreq.getRequest();
         String servid = new String("");
         List<MetaDataInner> inputdata = servallreq.getRequest().getMetadata();
         for (int i = 0; i < inputdata.size(); i++) {
@@ -159,11 +163,10 @@ public class XenIF {
         }
         
         //Take Label VM from VCImageID field
-        //Take location constraints for select the zone id
-        XenService xenel = xenreslist.get(servallreq.getRequest().getLocationConstraints());
+        XenService xenel = xenreslist.get(0);
         if (xenel == null) {
             System.out.println("XenIF ---> No resource pool for zoneid= " + servallreq.getRequest().getLocationConstraints());
-            VirtualCompute compel = new VirtualCompute();
+            VIMVirtualCompute compel = new VIMVirtualCompute();
             ComputeAllocateReply servallrep = new ComputeAllocateReply(servallreq.getReqId(),
                     compel);
             System.out.println("XenIF ---> post ComputeAllocateReply");
@@ -171,6 +174,7 @@ public class XenIF {
             return;
         }
         String vmlabel = servallreq.getRequest().getVcImageId();
+        String ipAddress = "";
         boolean found = false;
         for (Map.Entry<VM, VM.Record> e : xenel.getMapVmPool().entrySet()) {
             if (e.getValue().nameLabel.equals(vmlabel)) {
@@ -186,21 +190,22 @@ public class XenIF {
                 e.getKey().start(xenel.getConnection(), false, false);
 
                 /* get IP address of VIF associated */
-                // Waiting about 15 seconds to start the VM
-//                for (int i = 15; i >= 0; i--) {
-//                    System.out.print("Waiting for: " + i + " seconds\r");
-//                    Thread.sleep(1000);   // //Pause for 1 second [long milliseconds]
-//                }
-//                VMGuestMetrics metrics = vmCopy.getGuestMetrics(xenel.getConnection());
-//                VMGuestMetrics.Record metricsRecord = metrics.getRecord(xenel.getConnection());
-//                Map<String, String> networkIpMap = metricsRecord.networks;
-//                for (Map.Entry<String, String> e2 : networkIpMap.entrySet()) {
-//                    if (e2.getKey().equals("0/ip")) {
-//                        System.out.println("Key: " + e2.getKey() + " Value: " + e2.getValue());
-//                        ipAddress = e2.getValue();
-//                    }
-//                }
-//                System.out.println("[HypervisorManager:startVm]VM start. Ip addrees: " + ipAddress);
+                
+                //Waiting about 15 seconds to start the VM
+                for (int i = 15; i >= 0; i--) {
+                    System.out.print("Waiting for: " + i + " seconds\r");
+                    Thread.sleep(1000);   // //Pause for 1 second [long milliseconds]
+                }
+                VMGuestMetrics metrics = e.getKey().getGuestMetrics(xenel.getConnection());
+                VMGuestMetrics.Record metricsRecord = metrics.getRecord(xenel.getConnection());
+                Map<String, String> networkIpMap = metricsRecord.networks;
+                for (Map.Entry<String, String> e2 : networkIpMap.entrySet()) {
+                    if (e2.getKey().equals("0/ip")) {
+                        System.out.println("Key: " + e2.getKey() + " Value: " + e2.getValue());
+                        ipAddress = e2.getValue();
+                    }
+                }
+                System.out.println("[HypervisorManager:startVm]VM start. Ip addrees: " + ipAddress);
 
                 /* Add the new VM to map */
                //xenel.getMapVmPool().put(vmCopy, vmCopyRecord); // add the VM to the map
@@ -210,17 +215,23 @@ public class XenIF {
         }
         if (found == false) {
             System.out.println("XenIF ---> No WM with label= " + servallreq.getRequest().getVcImageId());
-            VirtualCompute compel = new VirtualCompute();
+            VIMVirtualCompute compel = new VIMVirtualCompute();
             ComputeAllocateReply servallrep = new ComputeAllocateReply(servallreq.getReqId(),
                     compel);
             System.out.println("XenIF ---> post ComputeAllocateReply");
             SingletonEventBus.getBus().post(servallrep);
             return;
         }
+        //TODO: Chack VM and VIF object to built the virtualnetworkinterfaces object in response
+        //set virtualnetworkinterface
+        List<VIMVirtualComputeVirtualNetworkInterface> vintflist = new ArrayList<VIMVirtualComputeVirtualNetworkInterface>();
+        VIMVirtualComputeVirtualNetworkInterface vintf = new VIMVirtualComputeVirtualNetworkInterface();
+        List <String> iplist = new ArrayList<String>();
+        iplist.add(ipAddress);
+        vintf.setIpAddress(iplist);
         
-        
-          
-        VirtualCompute compel = new VirtualCompute();
+        VIMVirtualCompute compel = new VIMVirtualCompute();
+        compel.setVirtualNetworkInterface(vintflist);
         compel.setComputeId(Integer.toString(compservcounter));
         compel.setComputeName("XenCompService" + Integer.toString(netservcounter));
         compel.setFlavourId(compreq.getComputeFlavourId());
@@ -328,42 +339,149 @@ public class XenIF {
     }
    
     
+    public AllocateNetworkResult allocateNetData(AllocateNetworkRequest netreq) {
+        System.out.println("XenIF ---> allocate network data " );
+        AllocateNetworkResult resp = new AllocateNetworkResult();
+        String datanetid = "datanet" + netservcounter;
+        String subnetid = "subnet" + netservcounter;
+        netservcounter++;
+        NetworkService servel = new NetworkService("",datanetid,subnetid,"","","");
+        netservlist.put(datanetid, servel);
+        
+        //formate response
+        AllocateNetworkResultNetworkData netdata = new AllocateNetworkResultNetworkData();
+        netdata.setNetworkResourceId(datanetid);
+        netdata.setNetworkResourceName(netreq.getNetworkResourceName());
+        netdata.setNetworkType(netreq.getNetworkResourceType());
+        return resp;
+    }
+    
+    public AllocateNetworkResult allocateSubnetData(AllocateNetworkRequest subnetreq) {
+        System.out.println("XenIF ---> allocate subnet data " );
+        AllocateNetworkResult resp = new AllocateNetworkResult();
+        boolean vxlanflag = false, serviceflag = false;
+        //retrieve the networkservie element
+        NetworkService el = netservlist.get(subnetreq.getTypeSubnetData().getNetworkId());
+        if (el == null) {
+           System.out.println("XenIF ---> error retrieve service network element for subnet data" );
+           return resp;
+        }
+        
+        //check if it is present the floating_required field in metadata
+        for (int i = 0; (i < subnetreq.getMetadata().size()) && (serviceflag == false); i++) {
+            if (subnetreq.getMetadata().get(i).getKey().compareTo("ServiceId") == 0) {
+                serviceflag = true;
+                
+                el.setServiceid(subnetreq.getMetadata().get(i).getValue());
+            }
+        }
+        if (serviceflag == false) {
+            System.out.println("XenIF ---> error retrieve service id for subnet data" );
+           return resp;
+        }
+        //check if it is present the floating_required field in metadata
+        for (int i = 0; (i < subnetreq.getMetadata().size()) && (vxlanflag == false); i++) {
+            if (subnetreq.getMetadata().get(i).getKey().compareTo("floating_required") == 0) {
+                vxlanflag = true;
+                //change nettypemap to vlan
+                //get PIF pool
+                for (Map.Entry<PIF, PIF.Record> e : xenreslist.get(0).getMapPifPool().entrySet()) {
+                    el.setPIFref(e.getValue().IP);
+                }
+                String portid = "port" + netservcounter;
+                netservcounter++;
+                el.setPortid(portid);
+            }
+        }
+        if (vxlanflag == false) {
+            System.out.println("XenIF ---> error retrieve floating IP for subnet data" );
+           return resp;
+        }
+
+        
+        //format subnet request
+        AllocateNetworkResultSubnetData subnetdata = new AllocateNetworkResultSubnetData();
+        //copy subnet data
+        subnetdata.setAddressPool(subnetreq.getTypeSubnetData().getAddressPool());
+        subnetdata.setCidr(subnetreq.getTypeSubnetData().getCidr());
+        subnetdata.setGatewayIp(subnetreq.getTypeSubnetData().getGatewayIp());
+        subnetdata.setIpVersion(subnetreq.getTypeSubnetData().getIpVersion());
+        subnetdata.setIsDhcpEnabled(subnetreq.getTypeSubnetData().isIsDhcpEnabled());
+        subnetdata.setResourceId(subnetreq.getTypeSubnetData().getResourceId());
+        subnetdata.setOperationalState("enabled");
+        //set subnetid
+        subnetdata.setNetworkId(el.getSubnetid());
+        resp.setSubnetData(subnetdata);
+        //insert modified element in network service map
+        netservlist.put(subnetreq.getTypeSubnetData().getNetworkId(), el);
+        return resp;
+    }
+    
+    public AllocateNetworkResult allocatePortData(AllocateNetworkRequest portreq) {
+        System.out.println("XenIF ---> allocate port data " );
+        AllocateNetworkResult resp = new AllocateNetworkResult();
+        String subnetid = "";
+        String ip = "";
+        String portid = "";
+        boolean subnetflag = false;
+        //retrieve subnet_id
+        for (int i = 0; (i < portreq.getMetadata().size()) && (subnetflag == false); i++) {
+            if (portreq.getMetadata().get(i).getKey().compareTo("subnet_id") ==0) {
+                subnetflag = true;
+                subnetid = portreq.getMetadata().get(i).getValue();
+            }
+        }
+        if (subnetflag == false) {
+            System.out.println("XenIF ---> error subnet id not found in port data");
+            return resp;
+        }
+        
+        for (Map.Entry<String, NetworkService> entry : netservlist.entrySet()) {
+            if (entry.getValue().getSubnetid().compareTo(subnetid) == 0) {
+                NetworkService el = entry.getValue();
+                ip = el.getPIFref();
+                portid = el.getPortid();
+                break;
+            }
+        }
+        if (portid.compareTo("") == 0) {
+           System.out.println("XenIF ---> error port id not found in port data");
+            return resp; 
+        }
+        //format port data
+        List<MetaDataInner> metadata = new ArrayList();
+        MetaDataInner ipentry = new MetaDataInner();
+        ipentry.setKey("floating_ip");
+        ipentry.setValue(ip);
+        metadata.add(ipentry);
+        
+        //set port data
+        AllocateNetworkResultNetworkPortData portdata = new AllocateNetworkResultNetworkPortData();
+        portdata.setNetworkId(portid);
+        portdata.setOperationalState("enabled");
+        //set floating ip in metadata
+        portdata.setMetadata(metadata);
+        resp.setNetworkPortData(portdata);
+        return resp;
+    }
+    
     @Subscribe
     public void handle_VirtualNetworkAllocateRequest(VirtualNetworkAllocateRequest servallreq) {
         System.out.println("XenIF ---> allocate network service request" );
-        
-        //XXX: As XEN DC uses the default virtual switch no virtual network are created.
-        // For R2 additional switch can be created
-        //retrieve ServiceId, networktype and segment id from metadata
-        
-        List<MetaDataInner> inputdata = servallreq.getE2ewimelem().getMetadata();
-        
-        String servid = new String("-1"), nettype = new String(""), netinfo = new String("");
-        
-        for (int i = 0; i < inputdata.size(); i++) {
-            if(inputdata.get(i).getKey().compareTo("ServiceId") == 0) {
-                servid = inputdata.get(i).getValue();
-            } else if (inputdata.get(i).getKey().compareTo("NetworkType") == 0) {
-                nettype = inputdata.get(i).getValue();
-            } else if (inputdata.get(i).getKey().compareTo("SegmentType") == 0) {
-                netinfo = inputdata.get(i).getValue();
-            }
-        }
-        NetworkService el = new NetworkService(servid, nettype, netinfo); 
-        netservlist.put(Integer.toString(netservcounter), el);
-        
+
         AllocateNetworkResult resp = new AllocateNetworkResult();
-        AllocateNetworkResultNetworkData networkData = new AllocateNetworkResultNetworkData();
-        //put id in the reply
-        networkData.setNetworkResourceId(Integer.toString(netservcounter));
-        networkData.setNetworkResourceName("XenNetService" + Integer.toString(netservcounter));
-        networkData.bandwidth(BigDecimal.ONE);
-        networkData.setSegmentType(nettype);
-        networkData.setSegmentType(netinfo);
-        networkData.setIsShared(Boolean.TRUE);
-        networkData.setOperationalState("enabled");
-        resp.setNetworkData(networkData);
-        netservcounter++;
+        //retrieve ServiceId, networktype and segment id from metadata
+        switch (servallreq.getE2ewimelem().getNetworkResourceType()) {
+            case "data" :
+                resp = allocateNetData(servallreq.getE2ewimelem());
+                break;
+            case "subnet":
+                resp = allocateSubnetData(servallreq.getE2ewimelem());
+                break;
+            case "port":
+                resp = allocatePortData(servallreq.getE2ewimelem());
+                break;
+        }
         VirtualNetworkAllocateReply servallrep = new VirtualNetworkAllocateReply(servallreq.getReqid(),
                      resp);
         System.out.println("XenIF ---> post VirtualNetworkAllocateReply");
@@ -373,17 +491,16 @@ public class XenIF {
     @Subscribe
     public void handle_VirtualNetworkTerminateRequest(VirtualNetworkTerminateRequest servtermreq) {
         System.out.println("XenIF ---> terminate network service request" );
+        
         List<String> resplist = new ArrayList();
         for (int i = 0; i < servtermreq.getE2EWIMElem().size(); i++) {
             String key = servtermreq.getE2EWIMElem().get(i);
             NetworkService servel = netservlist.get(key);
             if (servel != null) {
-                //XXX: As XEN DC uses the default virtual switch no virtual network are created.
-                // For R2 additional switch can be deleted
-                //Send the stringid as reply ServiceId, networktype and segment id from metadata
+                
                 netservlist.remove(key);
-                resplist.add(key);
             }
+            resplist.add(key);
         }
         
         VirtualNetworkTerminateReply servtermrep = new VirtualNetworkTerminateReply(servtermreq.getReqId(),resplist);

@@ -13,15 +13,17 @@
 
 package io.swagger.client.api;
 
+import io.swagger.client.ApiException;
 import com.mtp.extinterface.nbi.swagger.model.InlineResponse200;
 import com.mtp.extinterface.nbi.swagger.model.MECTrafficServiceCreationRequest;
 import com.mtp.extinterface.nbi.swagger.model.MECTrafficServiceCreationResponse;
-import io.swagger.client.ApiException;
-
 import org.junit.Test;
 import org.junit.Ignore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * API tests for MecResourcesApi

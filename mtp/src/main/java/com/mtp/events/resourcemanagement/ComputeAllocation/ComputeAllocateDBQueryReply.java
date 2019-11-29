@@ -11,19 +11,19 @@ import java.util.ArrayList;
 public class ComputeAllocateDBQueryReply {
 
     private long reqid;
-    private long servid; //service identifiers
+    private String servid; //service identifiers
 
     private ArrayList<Long> domlist;
     private ArrayList<Long> poplist;
 
     public ComputeAllocateDBQueryReply() {
         reqid = 0;
-        servid = 0;
+        servid = "";
         poplist = new ArrayList();
         domlist = new ArrayList();
     }
 
-    public ComputeAllocateDBQueryReply(long reqid, long servid, ArrayList<Long> domlist, ArrayList<Long> poplist) {
+    public ComputeAllocateDBQueryReply(long reqid, String servid, ArrayList<Long> domlist, ArrayList<Long> poplist) {
         this.reqid = reqid;
         this.servid = servid;
         this.domlist = domlist;
@@ -38,11 +38,11 @@ public class ComputeAllocateDBQueryReply {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

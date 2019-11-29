@@ -8,9 +8,12 @@ package com.mtp.abstraction;
 import com.google.common.eventbus.Subscribe;
 import com.mtp.DbConnectionPool.DbAbstractionDatasource;
 import com.mtp.DbConnectionPool.DbDomainDatasource;
+import com.mtp.DbConnectionPool.DbFederationDatasource;
 import com.mtp.SingletonEventBus;
 import com.mtp.common.objects.ComputeAllocateElem;
 import com.mtp.common.objects.ComputeTerminateElem;
+import com.mtp.common.objects.Fed_NetworkAllocateElem;
+import com.mtp.common.objects.Fed_NetworkTerminateElem;
 import com.mtp.common.objects.NetworkAllocateElem;
 import com.mtp.common.objects.NetworkTerminateElem;
 import com.mtp.events.placement.PAComputeReply;
@@ -36,14 +39,29 @@ import com.mtp.events.resourcemanagement.NetworkAllocation.E2ENetworkAllocateIns
 import com.mtp.events.resourcemanagement.NetworkAllocation.E2ENetworkAllocateInstanceOutcome;
 import com.mtp.events.resourcemanagement.NetworkAllocation.E2ENetworkAllocateReply;
 import com.mtp.events.resourcemanagement.NetworkAllocation.E2ENetworkAllocateRequest;
+import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_E2ENetworkAllocateInstance;
+import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_E2ENetworkAllocateInstanceOutcome;
+import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_E2ENetworkAllocateReply;
+import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_E2ENetworkAllocateRequest;
+import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_NetworkAllocateDBQuery;
+import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_NetworkAllocateDBQueryReply;
 import com.mtp.events.resourcemanagement.NetworkAllocation.NetworkAllocateDBQuery;
 import com.mtp.events.resourcemanagement.NetworkAllocation.NetworkAllocateDBQueryReply;
 import com.mtp.events.resourcemanagement.NetworkTermination.E2ENetworkTerminateInstance;
 import com.mtp.events.resourcemanagement.NetworkTermination.E2ENetworkTerminateInstanceOutcome;
 import com.mtp.events.resourcemanagement.NetworkTermination.E2ENetworkTerminateReply;
 import com.mtp.events.resourcemanagement.NetworkTermination.E2ENetworkTerminateRequest;
+import com.mtp.events.resourcemanagement.NetworkTermination.Fed_E2ENetworkTerminateInstance;
+import com.mtp.events.resourcemanagement.NetworkTermination.Fed_E2ENetworkTerminateInstanceOutcome;
+import com.mtp.events.resourcemanagement.NetworkTermination.Fed_E2ENetworkTerminateReply;
+import com.mtp.events.resourcemanagement.NetworkTermination.Fed_E2ENetworkTerminateRequest;
+import com.mtp.events.resourcemanagement.NetworkTermination.Fed_NetworkTerminateDBQuery;
+import com.mtp.events.resourcemanagement.NetworkTermination.Fed_NetworkTerminateDBQueryReply;
 import com.mtp.events.resourcemanagement.NetworkTermination.NetworkTerminateDBQuery;
 import com.mtp.events.resourcemanagement.NetworkTermination.NetworkTerminateDBQueryReply;
+import com.mtp.extinterface.nbi.swagger.model.InterNfviPopConnectivityRequest;
+import com.mtp.extinterface.nbi.swagger.model.LogicalLinkPathList;
+import com.mtp.extinterface.nbi.swagger.model.LogicalLinkPathListInner;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -62,7 +80,12 @@ public class ResourceSelectionLogic {
     private boolean pacompstatus;
     private boolean panetstatus;
     private long panetpathcount;
+    private HashMap<Long, Fed_NetworkAllocateElem> fed_netallmap;
+    private HashMap<Long, Fed_NetworkTerminateElem> fed_nettermmap;
+    private long fedvlancounter;
 
+    
+    
     public ResourceSelectionLogic() {
         compallmap = new HashMap();
         netallmap = new HashMap();
@@ -71,6 +94,9 @@ public class ResourceSelectionLogic {
         pacompstatus = false;
         panetstatus = false;
         panetpathcount = 1000; //From 1000 to on are the computed logical paths from pa network
+        fed_netallmap = new HashMap();
+        fed_nettermmap = new HashMap();
+        fedvlancounter = 100;
     }
     
     @Subscribe
@@ -206,8 +232,7 @@ public class ResourceSelectionLogic {
     @Subscribe
     public void handle_E2ENetworkAllocateRequest(E2ENetworkAllocateRequest allreqev) {
         System.out.println("ResourceSelectionLogic --> Handle E2ENetworkAllocateRequest Event");
-        long physicalpath = -1, logicallink = -1;
-        float availablebw = -1;
+     
 
         //insert element in hasmap of pening allocate req
         NetworkAllocateElem netel = new NetworkAllocateElem();
@@ -217,6 +242,11 @@ public class ResourceSelectionLogic {
         
         for (int i = 0; i < allreqev.getNetworkreq().getLogicalLinkPathList().size(); i++) {
 
+        long physicalpath = -1, logicallink = -1;
+        float availablebw = -1; 
+            
+            
+            
             //Get the logicalLinkId from dbquery
             logicallink = Long.parseLong(allreqev.getNetworkreq().getLogicalLinkPathList().get(i).getLogicalLinkAttributes().getLogicalLinkId());
             allreqev.getNetworkreq().getLogicalLinkPathList().get(i).getReqBandwidth();
@@ -270,8 +300,11 @@ public class ResourceSelectionLogic {
             }
 
             //Prepare and perform the query
+//            NetworkAllocateDBQuery dbev = new NetworkAllocateDBQuery(allreqev.getReqid(),
+//                    allreqev.getServid(), allreqev.getNetworkreq(), physicalpath);
             NetworkAllocateDBQuery dbev = new NetworkAllocateDBQuery(allreqev.getReqid(),
-                    allreqev.getServid(), allreqev.getNetworkreq(), physicalpath);
+                    allreqev.getServid(), allreqev.getNetworkreq().getLogicalLinkPathList().get(i) , physicalpath);
+            
             //post event
             System.out.println("ResourceSelectionLogic --> Post NetworkAllocateDBQuery Event");
             SingletonEventBus.getBus().post(dbev);
@@ -483,14 +516,28 @@ public class ResourceSelectionLogic {
             }
         }
         //Call NetworkAllocateDBQuery
-        NetworkAllocateDBQuery dbev = new NetworkAllocateDBQuery(panetrep.getReqid(),
+        NetworkAllocateElem elem = netallmap.get(panetrep.getReqid());
+        int size = elem.getAllocateRequest().getNetworkreq().getLogicalLinkPathList().size(); 
+       
+       for (int i = 0; i < wanlinkkeys.size(); i++) {
+        
+        
+//        NetworkAllocateDBQuery dbev = new NetworkAllocateDBQuery(panetrep.getReqid(),
+//               panetrep.getServid(), 
+//                netallmap.get(panetrep.getReqid()).getAllocateRequest().getNetworkreq(), 
+//                logicalpathid);
+        
+         NetworkAllocateDBQuery dbev = new NetworkAllocateDBQuery(panetrep.getReqid(),
                panetrep.getServid(), 
-                netallmap.get(panetrep.getReqid()).getAllocateRequest().getNetworkreq(), 
+                elem.getAllocateRequest().getNetworkreq().getLogicalLinkPathList().get(i), 
                 logicalpathid);
+        
        //post event
        System.out.println("ResourceSelectionLogic --> Post NetworkAllocateDBQuery Event");
        SingletonEventBus.getBus().post(dbev);
+       }
     }
+
     
     @Subscribe
     public void handle_NetworkAllocateDBQueryReply(NetworkAllocateDBQueryReply dbreply) {
@@ -841,5 +888,434 @@ public class ResourceSelectionLogic {
         System.out.println("ResourceSelectionLogic --> Post E2ENetworkTerminateReply Event");
         SingletonEventBus.getBus().post(allrepout);
     }
+    
+    
+    @Subscribe
+    public void handle_Fed_E2ENetworkAllocateRequest(Fed_E2ENetworkAllocateRequest allreqev) {
+        System.out.println("ResourceSelectionLogic --> Handle Fed_E2ENetworkAllocateRequest Event");
+      
 
+        //insert element in hasmap of pending allocate req
+        Fed_NetworkAllocateElem netel = new Fed_NetworkAllocateElem();
+        netel.setAllocateRequest(allreqev);
+        fed_netallmap.put(allreqev.getReqid(), netel);
+        
+        
+        for (int i = 0; i < allreqev.getNetworkreq().getLogicalLinkPathList().size(); i++) {
+  long physicalpath = -1, logicallink = -1;
+        float availablebw = -1;
+        String fed_vlanid=null;
+            //Get the logicalLinkId from dbquery
+            logicallink = Long.parseLong(allreqev.getNetworkreq().getLogicalLinkPathList().get(i).getLogicalLinkAttributes().getLogicalLinkId());
+            allreqev.getNetworkreq().getLogicalLinkPathList().get(i).getReqBandwidth();
+            System.out.println("handle_E2ENetworkAllocateRequest ----> LogicalLinkId:" + logicallink + "");
+//            if (pacompstatus == true) {
+//                //Prepare and perform the query
+//                PANetworkRequest panetreq = new PANetworkRequest(allreqev.getReqid(),
+//                        allreqev.getServid(), allreqev.getNetworkreq(), logicallink, 
+//                        allreqev.getNetworkreq().getLogicalLinkPathList().get(i).getReqBandwidth(),
+//                        allreqev.getNetworkreq().getLogicalLinkPathList().get(i).getReqLatency(),
+//                        allreqev.getNetworkreq().getLogicalLinkPathList().get(i).getLogicalLinkAttributes().getSrcGwIpAddress(),
+//                        allreqev.getNetworkreq().getLogicalLinkPathList().get(i).getLogicalLinkAttributes().getDstGwIpAddress());
+//                //post event
+//                System.out.println("ResourceSelectionLogic --> Post PANetworkRequest Event");
+//                SingletonEventBus.getBus().post(panetreq);
+//                continue;
+//            }        
+            //rerieve from DB logical paths related to the logicalLinkId 
+            try {
+                java.sql.Connection conn = DbFederationDatasource.getInstance().getConnection();
+                PreparedStatement ps = conn.prepareStatement("SELECT logicalPathId,availableBandwidth  FROM fed_logicalpath where logicalLinkId=?");
+                ps.setLong(1, logicallink);
+                java.sql.ResultSet rs = ps.executeQuery();
+                //Select the path with minimum available bandwidth
+                while (rs.next()) {
+                    if (availablebw == -1) {
+                        //first element is selected
+                        physicalpath = rs.getLong("logicalPathId");
+                        availablebw = rs.getFloat("availableBandwidth");
+                    } else {
+                        //check if tmp_available bw is bigger and select it
+                        float tmp_availablebw = rs.getFloat("availableBandwidth");
+                        //TODO: insert control on bw request when IFA005 is fixed
+                        //if ( /*(tmp_availablebw >= allreqev.getE2EWIMElem().) &&*/ 
+                        //        (tmp_availablebw > availablebw)) {
+                        if (tmp_availablebw > availablebw) {
+                            //select this as candidate
+                            physicalpath = rs.getLong("logicalPathId");
+                            availablebw = tmp_availablebw;
+                        }
+                    }
+                }
+                System.out.println("handle_Fed_E2ENetworkAllocateRequest ---> physicalpath: " + physicalpath + "");
+
+                rs.close();
+                ps.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ResourceSelectionLogic.class
+                        .getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+
+            
+            //Get from request the vlan related to the current logicalLink
+              int size = allreqev.getNetworkreq().getMetaData().size();
+            
+                   
+            for (int j = 0; j < size; j++) {
+                if (allreqev.getNetworkreq().getMetaData().get(j).getKey().compareTo("vlanId") == 0) {
+                    fed_vlanid = allreqev.getNetworkreq().getMetaData().get(j).getValue();
+                    break;
+                }
+            }
+            if (fed_vlanid == null) {
+                //no vlan federated is passed select one from the pool
+                fed_vlanid = String.valueOf(fedvlancounter);
+                fedvlancounter++;
+            }
+            
+            
+           
+           InterNfviPopConnectivityRequest currentReq = new InterNfviPopConnectivityRequest();
+          
+           
+           
+                 LogicalLinkPathListInner innerAttributes = new LogicalLinkPathListInner();
+                 innerAttributes=allreqev.getNetworkreq().getLogicalLinkPathList().get(i);
+           LogicalLinkPathList currentPath = new LogicalLinkPathList();
+           currentPath.add(innerAttributes);
+                 
+                 
+           
+           currentReq.setInterNfviPopNetworkType(allreqev.getNetworkreq().getInterNfviPopNetworkType());
+           currentReq.setLogicalLinkPathList(currentPath);
+           currentReq.setMetaData(allreqev.getNetworkreq().getMetaData());
+           currentReq.setNetworkLayer(allreqev.getNetworkreq().getNetworkLayer());
+  
+//            Fed_NetworkAllocateDBQuery dbev = new Fed_NetworkAllocateDBQuery(allreqev.getReqid(),
+//                    allreqev.getServid(), allreqev.getNetworkreq(), physicalpath, fed_vlanid);
+
+ Fed_NetworkAllocateDBQuery dbev = new Fed_NetworkAllocateDBQuery(allreqev.getReqid(),
+                    allreqev.getServid(), currentReq, physicalpath, fed_vlanid);
+
+
+            //post event
+            System.out.println("ResourceSelectionLogic --> Post NetworkAllocateDBQuery Event");
+            SingletonEventBus.getBus().post(dbev);
+        }
+    }
+    
+     @Subscribe
+    public void handle_Fed_NetworkAllocateDBQueryReply(Fed_NetworkAllocateDBQueryReply dbreply) {
+        System.out.println("ResourceSelectionLogic --> Handle NetworkAllocateDBQueryReply Event");
+
+        Fed_E2ENetworkAllocateInstance allinst = new Fed_E2ENetworkAllocateInstance(dbreply.getReqid(),
+                dbreply.getServid(), dbreply.getLogicalLPathId(), dbreply.getWimdomlist(), 
+                dbreply.getVimdomlist(), dbreply.getInterdomainLinks(), dbreply.getIntraPopLinks(),
+                dbreply.getWanLinks(), dbreply.getWimPopList(), dbreply.getVimPopList(), 
+                fed_netallmap.get(dbreply.getReqid()).getAllocateRequest().getNetworkreq(),
+                dbreply.getWimNetworkType(), dbreply.getVimNetworkType(), dbreply.getFlowRuleEndPointList(), dbreply.isAbstrSrcNfviPopOfLogicalPathIsFed());
+
+        System.out.println("ResourceSelectionLogic --> Post E2ENetworkAllocateInstance Event");
+        SingletonEventBus.getBus().post(allinst);
+
+    }
+    
+    
+        
+ @Subscribe
+    public void handle_Fed_E2ENetworkAllocateInstanceOutcome(Fed_E2ENetworkAllocateInstanceOutcome allinstout) {
+        System.out.println("ResourceSelectionLogic --> Handle E2ENetworkAllocateInstanceOutcome Event");
+        
+        if (allinstout.isOutcome() == false ) {
+            //send negative response
+            Fed_E2ENetworkAllocateReply allrepout = new Fed_E2ENetworkAllocateReply(allinstout.getReqid(),
+                    allinstout.getServid(), null, allinstout.isOutcome());
+            System.out.println("ResourceSelectionLogic --> Post Fed_E2ENetworkAllocateReply Event");
+            SingletonEventBus.getBus().post(allrepout);
+            return;
+        }
+        
+        long physicalpath = -1, logicallink = -1;
+        float availablebw = -1, ll_availablebw = -1;
+        //retrieve from federation DB the logical link id from the logical paths, 
+        try {
+            java.sql.Connection conn = DbFederationDatasource.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT logicalLinkId  FROM fed_logicalpath where logicalPathId=?");
+            ps.setLong(1, allinstout.getLogicalpath());
+            java.sql.ResultSet rs = ps.executeQuery();
+            //Select the path with maximum available bandwidth
+            while (rs.next()) {
+                logicallink = rs.getLong("logicalLinkId");  
+            }
+            System.out.println("handle_Fed_E2ENetworkAllocateRequest ---> logicallink: " + logicallink + "");
+            
+            rs.close();
+            ps.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ResourceSelectionLogic.class
+                    .getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        //retrieve from federation DB the available bw from logicallink
+        try {
+            java.sql.Connection conn = DbFederationDatasource.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT availableBandwidth  FROM fed_logicallink where logicalLinkId=?");
+            ps.setLong(1, logicallink);
+            java.sql.ResultSet rs = ps.executeQuery();
+            //Select the path with maximum available bandwidth
+            while (rs.next()) {
+                ll_availablebw = rs.getLong("availableBandwidth");
+            }
+            System.out.println("handle_Fed_E2ENetworkAllocateRequest ---> ll_availablebw: " + ll_availablebw + "");
+            
+            rs.close();
+            ps.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ResourceSelectionLogic.class
+                    .getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        //get the maximum available bw from logical paths associated to the same logicallink id        
+        try {
+            java.sql.Connection conn = DbFederationDatasource.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT availableBandwidth  FROM fed_logicalpath where logicalLinkId=?");
+            ps.setLong(1, logicallink);
+            java.sql.ResultSet rs = ps.executeQuery();
+            //Select the path with maximum available bandwidth
+            while (rs.next()) {
+                
+                if (availablebw == -1) {
+                    //first element is selected
+                    availablebw = rs.getFloat("availableBandwidth");
+                } else {
+                    //check if available bw is greater and select it
+                    float tmp_availablebw = rs.getFloat("availableBandwidth");
+                    if (tmp_availablebw > availablebw) {
+                        //select this as candidate
+                        availablebw = tmp_availablebw;
+                    }
+                }   
+            }
+            System.out.println("handle_Fed_E2ENetworkAllocateRequest ---> availablebw: " + availablebw + "");
+            
+            rs.close();
+            ps.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ResourceSelectionLogic.class
+                    .getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        //check if aavailable bw is the same as represented in the logical link. 
+        //If not change the bandwidth capacity values in logical link in DB 
+        if (availablebw != ll_availablebw) {
+            //change bandwidth capacity in logical link
+            try {
+                long availableBandwidth;
+                long allocatedBandwidth;
+                long totalBandwidth;
+
+                java.sql.Connection conn = DbFederationDatasource.getInstance().getConnection();
+
+                PreparedStatement ps = conn.prepareStatement("SELECT "
+                        + "logicalLinkId, "
+                        + "availableBandwidth,"
+                        + "totalBandwidth,"
+                        + "allocatedBandwidth "
+                        + "FROM fed_logicallink WHERE logicalLinkId=?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+                ps.setLong(1, logicallink);
+                java.sql.ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    availableBandwidth = rs.getLong("availableBandwidth");
+                    totalBandwidth = rs.getLong("totalBandwidth");
+                    allocatedBandwidth = rs.getLong("allocatedBandwidth");
+                    rs.updateString("availableBandwidth", Float.toString(availablebw));
+                    rs.updateString("allocatedBandwidth", Float.toString(totalBandwidth-availablebw));
+                    rs.updateRow();
+
+                    System.out.println("handle_Fed_E2ENetworkAllocateRequest ---> Bandwidth updated in Abstract logical link table!");
+                    System.out.println("handle_Fed_E2ENetworkAllocateRequest ---> new available bandwidth " + availablebw + "");
+                    
+                }
+
+                rs.close();
+                ps.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ResourceSelectionLogic.class
+                        .getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        } 
+        
+        Fed_E2ENetworkAllocateReply allrepout = new Fed_E2ENetworkAllocateReply(allinstout.getReqid(),
+                allinstout.getServid(), allinstout.getVn(), allinstout.isOutcome());
+        System.out.println("ResourceSelectionLogic --> Post Fed_E2ENetworkAllocateReply Event");
+        SingletonEventBus.getBus().post(allrepout);
+    } 
+    
+ @Subscribe
+    public void handle_Fed_E2ENetworkTerminateRequest(Fed_E2ENetworkTerminateRequest allreqev) {
+        System.out.println("ResourceSelectionLogic --> Handle Fed_E2ENetworkTerminateRequest Event");
+        //insert element in hasmap of pening allocate req
+        Fed_NetworkTerminateElem compel = new Fed_NetworkTerminateElem();
+        compel.setTerminateRequest(allreqev.getNetServIdList());
+        fed_nettermmap.put(allreqev.getReqid(), compel);
+        //Prepare and perform the query
+        Fed_NetworkTerminateDBQuery dbev = new Fed_NetworkTerminateDBQuery(allreqev.getReqid(),
+                allreqev.getServid(), allreqev.getNetServIdList());
+        //post event
+        System.out.println("ResourceSelectionLogic --> Post Fed_NetworkTerminateDBQuery Event");
+        SingletonEventBus.getBus().post(dbev);
+    }
+    
+ @Subscribe
+    public void handle_Fed_NetworkTerminateDBQueryReply(Fed_NetworkTerminateDBQueryReply dbreply) {
+        System.out.println("ResourceSelectionLogic --> Handle NetworkTerminateDBQueryReply Event");
+        Fed_E2ENetworkTerminateInstance allinst = new Fed_E2ENetworkTerminateInstance(dbreply.getReqid(),
+                dbreply.getServid(), dbreply.getWimdomlistMap(), dbreply.getVimdomlistMap(), dbreply.getInterdomainLinksMap(),
+                dbreply.getFed_interdomainLinksMap(), dbreply.getIntraPopLinksMap(), dbreply.getWanLinksMap(), 
+                dbreply.getWimPopListMap(), dbreply.getVimPopListMap(), dbreply.getWimNetworkTypeMap(), 
+                dbreply.getVimNetworkTypeMap(), dbreply.getWanResourceIdListMap(),
+                dbreply.getNetServIdList(), dbreply.getLogicalPathList());
+
+        System.out.println("ResourceSelectionLogic --> Post E2ENetworkTerminateInstance Event");
+        SingletonEventBus.getBus().post(allinst);
+
+    }
+    
+    
+    
+    
+    
+    
+    @Subscribe
+    public void handle_Fed_E2ENetworkTerminateInstanceOutcome(Fed_E2ENetworkTerminateInstanceOutcome allinstout) {
+        System.out.println("ResourceSelectionLogic --> Handle E2ENetworkTerminateInstanceOutcome Event");
+        long physicalpath = -1, logicallink = -1;
+        float availablebw = -1, ll_availablebw = -1;
+        //retrieve from abstract DB the logical link id from the logical paths,
+        for (int i = 0; i < allinstout.getLogicalPathList().size(); i++) {
+            try {
+                java.sql.Connection conn = DbFederationDatasource.getInstance().getConnection();
+                PreparedStatement ps = conn.prepareStatement("SELECT logicalLinkId  FROM fed_logicalpath where logicalPathId=?");
+                ps.setLong(1, Long.valueOf(allinstout.getLogicalPathList().get(i)));
+                java.sql.ResultSet rs = ps.executeQuery();
+                //Select the path with maximum available bandwidth
+                while (rs.next()) {
+                    logicallink = rs.getLong("logicalLinkId");
+                }
+                System.out.println("handle_E2ENetworkAllocateRequest ---> logicallink: " + logicallink + "");
+
+                rs.close();
+                ps.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ResourceSelectionLogic.class
+                        .getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+            //retrieve from abstract DB the available bw from logicallink
+            try {
+                java.sql.Connection conn = DbFederationDatasource.getInstance().getConnection();
+                PreparedStatement ps = conn.prepareStatement("SELECT availableBandwidth  FROM fed_logicallink where logicalLinkId=?");
+                ps.setLong(1, logicallink);
+                java.sql.ResultSet rs = ps.executeQuery();
+                //Select the path with maximum available bandwidth
+                while (rs.next()) {
+                    ll_availablebw = rs.getLong("availableBandwidth");
+                }
+                System.out.println("handle_E2ENetworkAllocateRequest ---> ll_availablebw: " + ll_availablebw + "");
+
+                rs.close();
+                ps.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ResourceSelectionLogic.class
+                        .getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+            //get the maximum available bw from logical path associated to the same logicallink id        
+            try {
+                java.sql.Connection conn = DbFederationDatasource.getInstance().getConnection();
+                PreparedStatement ps = conn.prepareStatement("SELECT availableBandwidth  FROM fed_logicalpath where logicalLinkId=?");
+                ps.setLong(1, logicallink);
+                java.sql.ResultSet rs = ps.executeQuery();
+                //Select the path with maximum available bandwidth
+                while (rs.next()) {
+
+                    if (availablebw == -1) {
+                        //first element is selected
+                        availablebw = rs.getFloat("availableBandwidth");
+                    } else {
+                        //check if available bw is greater and select it
+                        float tmp_availablebw = rs.getFloat("availableBandwidth");
+                        if (tmp_availablebw > availablebw) {
+                            //select this as candidate
+                            availablebw = tmp_availablebw;
+                        }
+                    }
+                }
+                System.out.println("handle_E2ENetworkAllocateRequest ---> availablebw: " + availablebw + "");
+
+                rs.close();
+                ps.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ResourceSelectionLogic.class
+                        .getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+            //check if aavailable bw is the same as represented in the logical link. 
+            //If not change the bandwidth capacity values in logical link in DB 
+            if (availablebw != ll_availablebw) {
+                //change bandwidth capacity in logical link
+                try {
+                    long availableBandwidth;
+                    long allocatedBandwidth;
+                    long totalBandwidth;
+
+                    java.sql.Connection conn = DbFederationDatasource.getInstance().getConnection();
+
+                 
+
+                    PreparedStatement ps = conn.prepareStatement("SELECT "
+                        + "logicalLinkId, "
+                        + "availableBandwidth,"
+                        + "totalBandwidth,"
+                        + "allocatedBandwidth "
+                        + "FROM fed_logicallink WHERE logicalLinkId=?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                    
+                    
+                    
+                    
+                    ps.setLong(1, logicallink);
+                    java.sql.ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        availableBandwidth = rs.getLong("availableBandwidth");
+                        totalBandwidth = rs.getLong("totalBandwidth");
+                        allocatedBandwidth = rs.getLong("allocatedBandwidth");
+                        rs.updateString("availableBandwidth", Float.toString(availablebw));
+                        rs.updateString("allocatedBandwidth", Float.toString(totalBandwidth - availablebw));
+                        rs.updateRow();
+
+                        System.out.println("handle_E2ENetworkAllocateRequest ---> Bandwidth updated in Abstract logical link table!");
+                        System.out.println("handle_E2ENetworkAllocateRequest ---> new available bandwidth " + availablebw + "");
+
+                    }
+
+                    rs.close();
+                    ps.close();
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(ResourceSelectionLogic.class
+                            .getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        }
+
+        Fed_E2ENetworkTerminateReply allrepout = new Fed_E2ENetworkTerminateReply(allinstout.getReqid(),
+                allinstout.getServid(), allinstout.getNetServIdList());
+        System.out.println("ResourceSelectionLogic --> Post E2ENetworkTerminateReply Event");
+        SingletonEventBus.getBus().post(allrepout);
+    }
+    
+    
 }

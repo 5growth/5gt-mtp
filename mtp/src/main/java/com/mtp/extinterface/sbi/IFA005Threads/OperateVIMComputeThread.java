@@ -31,7 +31,12 @@ public class OperateVIMComputeThread extends Thread {
     @Override
     public void run() {
         //String basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort() + "/" + dominfo.getName();
-        String basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort();
+        String basepath = null;
+        if (dominfo.getName().contains("OpenStack") == true) {
+            basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort() + "/v1";
+        } else {
+            basepath = "http://" + dominfo.getIp() + ":" + dominfo.getPort();
+        }
         ApiClient capi = new ApiClient();
         capi.setBasePath(basepath);
         VimComputeResourcesApi api = new VimComputeResourcesApi(capi);

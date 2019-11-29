@@ -26,6 +26,7 @@ import com.mtp.extinterface.nbi.swagger.model.MECRegionInfo;
 import com.mtp.extinterface.nbi.swagger.model.NfviPopsInnerNfviPopAttributesNetworkConnectivityEndpoint;
 import com.mtp.extinterface.nbi.swagger.model.NfviPopsInnerNfviPopAttributesRadioCoverageAreas;
 import com.mtp.extinterface.nbi.swagger.model.NfviPopsInnerNfviPopAttributesResourceZoneAttributes;
+import com.mtp.extinterface.nbi.swagger.model.PNFlist;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +34,19 @@ import java.util.List;
 /**
  * NfviPopsInnerNfviPopAttributes
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class NfviPopsInnerNfviPopAttributes {
+  @SerializedName("pnflist")
+  private PNFlist pnflist = null;
+
   @SerializedName("geographicalLocationInfo")
   private String geographicalLocationInfo = null;
 
   @SerializedName("vimId")
   private String vimId = null;
+
+  @SerializedName("federatedVimId")
+  private String federatedVimId = null;
 
   @SerializedName("networkConnectivityEndpoint")
   private List<NfviPopsInnerNfviPopAttributesNetworkConnectivityEndpoint> networkConnectivityEndpoint = new ArrayList<NfviPopsInnerNfviPopAttributesNetworkConnectivityEndpoint>();
@@ -61,6 +68,24 @@ public class NfviPopsInnerNfviPopAttributes {
 
   @SerializedName("RadioCoverageAreas")
   private List<NfviPopsInnerNfviPopAttributesRadioCoverageAreas> radioCoverageAreas = null;
+
+  public NfviPopsInnerNfviPopAttributes pnflist(PNFlist pnflist) {
+    this.pnflist = pnflist;
+    return this;
+  }
+
+   /**
+   * Get pnflist
+   * @return pnflist
+  **/
+  @ApiModelProperty(required = true, value = "")
+  public PNFlist getPnflist() {
+    return pnflist;
+  }
+
+  public void setPnflist(PNFlist pnflist) {
+    this.pnflist = pnflist;
+  }
 
   public NfviPopsInnerNfviPopAttributes geographicalLocationInfo(String geographicalLocationInfo) {
     this.geographicalLocationInfo = geographicalLocationInfo;
@@ -96,6 +121,24 @@ public class NfviPopsInnerNfviPopAttributes {
 
   public void setVimId(String vimId) {
     this.vimId = vimId;
+  }
+
+  public NfviPopsInnerNfviPopAttributes federatedVimId(String federatedVimId) {
+    this.federatedVimId = federatedVimId;
+    return this;
+  }
+
+   /**
+   * Identification of the Federated VIM.
+   * @return federatedVimId
+  **/
+  @ApiModelProperty(required = true, value = "Identification of the Federated VIM.")
+  public String getFederatedVimId() {
+    return federatedVimId;
+  }
+
+  public void setFederatedVimId(String federatedVimId) {
+    this.federatedVimId = federatedVimId;
   }
 
   public NfviPopsInnerNfviPopAttributes networkConnectivityEndpoint(List<NfviPopsInnerNfviPopAttributesNetworkConnectivityEndpoint> networkConnectivityEndpoint) {
@@ -257,8 +300,10 @@ public class NfviPopsInnerNfviPopAttributes {
       return false;
     }
     NfviPopsInnerNfviPopAttributes nfviPopsInnerNfviPopAttributes = (NfviPopsInnerNfviPopAttributes) o;
-    return Objects.equals(this.geographicalLocationInfo, nfviPopsInnerNfviPopAttributes.geographicalLocationInfo) &&
+    return Objects.equals(this.pnflist, nfviPopsInnerNfviPopAttributes.pnflist) &&
+        Objects.equals(this.geographicalLocationInfo, nfviPopsInnerNfviPopAttributes.geographicalLocationInfo) &&
         Objects.equals(this.vimId, nfviPopsInnerNfviPopAttributes.vimId) &&
+        Objects.equals(this.federatedVimId, nfviPopsInnerNfviPopAttributes.federatedVimId) &&
         Objects.equals(this.networkConnectivityEndpoint, nfviPopsInnerNfviPopAttributes.networkConnectivityEndpoint) &&
         Objects.equals(this.nfviPopId, nfviPopsInnerNfviPopAttributes.nfviPopId) &&
         Objects.equals(this.resourceZoneAttributes, nfviPopsInnerNfviPopAttributes.resourceZoneAttributes) &&
@@ -270,7 +315,7 @@ public class NfviPopsInnerNfviPopAttributes {
 
   @Override
   public int hashCode() {
-    return Objects.hash(geographicalLocationInfo, vimId, networkConnectivityEndpoint, nfviPopId, resourceZoneAttributes, mecCapable, mecRegions, radioCapable, radioCoverageAreas);
+    return Objects.hash(pnflist, geographicalLocationInfo, vimId, federatedVimId, networkConnectivityEndpoint, nfviPopId, resourceZoneAttributes, mecCapable, mecRegions, radioCapable, radioCoverageAreas);
   }
 
 
@@ -279,8 +324,10 @@ public class NfviPopsInnerNfviPopAttributes {
     StringBuilder sb = new StringBuilder();
     sb.append("class NfviPopsInnerNfviPopAttributes {\n");
     
+    sb.append("    pnflist: ").append(toIndentedString(pnflist)).append("\n");
     sb.append("    geographicalLocationInfo: ").append(toIndentedString(geographicalLocationInfo)).append("\n");
     sb.append("    vimId: ").append(toIndentedString(vimId)).append("\n");
+    sb.append("    federatedVimId: ").append(toIndentedString(federatedVimId)).append("\n");
     sb.append("    networkConnectivityEndpoint: ").append(toIndentedString(networkConnectivityEndpoint)).append("\n");
     sb.append("    nfviPopId: ").append(toIndentedString(nfviPopId)).append("\n");
     sb.append("    resourceZoneAttributes: ").append(toIndentedString(resourceZoneAttributes)).append("\n");

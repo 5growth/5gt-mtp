@@ -13,6 +13,7 @@
 
 package io.swagger.client.api;
 
+import io.swagger.client.ApiException;
 import com.mtp.extinterface.nbi.swagger.model.CapacityInformation;
 import com.mtp.extinterface.nbi.swagger.model.NfviPop;
 import com.mtp.extinterface.nbi.swagger.model.OperateComputeRequest;
@@ -21,11 +22,13 @@ import com.mtp.extinterface.nbi.swagger.model.VIMAllocateComputeRequest;
 import com.mtp.extinterface.nbi.swagger.model.VIMVirtualCompute;
 import com.mtp.extinterface.nbi.swagger.model.VirtualComputeFlavour;
 import com.mtp.extinterface.nbi.swagger.model.VirtualComputeResourceInformation;
-import io.swagger.client.ApiException;
 import org.junit.Test;
 import org.junit.Ignore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * API tests for VimComputeResourcesApi

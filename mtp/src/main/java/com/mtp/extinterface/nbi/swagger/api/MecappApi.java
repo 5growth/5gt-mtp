@@ -5,16 +5,15 @@ import com.mtp.SingletonEventBus;
 import com.mtp.events.abstraction.Advertisement.AdvertiseAppDIdReply;
 import com.mtp.events.abstraction.Advertisement.AdvertiseAppDIdRequest;
 import com.mtp.events.abstraction.Advertisement.AdvertiseAppDReply;
+import com.mtp.events.abstraction.Advertisement.AdvertiseAppDRequest;
 import com.mtp.extinterface.nbi.swagger.model.AppD;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 import io.swagger.annotations.*;
-import java.util.ArrayList;
 
 import java.util.Map;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
@@ -43,10 +42,10 @@ public class MecappApi {
     })
     public void mecappOnboardAppDIdGet(@Suspended final AsyncResponse ar, @PathParam("AppDId") @ApiParam("Application package identifier.") String appDId) {
         //return Response.ok().entity("magic!").build();
-        System.out.println("terminateResources ----> terminate abstracted compute request suspended");
-        System.out.println("terminateResources ----> Calling post");
+        System.out.println("mecappOnboardAppDIdGet ----> retrieve appd ID request rsuspended");
+        System.out.println("mecappOnboardAppDIdGet ----> Calling post");
         reqid++;
-        System.out.println("terminateResources ----> reqid = " + Long.toString(reqid));
+        System.out.println("mecappOnboardAppDIdGet ----> reqid = " + Long.toString(reqid));
         suspended.put(Long.toString(reqid), ar);
         AdvertiseAppDIdRequest req = new  AdvertiseAppDIdRequest(reqid, appDId);
         SingletonEventBus.getBus().post(req);
@@ -62,11 +61,13 @@ public class MecappApi {
     })
     public void mecappOnboardGet(@Suspended final AsyncResponse ar) {
         //return Response.ok().entity("magic!").build();
-        System.out.println("terminateResources ----> terminate abstracted compute request suspended");
-        System.out.println("terminateResources ----> Calling post");
+        System.out.println("mecappOnboardGet ----> retrieve appd request suspended");
+        System.out.println("mecappOnboardGet ----> Calling post");
         reqid++;
-        System.out.println("terminateResources ----> reqid = " + Long.toString(reqid));
+        System.out.println("mecappOnboardGet ----> reqid = " + Long.toString(reqid));
         suspended.put(Long.toString(reqid), ar);
+        AdvertiseAppDRequest req = new AdvertiseAppDRequest(reqid);
+        SingletonEventBus.getBus().post(req);
     }
     
     ////////////////Guava Event Handlers////////////////////////////////////////

@@ -28,7 +28,7 @@ import java.io.IOException;
  * Type and configuration of virtualised network resources that need to be restricted by the quota, e.g. {\&quot;numPublicIps\&quot;: 20}.
  */
 @ApiModel(description = "Type and configuration of virtualised network resources that need to be restricted by the quota, e.g. {\"numPublicIps\": 20}.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class CreateNetworkResourceQuotaRequestVirtualComputeQuota {
   @SerializedName("numPorts")
   private Integer numPorts = null;

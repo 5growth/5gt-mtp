@@ -28,7 +28,7 @@ import java.io.IOException;
  * Information about network connectivity endpoints to the NFVI-PoP that the VIM manages which helps build topology information relative to NFVI-PoP connectivity to other NFVI-PoP or N-PoP.
  */
 @ApiModel(description = "Information about network connectivity endpoints to the NFVI-PoP that the VIM manages which helps build topology information relative to NFVI-PoP connectivity to other NFVI-PoP or N-PoP.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class NfviPopsInnerNfviPopAttributesNetworkConnectivityEndpoint {
   @SerializedName("netGwIpAddress")
   private String netGwIpAddress = null;

@@ -1,7 +1,6 @@
 package com.ericsson.xenplugin.nbi.swagger.model;
 
-import com.ericsson.xenplugin.nbi.swagger.model.LogicalLinkInterNfviPops;
-import com.ericsson.xenplugin.nbi.swagger.model.NfviPops;
+import com.ericsson.xenplugin.nbi.swagger.model.RadioCoverageAreaList;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -13,41 +12,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class InlineResponse2001   {
   
-  private @Valid NfviPops nfviPops = null;
-  private @Valid LogicalLinkInterNfviPops logicalLinkInterNfviPops = null;
+  private @Valid RadioCoverageAreaList regions = null;
 
   /**
    **/
-  public InlineResponse2001 nfviPops(NfviPops nfviPops) {
-    this.nfviPops = nfviPops;
+  public InlineResponse2001 regions(RadioCoverageAreaList regions) {
+    this.regions = regions;
     return this;
   }
 
   
   @ApiModelProperty(value = "")
-  @JsonProperty("NfviPops")
-  public NfviPops getNfviPops() {
-    return nfviPops;
+  @JsonProperty("Regions")
+  public RadioCoverageAreaList getRegions() {
+    return regions;
   }
-  public void setNfviPops(NfviPops nfviPops) {
-    this.nfviPops = nfviPops;
-  }
-
-  /**
-   **/
-  public InlineResponse2001 logicalLinkInterNfviPops(LogicalLinkInterNfviPops logicalLinkInterNfviPops) {
-    this.logicalLinkInterNfviPops = logicalLinkInterNfviPops;
-    return this;
-  }
-
-  
-  @ApiModelProperty(value = "")
-  @JsonProperty("logicalLinkInterNfviPops")
-  public LogicalLinkInterNfviPops getLogicalLinkInterNfviPops() {
-    return logicalLinkInterNfviPops;
-  }
-  public void setLogicalLinkInterNfviPops(LogicalLinkInterNfviPops logicalLinkInterNfviPops) {
-    this.logicalLinkInterNfviPops = logicalLinkInterNfviPops;
+  public void setRegions(RadioCoverageAreaList regions) {
+    this.regions = regions;
   }
 
 
@@ -60,13 +41,12 @@ public class InlineResponse2001   {
       return false;
     }
     InlineResponse2001 inlineResponse2001 = (InlineResponse2001) o;
-    return Objects.equals(nfviPops, inlineResponse2001.nfviPops) &&
-        Objects.equals(logicalLinkInterNfviPops, inlineResponse2001.logicalLinkInterNfviPops);
+    return Objects.equals(regions, inlineResponse2001.regions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nfviPops, logicalLinkInterNfviPops);
+    return Objects.hash(regions);
   }
 
   @Override
@@ -74,8 +54,7 @@ public class InlineResponse2001   {
     StringBuilder sb = new StringBuilder();
     sb.append("class InlineResponse2001 {\n");
     
-    sb.append("    nfviPops: ").append(toIndentedString(nfviPops)).append("\n");
-    sb.append("    logicalLinkInterNfviPops: ").append(toIndentedString(logicalLinkInterNfviPops)).append("\n");
+    sb.append("    regions: ").append(toIndentedString(regions)).append("\n");
     sb.append("}");
     return sb.toString();
   }

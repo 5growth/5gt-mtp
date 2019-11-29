@@ -1,5 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.ReservedVirtualNetworkNetworkAttributes;
+import com.ericsson.dummyplugin.nbi.swagger.model.ReservedVirtualNetworkNetworkPorts;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

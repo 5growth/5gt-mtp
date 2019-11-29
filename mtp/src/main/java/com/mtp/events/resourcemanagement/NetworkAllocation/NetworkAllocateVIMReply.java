@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class NetworkAllocateVIMReply {
 
     private long reqid;
-    private long servid; //service identifiers 
+    private String servid; //service identifiers 
     private long logicallinkid;
     //private long domid; //id of vim domain to contac
     private boolean outcome; //result of the request
@@ -21,14 +21,14 @@ public class NetworkAllocateVIMReply {
 
     public NetworkAllocateVIMReply() {
         reqid = 0;
-        servid = 0;
+        servid = "";
         outcome = false;
         errorcode = 0;
         errormsg = null;
         logicallinkid = 0;
     }
 
-    public NetworkAllocateVIMReply(long reqid, long servid, boolean outcome, int errorcode, String errormsg, ArrayList<VirtualNetwork> vimnetlist, long logicallinkid) {
+    public NetworkAllocateVIMReply(long reqid, String servid, boolean outcome, int errorcode, String errormsg, ArrayList<VirtualNetwork> vimnetlist, long logicallinkid) {
         this.reqid = reqid;
         this.servid = servid;
         this.outcome = outcome;
@@ -47,11 +47,11 @@ public class NetworkAllocateVIMReply {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

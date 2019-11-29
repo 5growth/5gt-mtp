@@ -28,7 +28,7 @@ import java.io.IOException;
  * Element containing user data to customize the virtualised compute resource at boot-time.
  */
 @ApiModel(description = "Element containing user data to customize the virtualised compute resource at boot-time.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class AllocateComputeRequestUserData {
   @SerializedName("content")
   private String content = null;

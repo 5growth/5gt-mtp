@@ -15,7 +15,7 @@ public class NetworkTerminateVIMReq {
     private long servid; //service identifiers 
     private HashMap<Integer, ArrayList<Long>> vimdomlistMap; //contains domain managing the VIM abstract resources
     private HashMap<Integer, ArrayList<Long>> interdomainLinksMap;
-    private HashMap<Integer, ArrayList<Long>> intraPopLinksMap;
+    private HashMap<Integer, ArrayList<String>> intraPopLinksMap;
     private HashMap<Integer, ArrayList<Long>> vimPopListMap;
     private HashMap<Integer, ArrayList<String>> vimNetworkTypeMap;
     private List<String> logicalPathList;
@@ -30,7 +30,7 @@ public class NetworkTerminateVIMReq {
         logicalPathList = new ArrayList();
     }
 
-    public NetworkTerminateVIMReq(long reqid, long servid, HashMap<Integer, ArrayList<Long>> vimdomlistMap, HashMap<Integer, ArrayList<Long>> interdomainLinksMap, HashMap<Integer, ArrayList<Long>> intraPopLinksMap, HashMap<Integer, ArrayList<Long>> vimPopListMap, HashMap<Integer, ArrayList<String>> vimNetworkTypeMap, List<String> logicalPathList) {
+    public NetworkTerminateVIMReq(long reqid, long servid, HashMap<Integer, ArrayList<Long>> vimdomlistMap, HashMap<Integer, ArrayList<Long>> interdomainLinksMap, HashMap<Integer, ArrayList<String>> intraPopLinksMap, HashMap<Integer, ArrayList<Long>> vimPopListMap, HashMap<Integer, ArrayList<String>> vimNetworkTypeMap, List<String> logicalPathList) {
         this.reqid = reqid;
         this.servid = servid;
         this.vimdomlistMap = vimdomlistMap;
@@ -73,11 +73,11 @@ public class NetworkTerminateVIMReq {
         this.interdomainLinksMap = interdomainLinksMap;
     }
 
-    public HashMap<Integer, ArrayList<Long>> getIntraPopLinksMap() {
+    public HashMap<Integer, ArrayList<String>> getIntraPopLinksMap() {
         return intraPopLinksMap;
     }
 
-    public void setIntraPopLinksMap(HashMap<Integer, ArrayList<Long>> intraPopLinksMap) {
+    public void setIntraPopLinksMap(HashMap<Integer, ArrayList<String>> intraPopLinksMap) {
         this.intraPopLinksMap = intraPopLinksMap;
     }
 

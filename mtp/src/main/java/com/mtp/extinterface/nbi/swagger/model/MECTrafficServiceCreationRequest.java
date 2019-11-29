@@ -71,7 +71,7 @@ public enum StatusEnum {
 
   
   @ApiModelProperty(value = "Identifier of the request, assigned by the MEC plugin at creation time.")
-  @JsonProperty("RequestId")
+  @JsonProperty("requestId")
   public String getRequestId() {
     return requestId;
   }
@@ -89,7 +89,7 @@ public enum StatusEnum {
 
   
   @ApiModelProperty(required = true, value = "Identifier of the region where the MEC app will be instantiated.")
-  @JsonProperty("RegionId")
+  @JsonProperty("regionId")
   @NotNull
   public String getRegionId() {
     return regionId;

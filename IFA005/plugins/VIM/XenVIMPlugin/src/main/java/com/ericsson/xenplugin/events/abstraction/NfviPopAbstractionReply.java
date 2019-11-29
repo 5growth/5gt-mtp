@@ -6,7 +6,8 @@
 package com.ericsson.xenplugin.events.abstraction;
 
 
-import com.mtp.extinterface.nbi.swagger.model.NfviPop;
+
+import com.ericsson.xenplugin.nbi.swagger.model.NfviPop;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -13,6 +13,7 @@
 
 package io.swagger.client.api;
 
+import io.swagger.client.ApiException;
 import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkRequest;
 import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResult;
 import com.mtp.extinterface.nbi.swagger.model.CapacityInformation;
@@ -20,20 +21,35 @@ import com.mtp.extinterface.nbi.swagger.model.Filter;
 import com.mtp.extinterface.nbi.swagger.model.NfviPop;
 import com.mtp.extinterface.nbi.swagger.model.QueryNetworkCapacityRequest;
 import com.mtp.extinterface.nbi.swagger.model.VirtualNetwork;
-import io.swagger.client.ApiException;
+import java.math.BigDecimal;
 import org.junit.Test;
 import org.junit.Ignore;
 
 import java.util.List;
 
 /**
- * API tests for VimNetworkResourcesApi
+ * API tests for VimNetworkResourcesApi1
  */
 @Ignore
 public class VimNetworkResourcesApiTest {
 
     private final VimNetworkResourcesApi api = new VimNetworkResourcesApi();
 
+    
+    /**
+     * Retrieve free vlan tag from VIM domain
+     *
+     * Retrieve free vlan tag from VIM domain
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void freeVlanTest() throws ApiException {
+        List<BigDecimal> response = api.freeVlan();
+
+        // TODO: test validations
+    }
     
     /**
      * 

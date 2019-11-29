@@ -10,37 +10,37 @@ package com.mtp.common.objects;
  * @author efabuba
  */
 public class MapResources {
-    private long popid;
-    private long zoneid;
-    private long resourceid;
+    private String popid;
+    private String zoneid;
+    private String resourceid;
     
-    public MapResources(long pid, long zid, long resid) {
+    public MapResources(String pid, String zid, String resid) {
         popid = pid;
         zoneid = zid;
         resourceid = resid;   
     }
     
-    public void setPopId(long id) {
+    public void setPopId(String id) {
         popid = id;
     }
     
-    public long getPopId() {
+    public String getPopId() {
         return popid;
     }
     
-    public void setZoneId(long id) {
+    public void setZoneId(String id) {
         zoneid = id;
     }
     
-    public long getZoneId() {
+    public String getZoneId() {
         return zoneid;
     }
     
-    public void setResourceId(long id) {
+    public void setResourceId(String id) {
         resourceid = id;
     }
     
-    public long getResourceId() {
+    public String getResourceId() {
         return resourceid;
     }
 }

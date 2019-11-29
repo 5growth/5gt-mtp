@@ -2,8 +2,8 @@ package com.ericsson.xenplugin.nbi.swagger.api;
 
 
 
-import com.mtp.extinterface.nbi.swagger.model.Filter;
-import com.mtp.extinterface.nbi.swagger.model.VirtualNetworkResourceInformation;
+import com.ericsson.xenplugin.nbi.swagger.model.Filter;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualNetworkResourceInformation;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 

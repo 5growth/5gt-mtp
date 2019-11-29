@@ -42,11 +42,11 @@ public class AllocateMECThread extends Thread  {
 
         //set appDNs and filter rules with IP address and MAC addrss from virtual compute
         for (int j = 0 ; j < request.getMecreq().getAppDNSRule().size(); j++) {
-            request.getMecreq().getAppDNSRule().get(j).setIpAddress(request.getVmreq().getVirtualNetworkInterface().get(0).getIpAddress());
+            request.getMecreq().getAppDNSRule().get(j).setIpAddress(request.getVmreq().getVirtualNetworkInterface().get(0).getIpAddress().get(0));
         }
         for (int i = 0; i < request.getMecreq().getAppTrafficRule().size(); i++) {
             for (int j = 0; j < request.getMecreq().getAppTrafficRule().get(i).getDstInterface().size(); j++) {
-                request.getMecreq().getAppTrafficRule().get(i).getDstInterface().get(j).setDstIPAddress(request.getVmreq().getVirtualNetworkInterface().get(0).getIpAddress());
+                request.getMecreq().getAppTrafficRule().get(i).getDstInterface().get(j).setDstIPAddress(request.getVmreq().getVirtualNetworkInterface().get(0).getIpAddress().get(0));
                 request.getMecreq().getAppTrafficRule().get(i).getDstInterface().get(j).setDstMACAddress(request.getVmreq().getVirtualNetworkInterface().get(0).getMacAddress());
             }
         }

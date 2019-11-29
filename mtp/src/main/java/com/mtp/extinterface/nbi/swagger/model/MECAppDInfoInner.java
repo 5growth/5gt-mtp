@@ -1,5 +1,6 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.MECAppDInfoInnerAppDAttributes;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -22,7 +23,7 @@ public class MECAppDInfoInner   {
 
   
   @ApiModelProperty(required = true, value = "")
-  @JsonProperty("AppDAttributes")
+  @JsonProperty("appDAttributes")
   @NotNull
   public MECAppDInfoInnerAppDAttributes getAppDAttributes() {
     return appDAttributes;

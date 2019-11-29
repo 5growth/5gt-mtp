@@ -1,5 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.LogicalLinkAttributes;
+import com.ericsson.dummyplugin.nbi.swagger.model.MetaData;
 import java.math.BigDecimal;
 import javax.validation.constraints.*;
 import javax.validation.Valid;

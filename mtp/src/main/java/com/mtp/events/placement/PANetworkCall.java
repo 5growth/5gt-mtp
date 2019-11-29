@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class PANetworkCall {
 
     private long reqid;
-    private long servid;
+    private String servid;
     private long logicallinkid;
     private ArrayList<CompRouteInputInterWanLinks> interWanLinks;
     private ArrayList<CompRouteInputAbsWanTopo> absWanTopo;
@@ -29,7 +29,7 @@ public class PANetworkCall {
     private String PEsrc;
     private String PEdst;
 
-    public PANetworkCall(long reqid, long servid, long logicallinkid, ArrayList<CompRouteInputInterWanLinks> interWanLinks, ArrayList<CompRouteInputAbsWanTopo> absWanTopo, CompRouteInputQosCons qosCons, ArrayList<CompRouteInputNfviPops> nfviPops, InterNfviPopConnectivityRequest networkreq, String PEsrc, String PEdst) {
+    public PANetworkCall(long reqid, String servid, long logicallinkid, ArrayList<CompRouteInputInterWanLinks> interWanLinks, ArrayList<CompRouteInputAbsWanTopo> absWanTopo, CompRouteInputQosCons qosCons, ArrayList<CompRouteInputNfviPops> nfviPops, InterNfviPopConnectivityRequest networkreq, String PEsrc, String PEdst) {
         this.reqid = reqid;
         this.servid = servid;
         this.logicallinkid = logicallinkid;
@@ -52,11 +52,11 @@ public class PANetworkCall {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

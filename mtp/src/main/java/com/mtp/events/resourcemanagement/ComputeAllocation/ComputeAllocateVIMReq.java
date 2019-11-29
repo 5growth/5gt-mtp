@@ -12,13 +12,13 @@ import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequest;
 public class ComputeAllocateVIMReq {
 
     private long reqid;
-    private long servid; //service identifiers 
+    private String servid; //service identifiers 
     private long domid; //id of vim domain to contact
     //private long computeservid;
     private AllocateComputeRequest computereq;
     private long nfvipopid;
 
-    public ComputeAllocateVIMReq(long reqid, long servid, long domid, AllocateComputeRequest computereq, long nfvipopid) {
+    public ComputeAllocateVIMReq(long reqid, String servid, long domid, AllocateComputeRequest computereq, long nfvipopid) {
         this.reqid = reqid;
         this.servid = servid;
         this.domid = domid;
@@ -36,11 +36,11 @@ public class ComputeAllocateVIMReq {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

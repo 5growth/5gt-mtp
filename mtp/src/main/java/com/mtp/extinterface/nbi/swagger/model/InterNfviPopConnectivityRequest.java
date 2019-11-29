@@ -1,5 +1,7 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.LogicalLinkPathList;
+import com.mtp.extinterface.nbi.swagger.model.MetaData;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -18,6 +20,12 @@ public class InterNfviPopConnectivityRequest   {
 
   /**
    **/
+  
+  
+  
+  
+  
+  
   public InterNfviPopConnectivityRequest logicalLinkPathList(LogicalLinkPathList logicalLinkPathList) {
     this.logicalLinkPathList = logicalLinkPathList;
     return this;

@@ -22,7 +22,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import com.mtp.extinterface.nbi.swagger.model.ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface;
+import com.mtp.extinterface.nbi.swagger.model.VIMVirtualComputeVirtualNetworkInterface;
 import com.mtp.extinterface.nbi.swagger.model.VirtualComputeVirtualCpu;
 import com.mtp.extinterface.nbi.swagger.model.VirtualComputeVirtualMemory;
 import java.io.IOException;
@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * VIMVirtualCompute
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class VIMVirtualCompute {
   @SerializedName("accelerationCapability")
   private List<String> accelerationCapability = new ArrayList<String>();
@@ -65,7 +65,7 @@ public class VIMVirtualCompute {
   private VirtualComputeVirtualMemory virtualMemory = null;
 
   @SerializedName("virtualNetworkInterface")
-  private List<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface> virtualNetworkInterface = new ArrayList<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface>();
+  private List<VIMVirtualComputeVirtualNetworkInterface> virtualNetworkInterface = new ArrayList<VIMVirtualComputeVirtualNetworkInterface>();
 
   @SerializedName("zoneId")
   private String zoneId = null;
@@ -255,12 +255,12 @@ public class VIMVirtualCompute {
     this.virtualMemory = virtualMemory;
   }
 
-  public VIMVirtualCompute virtualNetworkInterface(List<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface> virtualNetworkInterface) {
+  public VIMVirtualCompute virtualNetworkInterface(List<VIMVirtualComputeVirtualNetworkInterface> virtualNetworkInterface) {
     this.virtualNetworkInterface = virtualNetworkInterface;
     return this;
   }
 
-  public VIMVirtualCompute addVirtualNetworkInterfaceItem(ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface virtualNetworkInterfaceItem) {
+  public VIMVirtualCompute addVirtualNetworkInterfaceItem(VIMVirtualComputeVirtualNetworkInterface virtualNetworkInterfaceItem) {
     this.virtualNetworkInterface.add(virtualNetworkInterfaceItem);
     return this;
   }
@@ -270,11 +270,11 @@ public class VIMVirtualCompute {
    * @return virtualNetworkInterface
   **/
   @ApiModelProperty(required = true, value = "Element with information of the instantiated virtual network interfaces of the compute resource.")
-  public List<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface> getVirtualNetworkInterface() {
+  public List<VIMVirtualComputeVirtualNetworkInterface> getVirtualNetworkInterface() {
     return virtualNetworkInterface;
   }
 
-  public void setVirtualNetworkInterface(List<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface> virtualNetworkInterface) {
+  public void setVirtualNetworkInterface(List<VIMVirtualComputeVirtualNetworkInterface> virtualNetworkInterface) {
     this.virtualNetworkInterface = virtualNetworkInterface;
   }
 

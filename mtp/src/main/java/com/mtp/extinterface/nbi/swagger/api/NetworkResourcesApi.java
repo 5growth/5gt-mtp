@@ -13,6 +13,7 @@ import com.mtp.extinterface.nbi.swagger.model.Filter;
 import com.mtp.extinterface.nbi.swagger.model.MetaDataInner;
 import com.mtp.extinterface.nbi.swagger.model.NfviPop;
 import com.mtp.extinterface.nbi.swagger.model.QueryNetworkCapacityRequest;
+import com.mtp.extinterface.nbi.swagger.model.VLANInfo;
 import com.mtp.extinterface.nbi.swagger.model.VirtualNetwork;
 
 
@@ -44,6 +45,20 @@ public class NetworkResourcesApi {
 
     }
 
+    @GET
+    @Path("/free_vlan")
+    @Produces({ "application/json" })
+    @ApiOperation(value = "Retrieve free vlan tag from VIM domain", notes = "Retrieve free vlan tag from VIM domain", response = VLANInfo.class, responseContainer = "List", tags={ "VIMNetworkResources",  })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "The filtered information that has been retrieved. The cardinality can be 0 if no matching information exist.", response = VLANInfo.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Bad request", response = Void.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)
+    })
+    public Response freeVlan() {
+        return Response.ok().entity("magic!").build();
+    }
+    
     @GET
     @Path("/nfvi-pop-network-information")
     @Consumes({ "application/json" })
@@ -94,14 +109,14 @@ public class NetworkResourcesApi {
         System.out.println("vIMallocateNetwork ----> reqid = " + Long.toString(reqid));
         suspended.put(Long.toString(reqid), ar);
         
-        long servid = -1;
+        String servid = "";
         long nfvipop = -1;
         List<MetaDataInner> metadata = params.getMetadata();
         for (int i=0; i < metadata.size(); i++) {
             if (metadata.get(i).getKey().compareTo("ServiceId") == 0) {
-                servid = Long.parseLong(metadata.get(i).getValue());
+                servid = metadata.get(i).getValue();
             }
-            if (metadata.get(i).getKey().compareTo("AbstractNvfiPoPId") == 0) {
+            if (metadata.get(i).getKey().compareTo("AbstractNfviPoPId") == 0) {
                 nfvipop = Long.parseLong(metadata.get(i).getValue());
             }
         }         

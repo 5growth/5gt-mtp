@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AllocateNetworkResultSubnetData   {
   
-  private @Valid String addressPool = null;
+  private @Valid List<Integer> addressPool = new ArrayList<Integer>();
   private @Valid String cidr = null;
   private @Valid String gatewayIp = null;
   private @Valid String ipVersion = null;
@@ -31,7 +31,7 @@ public class AllocateNetworkResultSubnetData   {
   /**
    * Address pools for the network/subnetwork. The cardinality can be 0 when VIM is allowed to allocate all addresses in the CIDR except for the address of the network/subnetwork gateway.
    **/
-  public AllocateNetworkResultSubnetData addressPool(String addressPool) {
+  public AllocateNetworkResultSubnetData addressPool(List<Integer> addressPool) {
     this.addressPool = addressPool;
     return this;
   }
@@ -40,10 +40,10 @@ public class AllocateNetworkResultSubnetData   {
   @ApiModelProperty(required = true, value = "Address pools for the network/subnetwork. The cardinality can be 0 when VIM is allowed to allocate all addresses in the CIDR except for the address of the network/subnetwork gateway.")
   @JsonProperty("addressPool")
   @NotNull
-  public String getAddressPool() {
+  public List<Integer> getAddressPool() {
     return addressPool;
   }
-  public void setAddressPool(String addressPool) {
+  public void setAddressPool(List<Integer> addressPool) {
     this.addressPool = addressPool;
   }
 

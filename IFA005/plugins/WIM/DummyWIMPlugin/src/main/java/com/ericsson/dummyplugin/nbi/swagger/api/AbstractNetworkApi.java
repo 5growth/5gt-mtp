@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
+import org.glassfish.jersey.server.ManagedAsync;
 
 @Path("/abstract-network")
 @Api(description = "the abstract-network API")
@@ -30,6 +31,7 @@ public class AbstractNetworkApi {
     }
 
     @GET
+    @ManagedAsync
     @Produces({ "application/json" })
     @ApiOperation(value = "Retrieve aggregated WAN Connectivity", notes = "Retrieve aggregated WAN Connectivity", response = InlineResponse200.class, tags={ "WIMNetworkResources" })
     @ApiResponses(value = { 

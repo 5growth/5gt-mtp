@@ -13,7 +13,7 @@ import com.mtp.extinterface.nbi.swagger.model.VirtualCompute;
 public class ComputeAllocateDBQueryOutcome {
 
     private long reqid;
-    private long servid; //service identifiers 
+    private String servid; //service identifiers 
     private long domid; //id of vim domain to contact
     private boolean outcome; //result of the request
     private VirtualCompute computereply;
@@ -21,7 +21,7 @@ public class ComputeAllocateDBQueryOutcome {
     private long nfvipopid;
     private AllocateComputeRequest computerequest;
 
-    public ComputeAllocateDBQueryOutcome(long reqid, long servid, long domid, boolean outcome, VirtualCompute computereply, long nfvipopid, AllocateComputeRequest computerequest) {
+    public ComputeAllocateDBQueryOutcome(long reqid, String servid, long domid, boolean outcome, VirtualCompute computereply, long nfvipopid, AllocateComputeRequest computerequest) {
         this.reqid = reqid;
         this.servid = servid;
         this.domid = domid;
@@ -39,11 +39,11 @@ public class ComputeAllocateDBQueryOutcome {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

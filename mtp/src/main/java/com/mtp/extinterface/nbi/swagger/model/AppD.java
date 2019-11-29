@@ -1,5 +1,16 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.AppExternalCpd;
+import com.mtp.extinterface.nbi.swagger.model.ChangeAppInstanceStateOpConfig;
+import com.mtp.extinterface.nbi.swagger.model.DNSRuleDescriptor;
+import com.mtp.extinterface.nbi.swagger.model.LatencyDescriptor;
+import com.mtp.extinterface.nbi.swagger.model.ServiceDependency;
+import com.mtp.extinterface.nbi.swagger.model.SwImageDescriptor;
+import com.mtp.extinterface.nbi.swagger.model.TerminateAppInstanceOpConfig;
+import com.mtp.extinterface.nbi.swagger.model.TrafficRuleDescriptor;
+import com.mtp.extinterface.nbi.swagger.model.TransportDependency;
+import com.mtp.extinterface.nbi.swagger.model.VirtualComputeDescription;
+import com.mtp.extinterface.nbi.swagger.model.VirtualStorageDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

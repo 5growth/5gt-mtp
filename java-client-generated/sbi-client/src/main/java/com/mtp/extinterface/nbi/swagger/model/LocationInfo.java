@@ -29,7 +29,7 @@ import java.math.BigDecimal;
  * Geographical location info of a region, expressed as a circle centered at specific coordinates and with a specified range.
  */
 @ApiModel(description = "Geographical location info of a region, expressed as a circle centered at specific coordinates and with a specified range.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class LocationInfo {
   @SerializedName("latitude")
   private BigDecimal latitude = null;

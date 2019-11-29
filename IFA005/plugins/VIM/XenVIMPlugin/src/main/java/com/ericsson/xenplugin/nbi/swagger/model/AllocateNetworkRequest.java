@@ -1,6 +1,7 @@
 package com.ericsson.xenplugin.nbi.swagger.model;
 
 import com.ericsson.xenplugin.nbi.swagger.model.MetaDataInner;
+import com.ericsson.xenplugin.nbi.swagger.model.SubnetData;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;
@@ -23,7 +24,7 @@ public class AllocateNetworkRequest   {
   private @Valid String resourceGroupId = null;
   private @Valid String typeNetworkData = null;
   private @Valid String typeNetworkPortData = null;
-  private @Valid String typeSubnetData = null;
+  private @Valid SubnetData typeSubnetData = null;
 
   /**
    * The binary software image file.
@@ -199,7 +200,7 @@ public class AllocateNetworkRequest   {
   /**
    * The binary software image file.
    **/
-  public AllocateNetworkRequest typeSubnetData(String typeSubnetData) {
+  public AllocateNetworkRequest typeSubnetData(SubnetData typeSubnetData) {
     this.typeSubnetData = typeSubnetData;
     return this;
   }
@@ -208,10 +209,10 @@ public class AllocateNetworkRequest   {
   @ApiModelProperty(required = true, value = "The binary software image file.")
   @JsonProperty("typeSubnetData")
   @NotNull
-  public String getTypeSubnetData() {
+  public SubnetData getTypeSubnetData() {
     return typeSubnetData;
   }
-  public void setTypeSubnetData(String typeSubnetData) {
+  public void setTypeSubnetData(SubnetData typeSubnetData) {
     this.typeSubnetData = typeSubnetData;
   }
 

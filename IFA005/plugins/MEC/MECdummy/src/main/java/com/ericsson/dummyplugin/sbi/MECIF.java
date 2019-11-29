@@ -14,13 +14,11 @@ import com.ericsson.dummyplugin.events.allocate.AppdAllocateReply;
 import com.ericsson.dummyplugin.events.allocate.AppdAllocateRequest;
 import com.ericsson.dummyplugin.events.terminate.AppdTerminateReply;
 import com.ericsson.dummyplugin.events.terminate.AppdTerminateRequest;
-import com.ericsson.dummyplugin.nbi.swagger.model.AllocateReply;
 import com.ericsson.dummyplugin.nbi.swagger.model.InlineResponse200;
 import com.ericsson.dummyplugin.nbi.swagger.model.LocationInfo;
 import com.ericsson.dummyplugin.nbi.swagger.model.MECRegionInfo;
-import com.ericsson.dummyplugin.nbi.swagger.model.MECRegionInfoMECRegionInfo;
+import com.ericsson.dummyplugin.nbi.swagger.model.MECRegionInfoMecRegionInfo;
 import com.ericsson.dummyplugin.nbi.swagger.model.MECTrafficServiceCreationResponse;
-import com.ericsson.dummyplugin.nbi.swagger.model.NetworkIds;
 import com.ericsson.dummyplugin.sbi.objects.MECRegionResource;
 import com.ericsson.dummyplugin.sbi.objects.MECService;
 
@@ -102,7 +100,7 @@ public class MECIF {
                 
        for (MECRegionResource value : netreslist.values()) {
            LocationInfo locinfo = new LocationInfo();
-           MECRegionInfoMECRegionInfo regioninfo = new MECRegionInfoMECRegionInfo();
+           MECRegionInfoMecRegionInfo regioninfo = new MECRegionInfoMecRegionInfo();
            MECRegionInfo mecinfo = new MECRegionInfo();
            locinfo.setAltitude(new BigDecimal(value.getAltitude()));
            locinfo.setLatitude(new BigDecimal(value.getLatitude()));
@@ -110,7 +108,7 @@ public class MECIF {
            locinfo.setRange(new BigDecimal(value.getRange()));
            regioninfo.setLocationInfo(locinfo);
            regioninfo.setRegionId(value.getId());
-           mecinfo.setMeCRegionInfo(regioninfo);
+           mecinfo.setMecRegionInfo(regioninfo);
            mecreglist.add(mecinfo);
         }
              

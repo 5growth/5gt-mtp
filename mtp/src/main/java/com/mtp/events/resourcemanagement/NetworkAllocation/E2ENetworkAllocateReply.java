@@ -11,11 +11,11 @@ import com.mtp.extinterface.nbi.swagger.model.VirtualNetwork;
 public class E2ENetworkAllocateReply {
 
     private long reqid;
-    private long servid; //service identifiers
+    private String servid; //service identifiers
     private VirtualNetwork vn;
     private boolean outcome;
 
-    public E2ENetworkAllocateReply(long reqid, long servid, VirtualNetwork vn, boolean outcome) {
+    public E2ENetworkAllocateReply(long reqid, String servid, VirtualNetwork vn, boolean outcome) {
         this.reqid = reqid;
         this.servid = servid;
         this.vn = vn;
@@ -31,11 +31,11 @@ public class E2ENetworkAllocateReply {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

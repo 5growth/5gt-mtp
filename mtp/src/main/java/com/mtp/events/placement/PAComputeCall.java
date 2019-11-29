@@ -15,13 +15,13 @@ import com.mtp.extinterface.pa.swagger.client.model.CompRouteInputNfviPops;
  */
 public class PAComputeCall {
     private long reqid;
-    private long servid;
+    private String servid;
     private long domid;
     private long nfvipopid;
     private CompRouteInputNfviPops poplist;
     private CompRouteInputNfviPopReqs popreq;
 
-    public PAComputeCall(long reqid, long servid, long domid, long nfvipopid, CompRouteInputNfviPops poplist, CompRouteInputNfviPopReqs popreq) {
+    public PAComputeCall(long reqid, String servid, long domid, long nfvipopid, CompRouteInputNfviPops poplist, CompRouteInputNfviPopReqs popreq) {
         this.reqid = reqid;
         this.servid = servid;
         this.domid = domid;
@@ -40,11 +40,11 @@ public class PAComputeCall {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

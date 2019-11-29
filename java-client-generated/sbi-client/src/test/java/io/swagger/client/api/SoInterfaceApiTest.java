@@ -13,6 +13,7 @@
 
 package io.swagger.client.api;
 
+import io.swagger.client.ApiException;
 import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequest;
 import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkRequest;
 import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResult;
@@ -23,11 +24,13 @@ import com.mtp.extinterface.nbi.swagger.model.InterNfviPopConnectivityRequest;
 import com.mtp.extinterface.nbi.swagger.model.OperateComputeRequest;
 import com.mtp.extinterface.nbi.swagger.model.VirtualCompute;
 import com.mtp.extinterface.nbi.swagger.model.VirtualNetwork;
-import io.swagger.client.ApiException;
 import org.junit.Test;
 import org.junit.Ignore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * API tests for SoInterfaceApi
@@ -81,6 +84,21 @@ public class SoInterfaceApiTest {
     @Test
     public void collectMtpCloudNetworkResourceInformationTest() throws ApiException {
         InlineResponse2003 response = api.collectMtpCloudNetworkResourceInformation();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * Retrieve aggregated Cloud NFVI-PoP and Inter-NFVI-PoP Connectivity for Federation
+     *
+     * Retrieve aggregated Cloud NFVI-PoP and Inter-NFVI-PoP Connectivity for Federation
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void collectMtpFederatedCloudNetworkResourceInformationTest() throws ApiException {
+        InlineResponse2003 response = api.collectMtpFederatedCloudNetworkResourceInformation();
 
         // TODO: test validations
     }

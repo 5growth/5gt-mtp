@@ -1,6 +1,11 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
 import io.swagger.annotations.ApiModel;
+import com.ericsson.dummyplugin.nbi.swagger.model.CreateComputeResourceReservationRequestContainerFlavourStorageAttributes;
+import com.ericsson.dummyplugin.nbi.swagger.model.ReservedVirtualComputeVirtualisationContainerReservedFlavourId;
+import com.ericsson.dummyplugin.nbi.swagger.model.ReservedVirtualComputeVirtualisationContainerReservedVirtualCpu;
+import com.ericsson.dummyplugin.nbi.swagger.model.ReservedVirtualComputeVirtualisationContainerReservedVirtualMemory;
+import com.ericsson.dummyplugin.nbi.swagger.model.ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

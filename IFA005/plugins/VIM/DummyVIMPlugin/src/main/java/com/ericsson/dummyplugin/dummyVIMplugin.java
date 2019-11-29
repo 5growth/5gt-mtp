@@ -19,14 +19,14 @@ import com.ericsson.dummyplugin.sbi.XenIF;
 import com.google.common.eventbus.EventBus;
 import com.ericsson.dummyplugin.nbi.swagger.api.AbstractComputeOperateResourcesApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.AbstractComputeResourcesApi;
-import com.ericsson.dummyplugin.nbi.swagger.api.AbstractMecResourcesApi;
+import com.ericsson.dummyplugin.nbi.swagger.api.AbstractFederatedResourcesApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.AbstractNetworkApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.AbstractNetworkResourcesApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.AbstractRadioCoverageareaApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.AbstractResourcesApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.ComputeOperateResourcesApi;
-import com.ericsson.dummyplugin.nbi.swagger.api.InstanceApi;
 import com.ericsson.dummyplugin.nbi.swagger.api.MecappApi;
+import com.ericsson.dummyplugin.nbi.swagger.api.ServiceApi;
 //import com.mtp.abstraction.E2EAbstractionLogic;
 //import com.mtp.abstraction.ResourceSelectionLogic;
 //import com.mtp.common.DatabaseDriver;
@@ -82,7 +82,7 @@ public class dummyVIMplugin {
         //register jaxrs api
         evbus.register(new AbstractComputeOperateResourcesApi());
         evbus.register(new AbstractComputeResourcesApi());
-        evbus.register(new AbstractMecResourcesApi());
+        evbus.register(new AbstractFederatedResourcesApi());
         evbus.register(new AbstractNetworkApi());
         evbus.register(new AbstractNetworkResourcesApi());
         evbus.register(new AbstractRadioCoverageareaApi());
@@ -91,11 +91,11 @@ public class dummyVIMplugin {
         evbus.register(new ComputeResourcesApi());
         evbus.register(new HealthzApi());
         evbus.register(new InformationApi());
-        evbus.register(new InstanceApi());
         evbus.register(new MecappApi());
         evbus.register(new NetworkResourcesApi());
         evbus.register(new QuotasApi());
         evbus.register(new ReservationsApi());
+        evbus.register(new ServiceApi());
         evbus.register(new SoftwareImagesApi());
         
                 

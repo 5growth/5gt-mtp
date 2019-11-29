@@ -23,7 +23,7 @@ public class RadioCoverageAreaListInner   {
 
   
   @ApiModelProperty(required = true, value = "")
-  @JsonProperty("RadioCoverageAreaInfo")
+  @JsonProperty("radioCoverageAreaInfo")
   @NotNull
   public RadioCoverageAreaListInnerRadioCoverageAreaInfo getRadioCoverageAreaInfo() {
     return radioCoverageAreaInfo;

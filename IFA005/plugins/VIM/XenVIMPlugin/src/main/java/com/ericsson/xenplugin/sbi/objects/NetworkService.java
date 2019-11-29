@@ -12,13 +12,19 @@ package com.ericsson.xenplugin.sbi.objects;
 public class NetworkService {
     
     private String serviceid;
-    private String networktype;
-    private String segmenttype;
+    private String networkid;
+    private String subnetid;
+    private String portid;
+    private String PIFref;
+    private String VLANref;
 
-    public NetworkService(String serviceid, String networktype, String segmenttype) {
+    public NetworkService(String serviceid, String networkid, String subnetid, String portid, String PIFref, String VLANref) {
         this.serviceid = serviceid;
-        this.networktype = networktype;
-        this.segmenttype = segmenttype;
+        this.networkid = networkid;
+        this.subnetid = subnetid;
+        this.portid = portid;
+        this.PIFref = PIFref;
+        this.VLANref = VLANref;
     }
 
     public String getServiceid() {
@@ -29,21 +35,46 @@ public class NetworkService {
         this.serviceid = serviceid;
     }
 
-    public String getNetworktype() {
-        return networktype;
+    public String getNetworkid() {
+        return networkid;
     }
 
-    public void setNetworktype(String networktype) {
-        this.networktype = networktype;
+    public void setNetworkid(String networkid) {
+        this.networkid = networkid;
     }
 
-    public String getSegmenttype() {
-        return segmenttype;
+    public String getSubnetid() {
+        return subnetid;
     }
 
-    public void setSegmenttype(String segmenttype) {
-        this.segmenttype = segmenttype;
+    public void setSubnetid(String subnetid) {
+        this.subnetid = subnetid;
     }
+
+    public String getPortid() {
+        return portid;
+    }
+
+    public void setPortid(String portid) {
+        this.portid = portid;
+    }
+
+    public String getPIFref() {
+        return PIFref;
+    }
+
+    public void setPIFref(String PIFref) {
+        this.PIFref = PIFref;
+    }
+
+    public String getVLANref() {
+        return VLANref;
+    }
+
+    public void setVLANref(String VLANref) {
+        this.VLANref = VLANref;
+    }
+
 
 
 }

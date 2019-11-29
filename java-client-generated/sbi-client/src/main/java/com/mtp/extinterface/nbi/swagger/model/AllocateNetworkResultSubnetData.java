@@ -14,16 +14,9 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
 import java.util.Objects;
-import java.util.Arrays;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import com.mtp.extinterface.nbi.swagger.model.MetaDataInner;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +24,10 @@ import java.util.List;
  * If subnet types are created satisfactorily, it contains the data relative to the allocated subnet. Cardinality can be \&quot;0\&quot; if the request did not include creation of such type of resource.
  */
 @ApiModel(description = "If subnet types are created satisfactorily, it contains the data relative to the allocated subnet. Cardinality can be \"0\" if the request did not include creation of such type of resource.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class AllocateNetworkResultSubnetData {
   @SerializedName("addressPool")
-  private String addressPool = null;
+  private List<Integer> addressPool = null;
 
   @SerializedName("cidr")
   private String cidr = null;
@@ -60,7 +53,7 @@ public class AllocateNetworkResultSubnetData {
   @SerializedName("resourceId")
   private String resourceId = null;
 
-  public AllocateNetworkResultSubnetData addressPool(String addressPool) {
+  public AllocateNetworkResultSubnetData addressPool(List<Integer> addressPool) {
     this.addressPool = addressPool;
     return this;
   }
@@ -70,11 +63,11 @@ public class AllocateNetworkResultSubnetData {
    * @return addressPool
   **/
   @ApiModelProperty(required = true, value = "Address pools for the network/subnetwork. The cardinality can be 0 when VIM is allowed to allocate all addresses in the CIDR except for the address of the network/subnetwork gateway.")
-  public String getAddressPool() {
+  public List<Integer> getAddressPool() {
     return addressPool;
   }
 
-  public void setAddressPool(String addressPool) {
+  public void setAddressPool(List<Integer> addressPool) {
     this.addressPool = addressPool;
   }
 

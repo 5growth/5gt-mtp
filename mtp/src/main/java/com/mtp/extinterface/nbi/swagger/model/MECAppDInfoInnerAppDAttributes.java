@@ -11,45 +11,45 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MECAppDInfoInnerAppDAttributes   {
   
-  private @Valid String apPDInfo = null;
-  private @Valid String meCAppDId = null;
+  private @Valid String appDInfo = null;
+  private @Valid String mecAppDId = null;
 
   /**
    * It provides information about MEC APPD (TBD)
    **/
-  public MECAppDInfoInnerAppDAttributes apPDInfo(String apPDInfo) {
-    this.apPDInfo = apPDInfo;
+  public MECAppDInfoInnerAppDAttributes appDInfo(String appDInfo) {
+    this.appDInfo = appDInfo;
     return this;
   }
 
   
   @ApiModelProperty(required = true, value = "It provides information about MEC APPD (TBD)")
-  @JsonProperty("APPDInfo")
+  @JsonProperty("appDInfo")
   @NotNull
-  public String getApPDInfo() {
-    return apPDInfo;
+  public String getAppDInfo() {
+    return appDInfo;
   }
-  public void setApPDInfo(String apPDInfo) {
-    this.apPDInfo = apPDInfo;
+  public void setAppDInfo(String appDInfo) {
+    this.appDInfo = appDInfo;
   }
 
   /**
    * Identification of the MEC APPdId
    **/
-  public MECAppDInfoInnerAppDAttributes meCAppDId(String meCAppDId) {
-    this.meCAppDId = meCAppDId;
+  public MECAppDInfoInnerAppDAttributes mecAppDId(String mecAppDId) {
+    this.mecAppDId = mecAppDId;
     return this;
   }
 
   
   @ApiModelProperty(required = true, value = "Identification of the MEC APPdId")
-  @JsonProperty("MECAppDId")
+  @JsonProperty("mecAppDId")
   @NotNull
-  public String getMeCAppDId() {
-    return meCAppDId;
+  public String getMecAppDId() {
+    return mecAppDId;
   }
-  public void setMeCAppDId(String meCAppDId) {
-    this.meCAppDId = meCAppDId;
+  public void setMecAppDId(String mecAppDId) {
+    this.mecAppDId = mecAppDId;
   }
 
 
@@ -62,13 +62,13 @@ public class MECAppDInfoInnerAppDAttributes   {
       return false;
     }
     MECAppDInfoInnerAppDAttributes meCAppDInfoInnerAppDAttributes = (MECAppDInfoInnerAppDAttributes) o;
-    return Objects.equals(apPDInfo, meCAppDInfoInnerAppDAttributes.apPDInfo) &&
-        Objects.equals(meCAppDId, meCAppDInfoInnerAppDAttributes.meCAppDId);
+    return Objects.equals(appDInfo, meCAppDInfoInnerAppDAttributes.appDInfo) &&
+        Objects.equals(mecAppDId, meCAppDInfoInnerAppDAttributes.mecAppDId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(apPDInfo, meCAppDId);
+    return Objects.hash(appDInfo, mecAppDId);
   }
 
   @Override
@@ -76,8 +76,8 @@ public class MECAppDInfoInnerAppDAttributes   {
     StringBuilder sb = new StringBuilder();
     sb.append("class MECAppDInfoInnerAppDAttributes {\n");
     
-    sb.append("    apPDInfo: ").append(toIndentedString(apPDInfo)).append("\n");
-    sb.append("    meCAppDId: ").append(toIndentedString(meCAppDId)).append("\n");
+    sb.append("    appDInfo: ").append(toIndentedString(appDInfo)).append("\n");
+    sb.append("    mecAppDId: ").append(toIndentedString(mecAppDId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

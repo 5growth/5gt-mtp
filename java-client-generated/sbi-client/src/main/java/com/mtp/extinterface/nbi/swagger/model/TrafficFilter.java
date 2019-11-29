@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * TrafficFilter
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class TrafficFilter {
   @SerializedName("srcAddress")
   private List<String> srcAddress = null;
@@ -44,10 +44,10 @@ public class TrafficFilter {
   @SerializedName("dstPort")
   private List<String> dstPort = null;
 
-  @SerializedName("Protocol")
+  @SerializedName("protocol")
   private List<String> protocol = null;
 
-  @SerializedName("Token")
+  @SerializedName("token")
   private List<String> token = null;
 
   @SerializedName("srcTunnelAddress")

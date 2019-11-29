@@ -58,12 +58,17 @@ public class AllocateVIMComputeStub extends Thread {
 
         //Virtual Network Interface 1
         interface_1.setBandwidth("1000");
-        interface_1.setIpAddress("10.10.10.10");
+        //String iplist1 = new (iplist1)
+        List<String>iplist1 = new ArrayList<String>();
+        iplist1.add("10.10.10.10");
+        interface_1.setIpAddress(iplist1);
         interface_1.setMacAddress("MAC_ADD_1");
         //Virtual Network Interface 2
-        interface_1.setBandwidth("100");
-        interface_1.setIpAddress("11.11.11.11");
-        interface_1.setMacAddress("MAC_ADD_2");
+        interface_2.setBandwidth("100");
+        List<String>iplist2 = new ArrayList<String>();
+        iplist2.add("11.11.11.11");
+        interface_2.setIpAddress(iplist2);
+        interface_2.setMacAddress("MAC_ADD_2");
 
         virtualNetworkInterface.add(interface_1);
         virtualNetworkInterface.add(interface_2);

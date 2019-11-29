@@ -26,7 +26,7 @@ public class VirtualNetwork   {
   private @Valid String operationalState = null;
   private @Valid String segmentType = null;
   private @Valid String sharingCriteria = null;
-  private @Valid String subnet = null;
+  private @Valid List<String> subnet = new ArrayList<String>();
   private @Valid String zoneId = null;
 
   /**
@@ -222,7 +222,7 @@ public class VirtualNetwork   {
   /**
    * Only present if the network provides layer 3 connectivity.
    **/
-  public VirtualNetwork subnet(String subnet) {
+  public VirtualNetwork subnet(List<String> subnet) {
     this.subnet = subnet;
     return this;
   }
@@ -231,10 +231,10 @@ public class VirtualNetwork   {
   @ApiModelProperty(required = true, value = "Only present if the network provides layer 3 connectivity.")
   @JsonProperty("subnet")
   @NotNull
-  public String getSubnet() {
+  public List<String> getSubnet() {
     return subnet;
   }
-  public void setSubnet(String subnet) {
+  public void setSubnet(List<String> subnet) {
     this.subnet = subnet;
   }
 

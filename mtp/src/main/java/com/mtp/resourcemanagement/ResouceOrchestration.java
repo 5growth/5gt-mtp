@@ -7,6 +7,8 @@ package com.mtp.resourcemanagement;
 
 import com.google.common.eventbus.Subscribe;
 import com.mtp.SingletonEventBus;
+import com.mtp.common.objects.PendingFedNetworkAllocateRequest;
+import com.mtp.common.objects.PendingFedNetworkTerminateRequest;
 import com.mtp.common.objects.PendingNetworkAllocateRequest;
 import com.mtp.common.objects.PendingNetworkTerminateRequest;
 import com.mtp.events.resourcemanagement.ComputeAllocation.ComputeAllocateDBQueryOutcome;
@@ -18,18 +20,31 @@ import com.mtp.events.resourcemanagement.ComputeTermination.ComputeTerminateVIMR
 import com.mtp.events.resourcemanagement.ComputeTermination.ComputeTerminateVIMReq;
 import com.mtp.events.resourcemanagement.ComputeTermination.E2EComputeTerminateInstance;
 import com.mtp.events.resourcemanagement.NetworkAllocation.E2ENetworkAllocateInstance;
+import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_E2ENetworkAllocateInstance;
+import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_NetworkAllocateDBQueryOutcome;
+import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_NetworkAllocateVIMReply;
+//import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_NetworkAllocateVIMReq;
+import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_NetworkAllocateWIMReply;
+import com.mtp.events.resourcemanagement.NetworkAllocation.Fed_NetworkAllocateWIMReq;
 import com.mtp.events.resourcemanagement.NetworkAllocation.NetworkAllocateDBQueryOutcome;
 import com.mtp.events.resourcemanagement.NetworkAllocation.NetworkAllocateVIMReply;
 import com.mtp.events.resourcemanagement.NetworkAllocation.NetworkAllocateVIMReq;
 import com.mtp.events.resourcemanagement.NetworkAllocation.NetworkAllocateWIMReply;
 import com.mtp.events.resourcemanagement.NetworkAllocation.NetworkAllocateWIMReq;
+import com.mtp.events.resourcemanagement.NetworkAllocation.VIMVLANReply;
+import com.mtp.events.resourcemanagement.NetworkAllocation.VIMVLANRequest;
 import com.mtp.events.resourcemanagement.NetworkTermination.E2ENetworkTerminateInstance;
+import com.mtp.events.resourcemanagement.NetworkTermination.Fed_E2ENetworkTerminateInstance;
+import com.mtp.events.resourcemanagement.NetworkTermination.Fed_NetworkTerminateDBQueryOutcome;
+import com.mtp.events.resourcemanagement.NetworkTermination.Fed_NetworkTerminateWIMReply;
+import com.mtp.events.resourcemanagement.NetworkTermination.Fed_NetworkTerminateWIMReq;
 import com.mtp.events.resourcemanagement.NetworkTermination.NetworkTerminateDBQueryOutcome;
 import com.mtp.events.resourcemanagement.NetworkTermination.NetworkTerminateVIMReply;
 import com.mtp.events.resourcemanagement.NetworkTermination.NetworkTerminateVIMReq;
 import com.mtp.events.resourcemanagement.NetworkTermination.NetworkTerminateWIMReply;
 import com.mtp.events.resourcemanagement.NetworkTermination.NetworkTerminateWIMReq;
 import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -40,15 +55,24 @@ public class ResouceOrchestration {
 
     private HashMap<Long, PendingNetworkAllocateRequest> pendingNetAllocReq;
     private HashMap<Long, PendingNetworkTerminateRequest> pendingNetTermReq;
+    private HashMap<Integer, PendingFedNetworkAllocateRequest> pendingFedNetAllocReq;
+     private HashMap<Long, PendingFedNetworkTerminateRequest> pendingFedNetTermReq;
+     private Integer pendingFedNetAllocReqId;
+     
+     
+     
 
     public ResouceOrchestration() {
         pendingNetAllocReq = new HashMap();
         pendingNetTermReq = new HashMap();
+        pendingFedNetAllocReq = new HashMap();
+         pendingFedNetTermReq = new HashMap();
+         pendingFedNetAllocReqId = 0;
     }
 
     @Subscribe
     public void handle_E2EComputeAllocateInstance(E2EComputeAllocateInstance allinst) {
-        System.out.println("ResouceOrchestration --> Handle ComputeAllocateDBQuery Event");
+        System.out.println("ResouceOrchestration --> Handle E2EComputeAllocateInstance Event");
         //TODO: orchestrate allocate operation
 
         //Get the AllocateComputeRequest instance and put it inside ComputeAllocateVIMReq
@@ -120,28 +144,66 @@ public class ResouceOrchestration {
 
     }
     
-
+    @Subscribe
+    public void handle_VIMVLANReply(VIMVLANReply vlanrep) {
+        System.out.println("ResouceOrchestration --> Handle VIMVLANReply Event");
+        //retrieve request from pendingreq
+        PendingNetworkAllocateRequest pendingel = pendingNetAllocReq.get(vlanrep.getLogicalLinkId());
+        if (pendingel == null) {
+            System.out.println("ResouceOrchestration --> No pending request found with key= " + vlanrep.getLogicalLinkId());
+            //TODO: Send API response
+            return;
+        }
+        pendingel.setVlanlist(vlanrep.getVlans());
+        NetworkAllocateWIMReq allwimreq = new NetworkAllocateWIMReq(pendingel.getReqid(),
+                pendingel.getServid(), pendingel.getLogicalLinkId(), pendingel.getNetworkRequest(), pendingel.getWimdomlist(),
+                pendingel.getInterdomainLinks(), pendingel.getWanLinks(), pendingel.getWimPopList(),
+                pendingel.getWimNetworkType(), vlanrep.getVlans(), new ArrayList<String>());
+        System.out.println("ResouceOrchestration --> Post NetworkAllocateWIMReq Event");
+        SingletonEventBus.getBus().post(allwimreq);
+    }
 
     @Subscribe
     public void handle_E2ENetworkAllocateInstance(E2ENetworkAllocateInstance allinst) {
-        System.out.println("ResouceOrchestration --> Handle ComputeAllocateDBQuery Event");
+        System.out.println("ResouceOrchestration --> Handle E2ENetworkAllocateInstance Event");
 //        NetworkAllocateWIMReq allwimreq = new NetworkAllocateWIMReq(allinst.getReqId(),
 //                allinst.getServId(), 3,
 //                new AllocateParameters());
 
+        PendingNetworkAllocateRequest pendingRequest = new PendingNetworkAllocateRequest(allinst.getReqid(), allinst.getServid(), allinst.getLogicalPathId(),
+                allinst.getNetworkRequest(), allinst.getWimdomlist(), allinst.getVimdomlist(),
+                allinst.getInterdomainLinks(), allinst.getIntraPopLinks(), allinst.getWanLinks(),
+                allinst.getWimPopList(), allinst.getVimPopList(), allinst.getWimNetworkType(), allinst.getVimNetworkType(), new ArrayList<Long>());
+
+        pendingNetAllocReq.put(allinst.getLogicalPathId(), pendingRequest);
+        
+        if (allinst.getNetworkRequest().getNetworkLayer().compareTo("VLAN") ==0) {
+            //select VLAN event
+            VIMVLANRequest vlanreq = new VIMVLANRequest(allinst.getLogicalPathId(), allinst.getNetworkRequest(), allinst.getVimdomlist(), allinst.getIntraPopLinks());
+            SingletonEventBus.getBus().post(vlanreq);
+            return;
+        } else if (allinst.getNetworkRequest().getNetworkLayer().compareTo("VXLAN") ==0) {
+            ArrayList<String> ips = new ArrayList<String>();
+            //retrieve ip list ans put in array
+            for (int i = 0; i < allinst.getIntraPopLinks().size(); i++) {
+                String intrapopval = allinst.getIntraPopLinks().get(i);
+                String[] vals = intrapopval.split(";");
+                ips.add(vals[2]);
+            }
+            NetworkAllocateWIMReq allwimreq = new NetworkAllocateWIMReq(allinst.getReqid(),
+                allinst.getServid(), allinst.getLogicalPathId(), allinst.getNetworkRequest(), allinst.getWimdomlist(),
+                allinst.getInterdomainLinks(), allinst.getWanLinks(), allinst.getWimPopList(),
+                allinst.getWimNetworkType(), new ArrayList<Long>(), ips);
+            SingletonEventBus.getBus().post(allwimreq);
+            return;
+        }
+        //default case
         NetworkAllocateWIMReq allwimreq = new NetworkAllocateWIMReq(allinst.getReqid(),
                 allinst.getServid(), allinst.getLogicalPathId(), allinst.getNetworkRequest(), allinst.getWimdomlist(),
                 allinst.getInterdomainLinks(), allinst.getWanLinks(), allinst.getWimPopList(),
-                allinst.getWimNetworkType());
+                allinst.getWimNetworkType(), new ArrayList<Long>(), new ArrayList<String>());
 
         System.out.println("ResouceOrchestration --> Post NetworkAllocateWIMReq Event");
-
-        PendingNetworkAllocateRequest pendingRequest = new PendingNetworkAllocateRequest(allinst.getReqid(), allinst.getServid(), allinst.getLogicalPathId(),
-                allinst.getNetworkRequest(), allinst.getWimdomlist(), allinst.getVimdomlist(),
-                allinst.getInterdomainLinks(), allinst.getIntraPopLinks(), allwimreq.getWanLinks(),
-                allinst.getWimPopList(), allinst.getVimPopList(), allinst.getWimNetworkType(), allinst.getVimNetworkType());
-
-        pendingNetAllocReq.put(allwimreq.getLogicalPathId(), pendingRequest);
 
         SingletonEventBus.getBus().post(allwimreq);
     }
@@ -152,7 +214,7 @@ public class ResouceOrchestration {
         //retrieve request from pendingreq
         PendingNetworkAllocateRequest pendingel = pendingNetAllocReq.get(allwimrep.getLogicallinkid());
         if (pendingel == null) {
-            System.out.println("ResouceOrchestration --> No pending request found with key= " + allwimrep.getReqid());
+            System.out.println("ResouceOrchestration --> No pending request found with key= " + allwimrep.getLogicallinkid());
             //TODO: Send API response
             return;
         }
@@ -161,7 +223,8 @@ public class ResouceOrchestration {
 
             NetworkAllocateVIMReq allvimreq = new NetworkAllocateVIMReq(pendingel.getReqid(), pendingel.getServid(),
                     pendingel.getLogicalLinkId(), pendingel.getNetworkRequest(), pendingel.getVimdomlist(), pendingel.getInterdomainLinks(),
-                    pendingel.getIntraPopLinks(), pendingel.getVimPopList(), pendingel.getVimNetworkType(), allwimrep.getWimnetlist());
+                    pendingel.getIntraPopLinks(), pendingel.getVimPopList(), pendingel.getVimNetworkType(), allwimrep.getWimnetlist(),
+                    pendingel.getVlanlist());
 
             System.out.println("ResouceOrchestration --> Post NetworkAllocateVIMReq Event");
             SingletonEventBus.getBus().post(allvimreq);
@@ -366,4 +429,207 @@ public class ResouceOrchestration {
         SingletonEventBus.getBus().post(allwimreq);
 
     }
+    
+  @Subscribe
+    public void handle_Fed_E2ENetworkAllocateInstance(Fed_E2ENetworkAllocateInstance allinst) {
+        System.out.println("ResouceOrchestration --> Handle Fed_NetworkAllocateWIMReq Event");
+//        NetworkAllocateWIMReq allwimreq = new NetworkAllocateWIMReq(allinst.getReqId(),
+//                allinst.getServId(), 3,
+//                new AllocateParameters());
+
+        PendingFedNetworkAllocateRequest pendingRequest = new PendingFedNetworkAllocateRequest(allinst.getReqid(), allinst.getServid(), allinst.getLogicalPathId(),
+                allinst.getNetworkRequest(), allinst.getWimdomlist(), allinst.getVimdomlist(),
+                allinst.getInterdomainLinks(), allinst.getIntraPopLinks(),  allinst.getWanLinks(),
+                allinst.getWimPopList(), allinst.getVimPopList(), allinst.getWimNetworkType(), allinst.getVimNetworkType(), allinst.getFlowRuleEndPointList(), allinst.isAbstrSrcNfviPopOfLogicalPathIsFed());
+
+        
+         pendingFedNetAllocReqId++;
+         
+        
+        //pendingFedNetAllocReq.put(allinst.getLogicalPathId(), pendingRequest);
+          pendingFedNetAllocReq.put(pendingFedNetAllocReqId, pendingRequest);
+        
+        
+        
+        
+        Fed_NetworkAllocateWIMReq allwimreq = new Fed_NetworkAllocateWIMReq(allinst.getReqid(),
+                allinst.getServid(), allinst.getLogicalPathId(), allinst.getNetworkRequest(), allinst.getWimdomlist(),
+                allinst.getInterdomainLinks(), allinst.getIntraPopLinks(), allinst.getWanLinks(), allinst.getWimPopList(),
+                allinst.getWimNetworkType(), allinst.getFlowRuleEndPointList(), allinst.isAbstrSrcNfviPopOfLogicalPathIsFed(),pendingFedNetAllocReqId);
+
+        System.out.println("ResouceOrchestration --> Post Fed_NetworkAllocateWIMReq Event");
+
+        SingletonEventBus.getBus().post(allwimreq);
+    }
+
+ @Subscribe
+    public void handle_Fed_NetworkAllocateWIMReply(Fed_NetworkAllocateWIMReply allwimrep) {
+        System.out.println("ResouceOrchestration --> Handle Fed_NetworkAllocateWIMReply Event");
+        //retrieve request from pendingreq
+        PendingFedNetworkAllocateRequest pendingel = pendingFedNetAllocReq.get(allwimrep.getPendingFedNetAllocReqId());
+//        if (pendingel == null) {
+//            System.out.println("ResouceOrchestration --> No pending request found with key= " + allwimrep.getLogicallinkid());
+//            //TODO: Send API response
+//            return;
+//        }
+//        if (allwimrep.isOutcome()) {
+//            pendingel.setWimnetlist(allwimrep.getWimnetlist());
+//
+//            Fed_NetworkAllocateVIMReq allvimreq = new Fed_NetworkAllocateVIMReq(pendingel.getReqid(), pendingel.getServid(),
+//                    pendingel.getLogicalLinkId(), pendingel.getNetworkRequest(), pendingel.getVimdomlist(), pendingel.getInterdomainLinks(),
+//                    pendingel.getIntraPopLinks(), pendingel.getVimPopList(), pendingel.getVimNetworkType(), allwimrep.getWimnetlist(),
+//                    pendingel.getVlanlist());
+//
+//            System.out.println("ResouceOrchestration --> Post NetworkAllocateVIMReq Event");
+//            SingletonEventBus.getBus().post(allvimreq);
+//        } else {
+//
+//            Fed_NetworkAllocateDBQueryOutcome dbres = new Fed_NetworkAllocateDBQueryOutcome(pendingel.getReqid(), pendingel.getServid(),
+//                    false, pendingel.getLogicalLinkId(), pendingel.getNetworkRequest(), pendingel.getWimdomlist(), pendingel.getVimdomlist(), pendingel.getInterdomainLinks(),
+//                    pendingel.getIntraPopLinks(), pendingel.getWanLinks(), pendingel.getWimPopList(), pendingel.getVimPopList(),
+//                    pendingel.getWimNetworkType(), pendingel.getVimNetworkType(), null, null);
+//          
+//
+//            //remove request from pending
+//            pendingFedNetAllocReq.remove(allwimrep.getLogicallinkid());
+//        }
+
+
+// Fed_NetworkAllocateDBQueryOutcome dbres = new Fed_NetworkAllocateDBQueryOutcome(pendingel.getReqid(), pendingel.getServid(),
+//                  allwimrep.isOutcome(), pendingel.getLogicalLinkId(), pendingel.getNetworkRequest(), pendingel.getWimdomlist(), pendingel.getVimdomlist(), pendingel.getInterdomainLinks(),
+//                   pendingel.getIntraPopLinks(), pendingel.getWanLinks(), pendingel.getWimPopList(), pendingel.getVimPopList(),
+//                    pendingel.getWimNetworkType(), pendingel.getVimNetworkType(), allwimrep.getWimnetlist());
+       
+  Fed_NetworkAllocateDBQueryOutcome dbres = new Fed_NetworkAllocateDBQueryOutcome(pendingel.getReqid(), pendingel.getServid(),
+                  allwimrep.isOutcome(), pendingel.getLogicalLinkId(), pendingel.getNetworkRequest(), pendingel.getWimdomlist(), 
+          pendingel.getInterdomainLinks(), pendingel.getWanLinks(), pendingel.getWimPopList(),
+                    pendingel.getWimNetworkType(),pendingel.isAbstrSrcNfviPopOfLogicalPathIsFed(), allwimrep.getWimnetlist());
+ 
+
+ 
+           //remove request from pending
+            pendingFedNetAllocReq.remove(allwimrep.getPendingFedNetAllocReqId());
+ System.out.println("ResouceOrchestration --> Post Fed_NetworkAllocateDBQueryOutcom Event");
+         SingletonEventBus.getBus().post(dbres );
+
+    }
+    
+    
+     @Subscribe
+    public void handle_Fed_E2ENetworkTerminateInstance(Fed_E2ENetworkTerminateInstance allinst) {
+        System.out.println("ResouceOrchestration --> Handle E2ENetworkTerminateInstance Event");
+        //TODO: orchestrate terminate operation
+
+        PendingFedNetworkTerminateRequest pendingReq = new PendingFedNetworkTerminateRequest(allinst.getReqid(), allinst.getServid(),
+                allinst.getWimdomlistMap(), allinst.getVimdomlistMap(), allinst.getInterdomainLinksMap(), allinst.getFed_interdomainLinksMap(),
+                allinst.getIntraPopLinksMap(), allinst.getWanLinksMap(), allinst.getWimPopListMap(), allinst.getVimPopListMap(),
+                allinst.getWimNetworkTypeMap(), allinst.getVimNetworkTypeMap(), allinst.getWanResourceIdListMap(), allinst.getNetServIdList(), allinst.getLocicalPathList());
+        pendingFedNetTermReq.put(allinst.getReqid(), pendingReq);
+        
+        
+
+//        NetworkTerminateVIMReq allvimreq = new NetworkTerminateVIMReq(allinst.getReqid(),
+//                allinst.getServid(), allinst.getVimdomlistMap(), allinst.getInterdomainLinksMap(),
+//                allinst.getIntraPopLinksMap(), allinst.getVimPopListMap(), allinst.getVimNetworkTypeMap(), allinst.getLocicalPathList());
+
+        
+
+ Fed_NetworkTerminateWIMReq allwimreq = new Fed_NetworkTerminateWIMReq(allinst.getReqid(),
+                allinst.getServid(), allinst.getWimdomlistMap(), allinst.getInterdomainLinksMap(), allinst.getWanLinksMap(),
+                allinst.getWimPopListMap(), allinst.getWimNetworkTypeMap(), allinst.getWanResourceIdListMap());
+
+
+
+        //System.out.println("ResouceOrchestration --> Post NetworkTerminateVIMReq Event");
+        //SingletonEventBus.getBus().post(allvimreq);
+         System.out.println("ResouceOrchestration --> Post Fed_NetworkTerminateWIMReq Event");
+         SingletonEventBus.getBus().post(allwimreq);
+    }
+    
+    
+    
+//    @Subscribe
+//    public void handle_Fed_NetworkAllocateVIMReply(Fed_NetworkAllocateVIMReply allvimrep) {
+//        System.out.println("ResouceOrchestration --> Handle handle_NetworkAllocateVIMReply Event");
+//        PendingNetworkAllocateRequest pendingel = pendingFedNetAllocReq.get(allvimrep.getLogicallinkid());
+//        if (pendingel == null) {
+//            System.out.println("ResouceOrchestration --> No pending request found with key= " + allvimrep.getReqid());
+//            //TODO: Send API response
+//            return;
+//        }
+//
+//        Fed_NetworkAllocateDBQueryOutcome dbres = new Fed_NetworkAllocateDBQueryOutcome(pendingel.getReqid(), pendingel.getServid(),
+//                allvimrep.isOutcome(), pendingel.getLogicalLinkId(), pendingel.getNetworkRequest(), pendingel.getWimdomlist(), pendingel.getVimdomlist(), pendingel.getInterdomainLinks(),
+//                pendingel.getIntraPopLinks(), pendingel.getWanLinks(), pendingel.getWimPopList(), pendingel.getVimPopList(),
+//                pendingel.getWimNetworkType(), pendingel.getVimNetworkType(), pendingel.getWimnetlist(), allvimrep.getVimnetlist());
+//        
+//
+//
+////remove request from pending
+//        pendingFedNetAllocReq.remove(allvimrep.getLogicallinkid());
+//        
+//         System.out.println("ResouceOrchestration --> Post NetworkAllocateDBQueryOutcome Event");
+//        SingletonEventBus.getBus().post(dbres);
+//        
+//        
+//
+//    }
+ 
+    
+  @Subscribe
+    public void handle_Fed_NetworkTerminateWIMReply(Fed_NetworkTerminateWIMReply allwimrep) {
+        System.out.println("ResouceOrchestration --> Handle NetworkTerminateWIMReply Event");
+
+        PendingFedNetworkTerminateRequest pendingel = pendingFedNetTermReq.get(allwimrep.getReqid());
+        if (pendingel == null) {
+            System.out.println("ResouceOrchestration --> No pending request found with key= " + allwimrep.getReqid());
+            //TODO: Send API response
+            return;
+        }
+
+        for (int i = 0; i < pendingel.getLocicalLinkList().size(); i++) {
+            boolean fail = false;
+            for (int j = 0; (fail == false) && (j < pendingel.getLocicalLinkList().size()); j++) {
+
+                fail = allwimrep.getOutcomeListMap().get(i).get(j);
+
+            }
+            if (fail == false) {
+                pendingel.getLocicalLinkList().remove(i);
+                pendingel.getInterdomainLinksMap().remove(i);
+                pendingel.getIntraPopLinksMap().remove(i);
+                pendingel.getIntraPopLinksMap().remove(i);
+                pendingel.getVimNetworkTypeMap().remove(i);
+                pendingel.getVimPopListMap().remove(i);
+                pendingel.getVimdomlistMap().remove(i);
+                pendingel.getWanLinksMap().remove(i);
+                pendingel.getWimNetworkTypeMap().remove(i);
+                pendingel.getWimPopListMap().remove(i);
+                pendingel.getWimdomlistMap().remove(i);
+                pendingel.getNetServIdList().remove(i);
+            }
+
+        }
+
+   
+        
+         Fed_NetworkTerminateDBQueryOutcome dboutcome = new Fed_NetworkTerminateDBQueryOutcome(pendingel.getReqid(), pendingel.getServid(), 
+         pendingel.getWimdomlistMap(), pendingel.getVimdomlistMap(), pendingel.getInterdomainLinksMap(), pendingel.getFed_interdomainLinksMap(), pendingel.getIntraPopLinksMap(), 
+         pendingel.getWanLinksMap(), pendingel.getWimPopListMap(), pendingel.getVimPopListMap(), pendingel.getWimNetworkTypeMap(), 
+         pendingel.getVimNetworkTypeMap(),pendingel.getWanResourceIdListMap() , pendingel.getNetServIdList(), pendingel.getLocicalLinkList());
+        System.out.println("ResouceOrchestration --> Post NetworkTerminateDBQueryOutcome Event");
+        SingletonEventBus.getBus().post(dboutcome);
+
+        
+        
+        
+        //MOVE BELOW EVENT INSIDE DATABASEDRIVER handle_NetworkTerminateDbQueryOutcome
+//        E2ENetworkTerminateInstanceOutcome allinstout = new E2ENetworkTerminateInstanceOutcome(allwimrep.getReqid(),
+//                allwimrep.getServid(), new VIMAbstractElem(), allwimrep.getOutcome());
+//         E2ENetworkTerminateInstanceOutcome allinstout = new E2ENetworkTerminateInstanceOutcome();
+//        System.out.println("ResouceOrchestration --> Post E2ENetworkAllocateInstanceOutcome Event");
+//        SingletonEventBus.getBus().post(allinstout);
+    }    
+    
+    
 }

@@ -14,21 +14,15 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
 import java.util.Objects;
-import java.util.Arrays;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import com.mtp.extinterface.nbi.swagger.model.MetaData;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SubnetData
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class SubnetData {
   @SerializedName("resourceId")
   private String resourceId = null;
@@ -49,7 +43,7 @@ public class SubnetData {
   private Boolean isDhcpEnabled = null;
 
   @SerializedName("addressPool")
-  private String addressPool = null;
+  private List<Integer> addressPool = new ArrayList<Integer>();;
 
   @SerializedName("metadata")
   private MetaData metadata = null;
@@ -162,21 +156,21 @@ public class SubnetData {
     this.isDhcpEnabled = isDhcpEnabled;
   }
 
-  public SubnetData addressPool(String addressPool) {
+  public SubnetData addressPool(List<Integer> addressPool) {
     this.addressPool = addressPool;
     return this;
   }
 
    /**
-   * Address Pool of the subnetwork Resource
+   * Get addressPool
    * @return addressPool
   **/
-  @ApiModelProperty(required = true, value = "Address Pool of the subnetwork Resource")
-  public String getAddressPool() {
+  @ApiModelProperty(required = true, value = "")
+  public List<Integer> getAddressPool() {
     return addressPool;
   }
 
-  public void setAddressPool(String addressPool) {
+  public void setAddressPool(List<Integer> addressPool) {
     this.addressPool = addressPool;
   }
 

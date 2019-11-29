@@ -1,6 +1,6 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
-import com.ericsson.dummyplugin.nbi.swagger.model.ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface;
+import com.ericsson.dummyplugin.nbi.swagger.model.VIMVirtualComputeVirtualNetworkInterface;
 import com.ericsson.dummyplugin.nbi.swagger.model.VirtualComputeVirtualCpu;
 import com.ericsson.dummyplugin.nbi.swagger.model.VirtualComputeVirtualMemory;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class VIMVirtualCompute   {
   private @Valid VirtualComputeVirtualCpu virtualCpu = null;
   private @Valid String virtualDisks = null;
   private @Valid VirtualComputeVirtualMemory virtualMemory = null;
-  private @Valid List<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface> virtualNetworkInterface = new ArrayList<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface>();
+  private @Valid List<VIMVirtualComputeVirtualNetworkInterface> virtualNetworkInterface = new ArrayList<VIMVirtualComputeVirtualNetworkInterface>();
   private @Valid String zoneId = null;
 
   /**
@@ -220,7 +220,7 @@ public class VIMVirtualCompute   {
   /**
    * Element with information of the instantiated virtual network interfaces of the compute resource.
    **/
-  public VIMVirtualCompute virtualNetworkInterface(List<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface> virtualNetworkInterface) {
+  public VIMVirtualCompute virtualNetworkInterface(List<VIMVirtualComputeVirtualNetworkInterface> virtualNetworkInterface) {
     this.virtualNetworkInterface = virtualNetworkInterface;
     return this;
   }
@@ -229,10 +229,10 @@ public class VIMVirtualCompute   {
   @ApiModelProperty(required = true, value = "Element with information of the instantiated virtual network interfaces of the compute resource.")
   @JsonProperty("virtualNetworkInterface")
   @NotNull
-  public List<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface> getVirtualNetworkInterface() {
+  public List<VIMVirtualComputeVirtualNetworkInterface> getVirtualNetworkInterface() {
     return virtualNetworkInterface;
   }
-  public void setVirtualNetworkInterface(List<ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface> virtualNetworkInterface) {
+  public void setVirtualNetworkInterface(List<VIMVirtualComputeVirtualNetworkInterface> virtualNetworkInterface) {
     this.virtualNetworkInterface = virtualNetworkInterface;
   }
 

@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * AllocateComputeRequest
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class AllocateComputeRequest {
   @SerializedName("affinityOrAntiAffinityConstraints")
   private List<AllocateComputeRequestAffinityOrAntiAffinityConstraints> affinityOrAntiAffinityConstraints = new ArrayList<AllocateComputeRequestAffinityOrAntiAffinityConstraints>();
@@ -65,8 +65,8 @@ public class AllocateComputeRequest {
   @SerializedName("vcImageId")
   private String vcImageId = null;
 
-  @SerializedName("MECAppDId")
-  private String meCAppDId = null;
+  @SerializedName("mecAppDId")
+  private String mecAppDId = null;
 
   public AllocateComputeRequest affinityOrAntiAffinityConstraints(List<AllocateComputeRequestAffinityOrAntiAffinityConstraints> affinityOrAntiAffinityConstraints) {
     this.affinityOrAntiAffinityConstraints = affinityOrAntiAffinityConstraints;
@@ -263,22 +263,22 @@ public class AllocateComputeRequest {
     this.vcImageId = vcImageId;
   }
 
-  public AllocateComputeRequest meCAppDId(String meCAppDId) {
-    this.meCAppDId = meCAppDId;
+  public AllocateComputeRequest mecAppDId(String mecAppDId) {
+    this.mecAppDId = mecAppDId;
     return this;
   }
 
    /**
    * Identifier of the MEC AppD reference identifier. Cardinality can be 0 if an VM is not allocated for a MEC application. 
-   * @return meCAppDId
+   * @return mecAppDId
   **/
   @ApiModelProperty(required = true, value = "Identifier of the MEC AppD reference identifier. Cardinality can be 0 if an VM is not allocated for a MEC application. ")
-  public String getMeCAppDId() {
-    return meCAppDId;
+  public String getMecAppDId() {
+    return mecAppDId;
   }
 
-  public void setMeCAppDId(String meCAppDId) {
-    this.meCAppDId = meCAppDId;
+  public void setMecAppDId(String mecAppDId) {
+    this.mecAppDId = mecAppDId;
   }
 
 
@@ -301,12 +301,12 @@ public class AllocateComputeRequest {
         Objects.equals(this.resourceGroupId, allocateComputeRequest.resourceGroupId) &&
         Objects.equals(this.userData, allocateComputeRequest.userData) &&
         Objects.equals(this.vcImageId, allocateComputeRequest.vcImageId) &&
-        Objects.equals(this.meCAppDId, allocateComputeRequest.meCAppDId);
+        Objects.equals(this.mecAppDId, allocateComputeRequest.mecAppDId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(affinityOrAntiAffinityConstraints, computeFlavourId, computeName, interfaceData, locationConstraints, metadata, reservationId, resourceGroupId, userData, vcImageId, meCAppDId);
+    return Objects.hash(affinityOrAntiAffinityConstraints, computeFlavourId, computeName, interfaceData, locationConstraints, metadata, reservationId, resourceGroupId, userData, vcImageId, mecAppDId);
   }
 
 
@@ -325,7 +325,7 @@ public class AllocateComputeRequest {
     sb.append("    resourceGroupId: ").append(toIndentedString(resourceGroupId)).append("\n");
     sb.append("    userData: ").append(toIndentedString(userData)).append("\n");
     sb.append("    vcImageId: ").append(toIndentedString(vcImageId)).append("\n");
-    sb.append("    meCAppDId: ").append(toIndentedString(meCAppDId)).append("\n");
+    sb.append("    mecAppDId: ").append(toIndentedString(mecAppDId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

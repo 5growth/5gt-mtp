@@ -1,5 +1,8 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface;
+import com.ericsson.dummyplugin.nbi.swagger.model.VirtualComputeVirtualCpu;
+import com.ericsson.dummyplugin.nbi.swagger.model.VirtualComputeVirtualMemory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

@@ -32,9 +32,8 @@ public class NfviPopsInnerNfviPopAttributesRadioCoverageAreas   {
   }
 
   
-  @ApiModelProperty(required = true, value = "Coverage Area Identifier supported by Radio PoP")
-  @JsonProperty("CoverageAreaId")
-  @NotNull
+  @ApiModelProperty(value = "Coverage Area Identifier supported by Radio PoP")
+  @JsonProperty("coverageAreaId")
   public String getCoverageAreaId() {
     return coverageAreaId;
   }
@@ -50,9 +49,8 @@ public class NfviPopsInnerNfviPopAttributesRadioCoverageAreas   {
   }
 
   
-  @ApiModelProperty(required = true, value = "")
-  @JsonProperty("CovrageLocationInfo")
-  @NotNull
+  @ApiModelProperty(value = "")
+  @JsonProperty("covrageLocationInfo")
   public NfviPopsInnerNfviPopAttributesCovrageLocationInfo getCovrageLocationInfo() {
     return covrageLocationInfo;
   }
@@ -69,9 +67,8 @@ public class NfviPopsInnerNfviPopAttributesRadioCoverageAreas   {
   }
 
   
-  @ApiModelProperty(required = true, value = "Minimummum bandwidth provided by the coverage area")
-  @JsonProperty("MinBandwidth")
-  @NotNull
+  @ApiModelProperty(value = "Minimummum bandwidth provided by the coverage area")
+  @JsonProperty("minBandwidth")
   public BigDecimal getMinBandwidth() {
     return minBandwidth;
   }
@@ -88,9 +85,8 @@ public class NfviPopsInnerNfviPopAttributesRadioCoverageAreas   {
   }
 
   
-  @ApiModelProperty(required = true, value = "Maximum bandwidth provided by the coverage area")
-  @JsonProperty("MaxBandwidth")
-  @NotNull
+  @ApiModelProperty(value = "Maximum bandwidth provided by the coverage area")
+  @JsonProperty("maxBandwidth")
   public BigDecimal getMaxBandwidth() {
     return maxBandwidth;
   }
@@ -107,9 +103,8 @@ public class NfviPopsInnerNfviPopAttributesRadioCoverageAreas   {
   }
 
   
-  @ApiModelProperty(required = true, value = "minimum delay guaranteed by the coverage area")
-  @JsonProperty("Delay")
-  @NotNull
+  @ApiModelProperty(value = "minimum delay guaranteed by the coverage area")
+  @JsonProperty("delay")
   public BigDecimal getDelay() {
     return delay;
   }

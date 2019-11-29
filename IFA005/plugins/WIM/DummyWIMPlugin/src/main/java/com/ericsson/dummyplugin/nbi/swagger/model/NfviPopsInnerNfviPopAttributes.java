@@ -1,6 +1,6 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
-import com.ericsson.dummyplugin.nbi.swagger.model.NfviPopsInnerNfviPopAttributesMecRegions;
+import com.ericsson.dummyplugin.nbi.swagger.model.MECRegionInfo;
 import com.ericsson.dummyplugin.nbi.swagger.model.NfviPopsInnerNfviPopAttributesNetworkConnectivityEndpoint;
 import com.ericsson.dummyplugin.nbi.swagger.model.NfviPopsInnerNfviPopAttributesRadioCoverageAreas;
 import com.ericsson.dummyplugin.nbi.swagger.model.NfviPopsInnerNfviPopAttributesResourceZoneAttributes;
@@ -23,7 +23,7 @@ public class NfviPopsInnerNfviPopAttributes   {
   private @Valid String nfviPopId = null;
   private @Valid List<NfviPopsInnerNfviPopAttributesResourceZoneAttributes> resourceZoneAttributes = new ArrayList<NfviPopsInnerNfviPopAttributesResourceZoneAttributes>();
   private @Valid String mecCapable = null;
-  private @Valid List<NfviPopsInnerNfviPopAttributesMecRegions> mecRegions = new ArrayList<NfviPopsInnerNfviPopAttributesMecRegions>();
+  private @Valid List<MECRegionInfo> mecRegions = new ArrayList<MECRegionInfo>();
   private @Valid String radioCapable = null;
   private @Valid List<NfviPopsInnerNfviPopAttributesRadioCoverageAreas> radioCoverageAreas = new ArrayList<NfviPopsInnerNfviPopAttributesRadioCoverageAreas>();
 
@@ -141,7 +141,7 @@ public class NfviPopsInnerNfviPopAttributes   {
 
   /**
    **/
-  public NfviPopsInnerNfviPopAttributes mecRegions(List<NfviPopsInnerNfviPopAttributesMecRegions> mecRegions) {
+  public NfviPopsInnerNfviPopAttributes mecRegions(List<MECRegionInfo> mecRegions) {
     this.mecRegions = mecRegions;
     return this;
   }
@@ -150,10 +150,10 @@ public class NfviPopsInnerNfviPopAttributes   {
   @ApiModelProperty(required = true, value = "")
   @JsonProperty("MecRegions")
   @NotNull
-  public List<NfviPopsInnerNfviPopAttributesMecRegions> getMecRegions() {
+  public List<MECRegionInfo> getMecRegions() {
     return mecRegions;
   }
-  public void setMecRegions(List<NfviPopsInnerNfviPopAttributesMecRegions> mecRegions) {
+  public void setMecRegions(List<MECRegionInfo> mecRegions) {
     this.mecRegions = mecRegions;
   }
 

@@ -15,20 +15,20 @@ import com.ericsson.xenplugin.events.allocate.ComputeAllocateReply;
 import com.ericsson.xenplugin.events.allocate.ComputeAllocateRequest;
 import com.ericsson.xenplugin.events.terminate.ComputeTerminateReply;
 import com.ericsson.xenplugin.events.terminate.ComputeTerminateRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.CapacityInformation;
+import com.ericsson.xenplugin.nbi.swagger.model.NfviPop;
+import com.ericsson.xenplugin.nbi.swagger.model.QueryComputeCapacityRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.ResourceZone;
+import com.ericsson.xenplugin.nbi.swagger.model.VIMAllocateComputeRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.VIMVirtualCompute;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualCompute;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualComputeFlavour;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualComputeResourceInformation;
 import com.google.common.eventbus.Subscribe;
-import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequest;
-import com.mtp.extinterface.nbi.swagger.model.CapacityInformation;
-import com.mtp.extinterface.nbi.swagger.model.NfviPop;
-import com.mtp.extinterface.nbi.swagger.model.QueryComputeCapacityRequest;
-import com.mtp.extinterface.nbi.swagger.model.ResourceZone;
-import com.mtp.extinterface.nbi.swagger.model.VirtualCompute;
-import com.mtp.extinterface.nbi.swagger.model.VirtualComputeFlavour;
-import com.mtp.extinterface.nbi.swagger.model.VirtualComputeResourceInformation;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 import io.swagger.annotations.*;
-import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Map;
@@ -57,14 +57,14 @@ public class ComputeResourcesApi {
     @ManagedAsync
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @ApiOperation(value = "", notes = "", response = VirtualCompute.class, tags={ "virtualisedComputeResources",  })
+    @ApiOperation(value = "", notes = "", response = VIMVirtualCompute.class, tags={ "virtualisedComputeResources",  })
     @ApiResponses(value = { 
         @ApiResponse(code = 201, message = "Element containing information of the newly instantiated virtualised compute resource.", response = VirtualCompute.class),
         @ApiResponse(code = 400, message = "Bad request", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 409, message = "software image already added", response = Void.class) })
-    public void allocateCompute(@Suspended final AsyncResponse ar, @Valid AllocateComputeRequest body) {
+    public void allocateCompute(@Suspended final AsyncResponse ar, @Valid VIMAllocateComputeRequest body) {
         //return Response.ok().entity("Not Implemented!").build();
         System.out.println("allocateCompute ----> query nfvipop suspended");
         System.out.println("allocateCompute ----> Calling post");
@@ -214,7 +214,7 @@ public class ComputeResourcesApi {
     @GET
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @ApiOperation(value = "", notes = "", response = VirtualCompute.class, responseContainer = "List", tags={ "virtualisedComputeResources",  })
+    @ApiOperation(value = "", notes = "", response = VIMVirtualCompute.class, responseContainer = "List", tags={ "virtualisedComputeResources",  })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Element containing information about the virtual compute resource(s) matching the filter. The cardinality can be 0 if no matching compute resources exist.", response = VirtualCompute.class, responseContainer = "List"),
         @ApiResponse(code = 400, message = "Bad request", response = Void.class),

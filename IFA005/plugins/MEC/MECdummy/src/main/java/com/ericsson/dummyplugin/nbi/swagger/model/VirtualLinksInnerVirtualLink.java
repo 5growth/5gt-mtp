@@ -1,6 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
 import io.swagger.annotations.ApiModel;
+import com.ericsson.dummyplugin.nbi.swagger.model.VirtualLinksInnerVirtualLinkNetworkQoS;
 import java.math.BigDecimal;
 import javax.validation.constraints.*;
 import javax.validation.Valid;

@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>io.swagger</groupId>
-            <artifactId>swagger-java-client</artifactId>
+            <artifactId>mtp-sbi-client</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
@@ -62,7 +62,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.ericsson.dummyplugin.dummyWimplugin</mainClass>
+                            <mainClass>com.ericsson.dummyplugin.DummyMecplugin</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -1,6 +1,7 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
 import io.swagger.annotations.ApiModel;
+import com.mtp.extinterface.nbi.swagger.model.MECRegionInfoMecRegionInfo;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -15,23 +16,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MECRegionInfo   {
   
-  private @Valid MECRegionInfoMECRegionInfo meCRegionInfo = null;
+  private @Valid MECRegionInfoMecRegionInfo mecRegionInfo = null;
 
   /**
    **/
-  public MECRegionInfo meCRegionInfo(MECRegionInfoMECRegionInfo meCRegionInfo) {
-    this.meCRegionInfo = meCRegionInfo;
+  public MECRegionInfo mecRegionInfo(MECRegionInfoMecRegionInfo mecRegionInfo) {
+    this.mecRegionInfo = mecRegionInfo;
     return this;
   }
 
   
   @ApiModelProperty(value = "")
-  @JsonProperty("MECRegionInfo")
-  public MECRegionInfoMECRegionInfo getMeCRegionInfo() {
-    return meCRegionInfo;
+  @JsonProperty("mecRegionInfo")
+  public MECRegionInfoMecRegionInfo getMecRegionInfo() {
+    return mecRegionInfo;
   }
-  public void setMeCRegionInfo(MECRegionInfoMECRegionInfo meCRegionInfo) {
-    this.meCRegionInfo = meCRegionInfo;
+  public void setMecRegionInfo(MECRegionInfoMecRegionInfo mecRegionInfo) {
+    this.mecRegionInfo = mecRegionInfo;
   }
 
 
@@ -44,12 +45,12 @@ public class MECRegionInfo   {
       return false;
     }
     MECRegionInfo meCRegionInfo = (MECRegionInfo) o;
-    return Objects.equals(meCRegionInfo, meCRegionInfo.meCRegionInfo);
+    return Objects.equals(mecRegionInfo, meCRegionInfo.mecRegionInfo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(meCRegionInfo);
+    return Objects.hash(mecRegionInfo);
   }
 
   @Override
@@ -57,7 +58,7 @@ public class MECRegionInfo   {
     StringBuilder sb = new StringBuilder();
     sb.append("class MECRegionInfo {\n");
     
-    sb.append("    meCRegionInfo: ").append(toIndentedString(meCRegionInfo)).append("\n");
+    sb.append("    mecRegionInfo: ").append(toIndentedString(mecRegionInfo)).append("\n");
     sb.append("}");
     return sb.toString();
   }

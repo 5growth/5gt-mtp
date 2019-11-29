@@ -1,5 +1,9 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequestAffinityOrAntiAffinityConstraints;
+import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequestInterfaceData;
+import com.mtp.extinterface.nbi.swagger.model.AllocateComputeRequestUserData;
+import com.mtp.extinterface.nbi.swagger.model.MetaDataInner;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

@@ -19,10 +19,26 @@ public class NfviPop   {
   /**
    * It provides information about the geographic location (e.g. geographic coordinates or address of the building, etc.) of the NFVI resources that the VIM manages.
    **/
-  public NfviPop geographicalLocationInfo(String geographicalLocationInfo) {
-    this.geographicalLocationInfo = geographicalLocationInfo;
-    return this;
-  }
+  
+  
+
+  
+  
+  
+    public NfviPop() {
+    
+    }
+
+    public NfviPop(String nfviPopId, String vimId, String networkConnectivityEndpoint) {
+        this.nfviPopId=nfviPopId;
+        this.vimId=vimId;
+                this.networkConnectivityEndpoint = networkConnectivityEndpoint;
+    }
+
+    public NfviPop geographicalLocationInfo(String geographicalLocationInfo) {
+        this.geographicalLocationInfo = geographicalLocationInfo;
+        return this;
+    }
 
   
   @ApiModelProperty(required = true, value = "It provides information about the geographic location (e.g. geographic coordinates or address of the building, etc.) of the NFVI resources that the VIM manages.")

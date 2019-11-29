@@ -29,7 +29,7 @@ import org.threeten.bp.OffsetDateTime;
  * The time interval for which capacity is queried. When omitted, an interval starting \&quot;now\&quot; is used. The time interval can be specified since resource reservations can be made for a specified time interval.
  */
 @ApiModel(description = "The time interval for which capacity is queried. When omitted, an interval starting \"now\" is used. The time interval can be specified since resource reservations can be made for a specified time interval.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class QueryComputeCapacityRequestTimePeriod {
   @SerializedName("startTime")
   private OffsetDateTime startTime = null;

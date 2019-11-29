@@ -132,9 +132,9 @@ public class QueryWIMThread extends Thread {
             netel.setLinkinfo(linkinfolist.get(i));
             ev.setNetworkResElem(netel);
             //create element in map
-            MapResources mapel = new MapResources(Long.valueOf(zonelist.get(0).getNfviPopId()),
-                    Long.valueOf(zonelist.get(0).getZoneId()),
-                    Long.valueOf(netinfolist.get(i).getNetworkResourceTypeId()));
+            MapResources mapel = new MapResources(zonelist.get(0).getNfviPopId(),
+                    zonelist.get(0).getZoneId(),
+                    netinfolist.get(i).getNetworkResourceTypeId());
             ev.setNetworkMapElem(mapel);
         }//Loop on virtual network resources            
         //send event

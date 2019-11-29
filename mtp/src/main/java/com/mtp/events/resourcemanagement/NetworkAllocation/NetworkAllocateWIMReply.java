@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class NetworkAllocateWIMReply {
 
     private long reqid;
-    private long servid; //service identifiers 
+    private String servid; //service identifiers 
     private long logicallinkid;
     private boolean outcome; //result of the request
     private int errorcode;
@@ -21,7 +21,7 @@ public class NetworkAllocateWIMReply {
 
     public NetworkAllocateWIMReply() {
         reqid = 0;
-        servid = 0;
+        servid = "";
         outcome = false;
         errorcode = 0;
         errormsg = null;
@@ -29,7 +29,7 @@ public class NetworkAllocateWIMReply {
         logicallinkid = 0;
     }
 
-    public NetworkAllocateWIMReply(long reqid, long servid, boolean outcome, int errorcode, String errormsg, ArrayList<VirtualNetwork> elemlist, long getLogicalLinkId) {
+    public NetworkAllocateWIMReply(long reqid, String servid, boolean outcome, int errorcode, String errormsg, ArrayList<VirtualNetwork> elemlist, long getLogicalLinkId) {
         this.reqid = reqid;
         this.servid = servid;
         this.outcome = outcome;
@@ -55,11 +55,11 @@ public class NetworkAllocateWIMReply {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

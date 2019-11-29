@@ -1,9 +1,9 @@
 package com.ericsson.xenplugin.nbi.swagger.api;
 
-import com.mtp.extinterface.nbi.swagger.model.CreateComputeResourceReservationRequest;
-import com.mtp.extinterface.nbi.swagger.model.CreateNetworkResourceReservationRequest;
-import com.mtp.extinterface.nbi.swagger.model.ReservedVirtualCompute;
-import com.mtp.extinterface.nbi.swagger.model.ReservedVirtualNetwork;
+import com.ericsson.xenplugin.nbi.swagger.model.CreateComputeResourceReservationRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.CreateNetworkResourceReservationRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.ReservedVirtualCompute;
+import com.ericsson.xenplugin.nbi.swagger.model.ReservedVirtualNetwork;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 

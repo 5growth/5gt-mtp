@@ -14,11 +14,11 @@ import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResult;
  */
 public class IntraPoPAllocateDbReply {
     private long reqid;
-    private long servid;
+    private String servid;
     private long nfvipopid;
     private AllocateNetworkResult intrapoprep;
 
-    public IntraPoPAllocateDbReply(long reqid, long servid, long nfvipopid, AllocateNetworkResult intrapoprep) {
+    public IntraPoPAllocateDbReply(long reqid, String servid, long nfvipopid, AllocateNetworkResult intrapoprep) {
         this.reqid = reqid;
         this.servid = servid;
         this.nfvipopid = nfvipopid;
@@ -33,11 +33,11 @@ public class IntraPoPAllocateDbReply {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 

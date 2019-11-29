@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class NetworkAllocateDBQueryReply {
 
     private long reqid;
-    private long servid; //service identifiers
+    private String servid; //service identifiers
     private long logicalLPathId;
     //contains domain managing the abstract resources
     //association is the index of the array
@@ -18,7 +18,7 @@ public class NetworkAllocateDBQueryReply {
     private ArrayList<Long> vimdomlist; //contains domain managing the VIM abstract resources
 
     private ArrayList<Long> interdomainLinks;
-    private ArrayList<Long> intraPopLinks;
+    private ArrayList<String> intraPopLinks;
     private ArrayList<Long> wanLinks;
     private ArrayList<Long> wimPopList;
     private ArrayList<Long> vimPopList;
@@ -28,7 +28,7 @@ public class NetworkAllocateDBQueryReply {
 
     public NetworkAllocateDBQueryReply() {
         reqid = 0;
-        servid = 0;
+        servid = "";
         logicalLPathId = 0;
         interdomainLinks = new ArrayList();
         intraPopLinks = new ArrayList();
@@ -39,7 +39,7 @@ public class NetworkAllocateDBQueryReply {
         vimNetworkType = new ArrayList();
     }
 
-    public NetworkAllocateDBQueryReply(long reqid, long servid, long logicalLPathId, ArrayList<Long> wimdomlist, ArrayList<Long> vimdomlist, ArrayList<Long> interdomainLinks, ArrayList<Long> intraPopLinks, ArrayList<Long> wanLinks, ArrayList<Long> wimPopList, ArrayList<Long> vimPopList, ArrayList<String> wimNetworkType, ArrayList<String> vimNetworkType) {
+    public NetworkAllocateDBQueryReply(long reqid, String servid, long logicalLPathId, ArrayList<Long> wimdomlist, ArrayList<Long> vimdomlist, ArrayList<Long> interdomainLinks, ArrayList<String> intraPopLinks, ArrayList<Long> wanLinks, ArrayList<Long> wimPopList, ArrayList<Long> vimPopList, ArrayList<String> wimNetworkType, ArrayList<String> vimNetworkType) {
         this.reqid = reqid;
         this.servid = servid;
         this.logicalLPathId = logicalLPathId;
@@ -86,11 +86,11 @@ public class NetworkAllocateDBQueryReply {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 
@@ -118,11 +118,11 @@ public class NetworkAllocateDBQueryReply {
         this.interdomainLinks = interdomainLinks;
     }
 
-    public ArrayList<Long> getIntraPopLinks() {
+    public ArrayList<String> getIntraPopLinks() {
         return intraPopLinks;
     }
 
-    public void setIntraPopLinks(ArrayList<Long> intraPopLinks) {
+    public void setIntraPopLinks(ArrayList<String> intraPopLinks) {
         this.intraPopLinks = intraPopLinks;
     }
 

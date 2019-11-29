@@ -5,7 +5,9 @@
  */
 package com.ericsson.xenplugin.events.allocate;
 
-import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResult;
+import com.ericsson.xenplugin.nbi.swagger.model.AllocateNetworkResult;
+
+
 
 /**
  *

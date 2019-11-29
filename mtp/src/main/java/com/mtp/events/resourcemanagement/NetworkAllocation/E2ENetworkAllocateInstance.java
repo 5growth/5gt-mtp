@@ -13,13 +13,13 @@ import java.util.ArrayList;
 public class E2ENetworkAllocateInstance {
 
     private long reqid;
-    private long servid; //service identifiers 
+    private String servid; //service identifiers 
     private long logicalPathId;
     private ArrayList<Long> wimdomlist; //contains domain managing the WIM abstract resources
     private ArrayList<Long> vimdomlist; //contains domain managing the VIM abstract resources
 
     private ArrayList<Long> interdomainLinks;
-    private ArrayList<Long> intraPopLinks;
+    private ArrayList<String> intraPopLinks;
     private ArrayList<Long> wanLinks;
     private ArrayList<Long> wimPopList;
     private ArrayList<Long> vimPopList;
@@ -29,7 +29,7 @@ public class E2ENetworkAllocateInstance {
 
     public E2ENetworkAllocateInstance() {
         reqid = 0;
-        servid = 0;
+        servid = "";
         logicalPathId = 0;
         wimdomlist = new ArrayList();
         vimdomlist = new ArrayList();
@@ -44,7 +44,7 @@ public class E2ENetworkAllocateInstance {
 
     }
 
-    public E2ENetworkAllocateInstance(long reqid, long servid, long logicalPathId, ArrayList<Long> wimdomlist, ArrayList<Long> vimdomlist, ArrayList<Long> interdomainLinks, ArrayList<Long> intraPopLinks, ArrayList<Long> wanLinks, ArrayList<Long> wimPopList, ArrayList<Long> vimPopList, InterNfviPopConnectivityRequest networkRequest, ArrayList<String> wimNetworkType, ArrayList<String> vimNetworkType) {
+    public E2ENetworkAllocateInstance(long reqid, String servid, long logicalPathId, ArrayList<Long> wimdomlist, ArrayList<Long> vimdomlist, ArrayList<Long> interdomainLinks, ArrayList<String> intraPopLinks, ArrayList<Long> wanLinks, ArrayList<Long> wimPopList, ArrayList<Long> vimPopList, InterNfviPopConnectivityRequest networkRequest, ArrayList<String> wimNetworkType, ArrayList<String> vimNetworkType) {
         this.reqid = reqid;
         this.servid = servid;
         this.logicalPathId = logicalPathId;
@@ -100,11 +100,11 @@ public class E2ENetworkAllocateInstance {
         this.reqid = reqid;
     }
 
-    public long getServid() {
+    public String getServid() {
         return servid;
     }
 
-    public void setServid(long servid) {
+    public void setServid(String servid) {
         this.servid = servid;
     }
 
@@ -132,11 +132,11 @@ public class E2ENetworkAllocateInstance {
         this.interdomainLinks = interdomainLinks;
     }
 
-    public ArrayList<Long> getIntraPopLinks() {
+    public ArrayList<String> getIntraPopLinks() {
         return intraPopLinks;
     }
 
-    public void setIntraPopLinks(ArrayList<Long> intraPopLinks) {
+    public void setIntraPopLinks(ArrayList<String> intraPopLinks) {
         this.intraPopLinks = intraPopLinks;
     }
 

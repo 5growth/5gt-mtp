@@ -1,5 +1,6 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.InterNfviPopConnnectivityIdListInner;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

@@ -29,7 +29,7 @@ import java.math.BigDecimal;
  * The virtual memory of the reserved virtualisation container.
  */
 @ApiModel(description = "The virtual memory of the reserved virtualisation container.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class ReservedVirtualComputeVirtualisationContainerReservedVirtualMemory {
   @SerializedName("numaEnabled")
   private Boolean numaEnabled = null;

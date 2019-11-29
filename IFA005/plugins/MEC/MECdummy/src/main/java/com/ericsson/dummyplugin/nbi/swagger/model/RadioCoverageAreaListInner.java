@@ -1,5 +1,6 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.RadioCoverageAreaListInnerRadioCoverageAreaInfo;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
@@ -22,7 +23,7 @@ public class RadioCoverageAreaListInner   {
 
   
   @ApiModelProperty(required = true, value = "")
-  @JsonProperty("RadioCoverageAreaInfo")
+  @JsonProperty("radioCoverageAreaInfo")
   @NotNull
   public RadioCoverageAreaListInnerRadioCoverageAreaInfo getRadioCoverageAreaInfo() {
     return radioCoverageAreaInfo;

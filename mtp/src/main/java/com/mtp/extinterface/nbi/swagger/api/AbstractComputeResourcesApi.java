@@ -66,7 +66,7 @@ public class AbstractComputeResourcesApi {
         metadata = body.getMetadata();
         for (int i=0; i < metadata.size(); i++) {
             if (metadata.get(i).getKey().compareTo("ServiceId") == 0) {
-                long val = Long.parseLong(metadata.get(i).getValue());
+                String val = metadata.get(i).getValue();
                 request.setServid(val);
             }
         }         

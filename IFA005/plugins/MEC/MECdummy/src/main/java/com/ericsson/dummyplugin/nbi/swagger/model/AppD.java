@@ -1,5 +1,16 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.AppExternalCpd;
+import com.ericsson.dummyplugin.nbi.swagger.model.ChangeAppInstanceStateOpConfig;
+import com.ericsson.dummyplugin.nbi.swagger.model.DNSRuleDescriptor;
+import com.ericsson.dummyplugin.nbi.swagger.model.LatencyDescriptor;
+import com.ericsson.dummyplugin.nbi.swagger.model.ServiceDependency;
+import com.ericsson.dummyplugin.nbi.swagger.model.SwImageDescriptor;
+import com.ericsson.dummyplugin.nbi.swagger.model.TerminateAppInstanceOpConfig;
+import com.ericsson.dummyplugin.nbi.swagger.model.TrafficRuleDescriptor;
+import com.ericsson.dummyplugin.nbi.swagger.model.TransportDependency;
+import com.ericsson.dummyplugin.nbi.swagger.model.VirtualComputeDescription;
+import com.ericsson.dummyplugin.nbi.swagger.model.VirtualStorageDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

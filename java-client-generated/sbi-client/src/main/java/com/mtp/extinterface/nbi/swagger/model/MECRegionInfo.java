@@ -22,34 +22,34 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import com.mtp.extinterface.nbi.swagger.model.MECRegionInfoMECRegionInfo;
+import com.mtp.extinterface.nbi.swagger.model.MECRegionInfoMecRegionInfo;
 import java.io.IOException;
 
 /**
  * Information about a region.
  */
 @ApiModel(description = "Information about a region.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class MECRegionInfo {
-  @SerializedName("MECRegionInfo")
-  private MECRegionInfoMECRegionInfo meCRegionInfo = null;
+  @SerializedName("mecRegionInfo")
+  private MECRegionInfoMecRegionInfo mecRegionInfo = null;
 
-  public MECRegionInfo meCRegionInfo(MECRegionInfoMECRegionInfo meCRegionInfo) {
-    this.meCRegionInfo = meCRegionInfo;
+  public MECRegionInfo mecRegionInfo(MECRegionInfoMecRegionInfo mecRegionInfo) {
+    this.mecRegionInfo = mecRegionInfo;
     return this;
   }
 
    /**
-   * Get meCRegionInfo
-   * @return meCRegionInfo
+   * Get mecRegionInfo
+   * @return mecRegionInfo
   **/
   @ApiModelProperty(value = "")
-  public MECRegionInfoMECRegionInfo getMeCRegionInfo() {
-    return meCRegionInfo;
+  public MECRegionInfoMecRegionInfo getMecRegionInfo() {
+    return mecRegionInfo;
   }
 
-  public void setMeCRegionInfo(MECRegionInfoMECRegionInfo meCRegionInfo) {
-    this.meCRegionInfo = meCRegionInfo;
+  public void setMecRegionInfo(MECRegionInfoMecRegionInfo mecRegionInfo) {
+    this.mecRegionInfo = mecRegionInfo;
   }
 
 
@@ -62,12 +62,12 @@ public class MECRegionInfo {
       return false;
     }
     MECRegionInfo meCRegionInfo = (MECRegionInfo) o;
-    return Objects.equals(this.meCRegionInfo, meCRegionInfo.meCRegionInfo);
+    return Objects.equals(this.mecRegionInfo, meCRegionInfo.mecRegionInfo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(meCRegionInfo);
+    return Objects.hash(mecRegionInfo);
   }
 
 
@@ -76,7 +76,7 @@ public class MECRegionInfo {
     StringBuilder sb = new StringBuilder();
     sb.append("class MECRegionInfo {\n");
     
-    sb.append("    meCRegionInfo: ").append(toIndentedString(meCRegionInfo)).append("\n");
+    sb.append("    mecRegionInfo: ").append(toIndentedString(mecRegionInfo)).append("\n");
     sb.append("}");
     return sb.toString();
   }

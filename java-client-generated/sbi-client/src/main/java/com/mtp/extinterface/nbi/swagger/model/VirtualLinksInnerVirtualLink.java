@@ -30,7 +30,7 @@ import java.math.BigDecimal;
  * 5GT - Element providing information the attributes related to particular logical links between pair of NFVI-PoPs.
  */
 @ApiModel(description = "5GT - Element providing information the attributes related to particular logical links between pair of NFVI-PoPs.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class VirtualLinksInnerVirtualLink {
   @SerializedName("virtualLinkId")
   private String virtualLinkId = null;

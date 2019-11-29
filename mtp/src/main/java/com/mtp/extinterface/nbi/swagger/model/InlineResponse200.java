@@ -1,5 +1,6 @@
 package com.mtp.extinterface.nbi.swagger.model;
 
+import com.mtp.extinterface.nbi.swagger.model.MECRegionInfo;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;
@@ -24,7 +25,7 @@ public class InlineResponse200   {
 
   
   @ApiModelProperty(value = "")
-  @JsonProperty("Regions")
+  @JsonProperty("regions")
   public List<MECRegionInfo> getRegions() {
     return regions;
   }

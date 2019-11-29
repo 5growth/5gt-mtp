@@ -27,6 +27,7 @@ public class AllocateComputeRequest   {
   private @Valid String resourceGroupId = null;
   private @Valid AllocateComputeRequestUserData userData = null;
   private @Valid String vcImageId = null;
+  private @Valid String mecAppDId = null;
 
   /**
    * A list of elements with affinity or anti affinity information of the virtualised compute resource to allocate. There should be a relation between the constraints defined in the different elements of the list.
@@ -217,6 +218,25 @@ public class AllocateComputeRequest   {
     this.vcImageId = vcImageId;
   }
 
+  /**
+   * Identifier of the MEC AppD reference identifier. Cardinality can be 0 if an VM is not allocated for a MEC application. 
+   **/
+  public AllocateComputeRequest mecAppDId(String mecAppDId) {
+    this.mecAppDId = mecAppDId;
+    return this;
+  }
+
+  
+  @ApiModelProperty(required = true, value = "Identifier of the MEC AppD reference identifier. Cardinality can be 0 if an VM is not allocated for a MEC application. ")
+  @JsonProperty("mecAppDId")
+  @NotNull
+  public String getMecAppDId() {
+    return mecAppDId;
+  }
+  public void setMecAppDId(String mecAppDId) {
+    this.mecAppDId = mecAppDId;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -236,12 +256,13 @@ public class AllocateComputeRequest   {
         Objects.equals(reservationId, allocateComputeRequest.reservationId) &&
         Objects.equals(resourceGroupId, allocateComputeRequest.resourceGroupId) &&
         Objects.equals(userData, allocateComputeRequest.userData) &&
-        Objects.equals(vcImageId, allocateComputeRequest.vcImageId);
+        Objects.equals(vcImageId, allocateComputeRequest.vcImageId) &&
+        Objects.equals(mecAppDId, allocateComputeRequest.mecAppDId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(affinityOrAntiAffinityConstraints, computeFlavourId, computeName, interfaceData, locationConstraints, metadata, reservationId, resourceGroupId, userData, vcImageId);
+    return Objects.hash(affinityOrAntiAffinityConstraints, computeFlavourId, computeName, interfaceData, locationConstraints, metadata, reservationId, resourceGroupId, userData, vcImageId, mecAppDId);
   }
 
   @Override
@@ -259,6 +280,7 @@ public class AllocateComputeRequest   {
     sb.append("    resourceGroupId: ").append(toIndentedString(resourceGroupId)).append("\n");
     sb.append("    userData: ").append(toIndentedString(userData)).append("\n");
     sb.append("    vcImageId: ").append(toIndentedString(vcImageId)).append("\n");
+    sb.append("    mecAppDId: ").append(toIndentedString(mecAppDId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -1,5 +1,6 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.GatewaysInner;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

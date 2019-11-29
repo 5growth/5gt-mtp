@@ -21,6 +21,7 @@ from flasgger import SwaggerView
 
 from vim_manager.api.compute.schema import VirtualComputeResourceInformation
 from vim_manager.api.schema import Filter
+from vim_manager import conf
 
 OK = http.HTTPStatus.OK.value
 CREATED = http.HTTPStatus.CREATED.value
@@ -40,12 +41,21 @@ class InformationQueryAPI(SwaggerView):
     This operation supports retrieval of information for the various types of
     virtualised compute resources managed by the VIM.
     """
+    # TODO replace get by post
+    # parameters = [{
+    #     "name": "informationQueryFilter",
+    #     "in": "body",
+    #     "schema": Filter,
+    #     "description": "Filter defining the information of consumable "
+    #                    "virtualised resources on which the query applies.",
+    #     "required": True
+    # }]
+
     parameters = [{
-        "name": "informationQueryFilter",
-        "in": "body",
-        "schema": Filter,
-        "description": "Filter defining the information of consumable "
-                       "virtualised resources on which the query applies.",
+        "name": "zoneId",
+        "in": "path",
+        "type": "string",
+        "description": "The requested zoneId",
         "required": True
     }]
 
@@ -71,33 +81,71 @@ class InformationQueryAPI(SwaggerView):
     tags = ['virtualisedComputeResources']
     operationId = "queryComputeInformation"
 
-    def post(self):
+    # def post(self):
+
+    #     virtual_memory = {
+    #         'virtualMemSize': 0,
+    #         'virtualMemOversubscriptionPolicy': '',
+    #         'numaSupported': True
+    #     }
+
+    #     virtual_cpu = {
+    #         'cpuArchitecture': '',
+    #         'numVirtualCpu': 0,
+    #         'cpuClock': 0,
+    #         'virtualCpuOversubscriptionPolicy': '',
+    #         'virtualCpuPinningSupported': True,
+    #     }
+
+    #     informations = {
+    #         'computeResourceTypeId': '',
+    #         'virtualMemory': virtual_memory,
+    #         'virtualCPU': virtual_cpu,
+    #         'accelerationCapability': '',
+    #     }
+    #     return flask.jsonify(informations), OK
+
+    def get(self):
+
+        data = flask.request.args.getlist('zoneId')
+        print ( 'zoneId: ' + str(data))
 
         virtual_memory = {
-            'virtualMemSize': 0,
-            'virtualMemOversubscriptionPolicy': '',
-            'numaSupported': True
+            'virtualMemSize': conf.cfg.CONF.compute_information.virtualMemSize,
+            'virtualMemOversubscriptionPolicy': conf.cfg.CONF.compute_information.virtualMemOversubscriptionPolicy,
+            'numaSupported': conf.cfg.CONF.compute_information.numaSupported
         }
 
         virtual_cpu = {
-            'cpuArchitecture': '',
-            'numVirtualCpu': 0,
-            'cpuClock': 0,
-            'virtualCpuOversubscriptionPolicy': '',
-            'virtualCpuPinningSupported': True,
+            'cpuArchitecture': conf.cfg.CONF.compute_information.cpuArchitecture,
+            'numVirtualCpu': conf.cfg.CONF.compute_information.numVirtualCpu,
+            'cpuClock': conf.cfg.CONF.compute_information.cpuClock,
+            'virtualCpuOversubscriptionPolicy': conf.cfg.CONF.compute_information.virtualCpuOversubscriptionPolicy,
+            'virtualCpuPinningSupported': conf.cfg.CONF.compute_information.virtualCpuPinningSupported,
         }
 
-        informations = {
-            'computeResourceTypeId': '',
-            'virtualMemory': virtual_memory,
-            'virtualCPU': virtual_cpu,
-            'accelerationCapability': '',
-        }
+        informations = [
+            {
+                'computeResourceTypeId': conf.cfg.CONF.compute_information.computeResourceTypeMemory,
+                'virtualMemory': virtual_memory,
+                'accelerationCapability': conf.cfg.CONF.compute_information.accelerationCapability,
+            },
+            {
+                'computeResourceTypeId': conf.cfg.CONF.compute_information.computeResourceTypeCpu,
+                'virtualCPU': virtual_cpu,
+                'accelerationCapability': conf.cfg.CONF.compute_information.accelerationCapability,
+            }
+        ]
         return flask.jsonify(informations), OK
 
-
 blueprint.add_url_rule(
-    '/v1/compute_resources/information/query',
+    # TODO replace get by post
+    # '/v1/compute_resources/information/query',
+    # '/v1/compute_resources/information/<zoneId>',
+    '/v1/compute_resources/information',
+
     strict_slashes=False,
     view_func=InformationQueryAPI.as_view('queryComputeInformation'),
-    methods=['POST'])
+    # TODO replace get by post
+    # methods=['POST'])
+    methods=['GET'])

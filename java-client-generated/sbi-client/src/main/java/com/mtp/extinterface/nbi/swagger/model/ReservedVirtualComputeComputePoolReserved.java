@@ -30,7 +30,7 @@ import java.math.BigDecimal;
  * Information about compute resources that have been reserved, e.g. {\&quot;cpu_cores\&quot;: 90, \&quot;vm_instances\&quot;: 10, \&quot;ram\&quot;: 10000}
  */
 @ApiModel(description = "Information about compute resources that have been reserved, e.g. {\"cpu_cores\": 90, \"vm_instances\": 10, \"ram\": 10000}")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class ReservedVirtualComputeComputePoolReserved {
   @SerializedName("computeAttributes")
   private ReservedVirtualComputeComputePoolReservedComputeAttributes computeAttributes = null;

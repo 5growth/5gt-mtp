@@ -1,7 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
 import com.ericsson.dummyplugin.nbi.swagger.model.AllocateComputeRequestAffinityOrAntiAffinityConstraints;
-import com.ericsson.dummyplugin.nbi.swagger.model.AllocateComputeRequestInterfaceData;
+//import com.ericsson.dummyplugin.nbi.swagger.model.AllocateComputeRequestInterfaceData;
 import com.ericsson.dummyplugin.nbi.swagger.model.AllocateComputeRequestUserData;
 import com.ericsson.dummyplugin.nbi.swagger.model.MetaDataInner;
 import java.util.ArrayList;

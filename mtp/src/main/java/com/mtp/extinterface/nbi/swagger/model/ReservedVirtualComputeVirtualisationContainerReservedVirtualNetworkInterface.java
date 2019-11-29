@@ -7,15 +7,19 @@ import javax.validation.Valid;
 import io.swagger.annotations.*;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface   {
   
-  private @Valid String accelerationCapability = null;
+  private @Valid List<String> accelerationCapability = new ArrayList<String>();
   private @Valid String bandwidth = null;
-  private @Valid String ipAddress = null;
+  private @Valid List<String> ipAddress = new ArrayList<String>();
   private @Valid String macAddress = null;
-  private @Valid String metadata = null;
+  private @Valid String networkName = null;
+  private @Valid String floatingIP = null;
+  private @Valid MetaData metadata = new MetaData();
   private @Valid String networkId = null;
   private @Valid String networkPortId = null;
   private @Valid String operationalState = null;
@@ -27,7 +31,7 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
   /**
    * Shows the acceleration capabilities utilized by the virtual network interface. The cardinality can be 0, if no acceleration capability is utilized.
    **/
-  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface accelerationCapability(String accelerationCapability) {
+  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface accelerationCapability(List<String> accelerationCapability) {
     this.accelerationCapability = accelerationCapability;
     return this;
   }
@@ -36,10 +40,10 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
   @ApiModelProperty(required = true, value = "Shows the acceleration capabilities utilized by the virtual network interface. The cardinality can be 0, if no acceleration capability is utilized.")
   @JsonProperty("accelerationCapability")
   @NotNull
-  public String getAccelerationCapability() {
+  public List<String> getAccelerationCapability() {
     return accelerationCapability;
   }
-  public void setAccelerationCapability(String accelerationCapability) {
+  public void setAccelerationCapability(List<String> accelerationCapability) {
     this.accelerationCapability = accelerationCapability;
   }
 
@@ -65,7 +69,7 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
   /**
    * The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to. The cardinality can be 0 in the case that a network interface is created without being attached to any specific network, or when an IP address can be automatically configured, e.g. by DHCP.
    **/
-  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface ipAddress(String ipAddress) {
+  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface ipAddress(List<String> ipAddress) {
     this.ipAddress = ipAddress;
     return this;
   }
@@ -74,10 +78,10 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
   @ApiModelProperty(required = true, value = "The virtual network interface can be configured with specific IP address(es) associated to the network to be attached to. The cardinality can be 0 in the case that a network interface is created without being attached to any specific network, or when an IP address can be automatically configured, e.g. by DHCP.")
   @JsonProperty("ipAddress")
   @NotNull
-  public String getIpAddress() {
+  public List<String> getIpAddress() {
     return ipAddress;
   }
-  public void setIpAddress(String ipAddress) {
+  public void setIpAddress(List<String> ipAddress) {
     this.ipAddress = ipAddress;
   }
 
@@ -100,10 +104,41 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
     this.macAddress = macAddress;
   }
 
+  
+  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface networkName(String networkName) {
+    this.networkName = networkName;
+    return this;
+  } 
+  
+  @ApiModelProperty(required = false, value = "In the case when the virtual network interface is attached to the network, it identifies such a network. The cardinality can be 0 in the case that a network interface is created without being attached to any specific network.")
+  @JsonProperty("networkName")
+  @NotNull
+  public String getNetworkName() {
+    return networkName;
+  }
+  public void setNetworkName(String networkName) {
+    this.networkName = networkName;
+  }
+
+  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface floatingIP(String floatingIP) {
+    this.floatingIP = floatingIP;
+    return this;
+  }
+  @ApiModelProperty(required = false, value = "In the case when the virtual network interface is attached to the network, it identifies such a network. The cardinality can be 0 in the case that a network interface is created without being attached to any specific network.")
+  @JsonProperty("floatingIP")
+  @NotNull
+  public String getFloatingIP() {
+    return floatingIP;
+  }
+  public void setFloatingIP(String floatingIP) {
+    this.floatingIP = floatingIP;
+  }
+  
+  
   /**
    * List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.
    **/
-  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface metadata(String metadata) {
+  public ReservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface metadata(MetaData metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -112,10 +147,10 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
   @ApiModelProperty(required = true, value = "List of metadata key-value pairs used by the consumer to associate meaningful metadata to the related virtualised resource.")
   @JsonProperty("metadata")
   @NotNull
-  public String getMetadata() {
+  public MetaData getMetadata() {
     return metadata;
   }
-  public void setMetadata(String metadata) {
+  public void setMetadata(MetaData metadata) {
     this.metadata = metadata;
   }
 
@@ -266,6 +301,8 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
         Objects.equals(bandwidth, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.bandwidth) &&
         Objects.equals(ipAddress, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.ipAddress) &&
         Objects.equals(macAddress, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.macAddress) &&
+        Objects.equals(networkName, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.networkName) &&
+        Objects.equals(floatingIP, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.floatingIP) &&
         Objects.equals(metadata, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.metadata) &&
         Objects.equals(networkId, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.networkId) &&
         Objects.equals(networkPortId, reservedVirtualComputeVirtualisationContainerReservedVirtualNetworkInterface.networkPortId) &&
@@ -278,7 +315,7 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
 
   @Override
   public int hashCode() {
-    return Objects.hash(accelerationCapability, bandwidth, ipAddress, macAddress, metadata, networkId, networkPortId, operationalState, ownerId, resourceId, typeConfiguration, typeVirtualNic);
+    return Objects.hash(accelerationCapability, bandwidth, ipAddress, macAddress, networkName, floatingIP, metadata, networkId, networkPortId, operationalState, ownerId, resourceId, typeConfiguration, typeVirtualNic);
   }
 
   @Override
@@ -290,6 +327,8 @@ public class ReservedVirtualComputeVirtualisationContainerReservedVirtualNetwork
     sb.append("    bandwidth: ").append(toIndentedString(bandwidth)).append("\n");
     sb.append("    ipAddress: ").append(toIndentedString(ipAddress)).append("\n");
     sb.append("    macAddress: ").append(toIndentedString(macAddress)).append("\n");
+    sb.append("    networkName: ").append(toIndentedString(networkName)).append("\n");
+    sb.append("    floatingIP: ").append(toIndentedString(floatingIP)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
     sb.append("    networkPortId: ").append(toIndentedString(networkPortId)).append("\n");

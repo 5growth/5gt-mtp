@@ -19,7 +19,7 @@ public class NetworkTerminateDBQueryReply {
     private HashMap<Integer, ArrayList<Long>> vimdomlistMap; //contains domain managing the VIM abstract resources
 
     private HashMap<Integer, ArrayList<Long>> interdomainLinksMap;
-    private HashMap<Integer, ArrayList<Long>> intraPopLinksMap;
+    private HashMap<Integer, ArrayList<String>> intraPopLinksMap;
     private HashMap<Integer, ArrayList<Long>> wanLinksMap;
     private HashMap<Integer, ArrayList<Long>> wimPopListMap;
     private HashMap<Integer, ArrayList<Long>> vimPopListMap;
@@ -47,7 +47,7 @@ public class NetworkTerminateDBQueryReply {
         logicalPathList = null;
     }
 
-    public NetworkTerminateDBQueryReply(long reqid, long servid, HashMap<Integer, ArrayList<Long>> wimdomlistMap, HashMap<Integer, ArrayList<Long>> vimdomlistMap, HashMap<Integer, ArrayList<Long>> interdomainLinksMap, HashMap<Integer, ArrayList<Long>> intraPopLinksMap, HashMap<Integer, ArrayList<Long>> wanLinksMap, HashMap<Integer, ArrayList<Long>> wimPopListMap, HashMap<Integer, ArrayList<Long>> vimPopListMap, HashMap<Integer, ArrayList<String>> wimNetworkTypeMap, HashMap<Integer, ArrayList<String>> vimNetworkTypeMap, HashMap<Integer, ArrayList<Long>> wanResourceIdListMap, List<String> netServIdList, List<String> logicalPathList) {
+    public NetworkTerminateDBQueryReply(long reqid, long servid, HashMap<Integer, ArrayList<Long>> wimdomlistMap, HashMap<Integer, ArrayList<Long>> vimdomlistMap, HashMap<Integer, ArrayList<Long>> interdomainLinksMap, HashMap<Integer, ArrayList<String>> intraPopLinksMap, HashMap<Integer, ArrayList<Long>> wanLinksMap, HashMap<Integer, ArrayList<Long>> wimPopListMap, HashMap<Integer, ArrayList<Long>> vimPopListMap, HashMap<Integer, ArrayList<String>> wimNetworkTypeMap, HashMap<Integer, ArrayList<String>> vimNetworkTypeMap, HashMap<Integer, ArrayList<Long>> wanResourceIdListMap, List<String> netServIdList, List<String> logicalPathList) {
         this.reqid = reqid;
         this.servid = servid;
         this.wimdomlistMap = wimdomlistMap;
@@ -117,11 +117,11 @@ public class NetworkTerminateDBQueryReply {
         this.interdomainLinksMap = interdomainLinksMap;
     }
 
-    public HashMap<Integer, ArrayList<Long>> getIntraPopLinksMap() {
+    public HashMap<Integer, ArrayList<String>> getIntraPopLinksMap() {
         return intraPopLinksMap;
     }
 
-    public void setIntraPopLinksMap(HashMap<Integer, ArrayList<Long>> intraPopLinksMap) {
+    public void setIntraPopLinksMap(HashMap<Integer, ArrayList<String>> intraPopLinksMap) {
         this.intraPopLinksMap = intraPopLinksMap;
     }
 

@@ -1,0 +1,438 @@
+{
+	"info": {
+		"_postman_id": "8188f9c5-a0bf-4755-bd80-53e776c956e7",
+		"name": "mtp_openstack",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "NBI-SO",
+			"item": [
+				{
+					"name": "query abstraction resources",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/abstract-resources",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"abstract-resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allocate interPoP WIM",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"logicalLinkPathList\": [\r\n    {\r\n      \"logicalLinkAttributes\": {\r\n        \"logicalLinkId\": \"1\",\r\n        \"srcGwIpAddress\": \"192.168.3.30\",\r\n        \"localLinkId\": 1,\r\n        \"dstGwIpAddress\": \"192.168.4.40\",\r\n        \"remoteLinkId\": 1\r\n      }\r\n    }\r\n  ],\r\n  \"reqBandwidth\": 10000,\r\n  \"reqLatency\": 70,\r\n  \"networkLayer\": \"IP\",\r\n  \"interNfviPopNetworkType\": \"VXLAN\",\r\n  \"metaData\": [\r\n    {\r\n      \"key\": \"ServiceId\",\r\n      \"value\": \"5\"\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/abstract-network-resources",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"abstract-network-resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allocate intraPoP VIM1 admin net",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"affinityOrAntiAffinityConstraints\": \"null\",\r\n  \"locationConstraints\": \"null\",\r\n  \"metadata\": [\r\n    {\r\n      \"key\": \"ServiceId\",\r\n      \"value\": \"5\"\r\n    }\r\n  ],\r\n  \"networkResourceName\": \"vim1-admin\",\r\n  \"networkResourceType\": \"subnet\",\r\n  \"reservationId\": \"vim1-admin-reserve\",\r\n  \"resourceGroupId\": \"null\",\r\n  \"typeNetworkData\": \"null\",\r\n  \"typeNetworkPortData\": \"null\",\r\n  \"typeSubnetData\": {\r\n    \"resourceId\": \"null\",\r\n    \"networkId\": \"null\",\r\n    \"ipVersion\": \"IPv4\",\r\n    \"gatewayIp\": \"192.168.120.1\",\r\n    \"cidr\": \"192.168.120.0/24\",\r\n    \"isDhcpEnabled\": true,\r\n    \"addressPool\": \"null\",\r\n    \"metadata\": [\r\n      {\r\n        \"key\": \"subnet-type\",\r\n        \"value\": \"admin\"\r\n      }\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/network_resources",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"network_resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allocate intraPoP VIM2 admin net",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"affinityOrAntiAffinityConstraints\": \"null\",\r\n  \"locationConstraints\": \"null\",\r\n  \"metadata\": [\r\n    {\r\n      \"key\": \"ServiceId\",\r\n      \"value\": \"5\"\r\n    }\r\n  ],\r\n  \"networkResourceName\": \"vim2-admin\",\r\n  \"networkResourceType\": \"subnet\",\r\n  \"reservationId\": \"vim2-admin-reserve\",\r\n  \"resourceGroupId\": \"null\",\r\n  \"typeNetworkData\": \"null\",\r\n  \"typeNetworkPortData\": \"null\",\r\n  \"typeSubnetData\": {\r\n    \"resourceId\": \"null\",\r\n    \"networkId\": \"null\",\r\n    \"ipVersion\": \"IPv4\",\r\n    \"gatewayIp\": \"192.168.120.1\",\r\n    \"cidr\": \"192.168.1200/24\",\r\n    \"isDhcpEnabled\": true,\r\n    \"addressPool\": \"192.168.120.11-192.168.120.20\",\r\n    \"metadata\": [\r\n      {\r\n        \"key\": \"subnet-type\",\r\n        \"value\": \"admin\"\r\n      }\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/network_resources",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"network_resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allocate intraPoP VIM1 internal net",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"affinityOrAntiAffinityConstraints\": \"null\",\r\n  \"locationConstraints\": \"null\",\r\n  \"metadata\": [\r\n    {\r\n      \"key\": \"ServiceId\",\r\n      \"value\": \"5\"\r\n    }\r\n  ],\r\n  \"networkResourceName\": \"vim1-internal\",\r\n  \"networkResourceType\": \"subnet\",\r\n  \"reservationId\": \"vim1-internal-reserve\",\r\n  \"resourceGroupId\": \"null\",\r\n  \"typeNetworkData\": \"null\",\r\n  \"typeNetworkPortData\": \"null\",\r\n  \"typeSubnetData\": {\r\n    \"resourceId\": \"null\",\r\n    \"networkId\": \"null\",\r\n    \"ipVersion\": \"IPv4\",\r\n    \"gatewayIp\": \"172.168.120.1\",\r\n    \"cidr\": \"172.168.120.0/24\",\r\n    \"isDhcpEnabled\": true,\r\n    \"addressPool\": \"null\",\r\n    \"metadata\": [\r\n      {\r\n        \"key\": \"null\",\r\n        \"value\": \"null\"\r\n      }\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/network_resources",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"network_resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allocate intraPoP VIM2 internal net",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"affinityOrAntiAffinityConstraints\": \"null\",\r\n  \"locationConstraints\": \"null\",\r\n  \"metadata\": [\r\n    {\r\n      \"key\": \"ServiceId\",\r\n      \"value\": \"5\"\r\n    }\r\n  ],\r\n  \"networkResourceName\": \"vim2-internal\",\r\n  \"networkResourceType\": \"subnet\",\r\n  \"reservationId\": \"vim1-internal-reserve\",\r\n  \"resourceGroupId\": \"null\",\r\n  \"typeNetworkData\": \"null\",\r\n  \"typeNetworkPortData\": \"null\",\r\n  \"typeSubnetData\": {\r\n    \"resourceId\": \"null\",\r\n    \"networkId\": \"null\",\r\n    \"ipVersion\": \"IPv4\",\r\n    \"gatewayIp\": \"172.168.120.1\",\r\n    \"cidr\": \"172.168.120.0/24\",\r\n    \"isDhcpEnabled\": true,\r\n    \"addressPool\": \"null\",\r\n    \"metadata\": [\r\n      {\r\n        \"key\": \"null\",\r\n        \"value\": \"null\"\r\n      }\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/network_resources",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"network_resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allocate compute VIM1 resources",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"affinityOrAntiAffinityConstraints\": [\r\n    {\r\n      \"affinityAntiAffinityResourceGroup\": \"\",\r\n      \"affinityAntiAffinityResourceList\": {\r\n        \"resource\": [\r\n          \"\"\r\n        ]\r\n      },\r\n      \"scope\": \"\",\r\n      \"type\": \"\"\r\n    }\r\n  ],\r\n  \"computeFlavourId\": \"b74c8a98-d710-41e8-90f0-549c5b81f1e9\",\r\n  \"computeName\": \"compute-vim-T1-test-fip\",\r\n  \"interfaceData\": [\r\n    {\r\n\t\t\"ipAddress\" : \"172.168.120.121\",\r\n\t\t\"macAddress\" : \"\"\r\n\t\t}\r\n  ],\r\n  \"locationConstraints\": \"\",\r\n  \"metadata\": [\r\n    {\r\n      \"key\": \"ServiceId\",\r\n      \"value\": \"5\"\r\n    },\r\n    {\r\n      \"key\": \"AbstractNfviPopId\",\r\n      \"value\": \"11\"\r\n    }\r\n  ],\r\n  \"reservationId\": \"\",\r\n  \"resourceGroupId\": \"\",\r\n  \"userData\": {\r\n    \"content\": \"null\",\r\n    \"method\": \"null\"\r\n  },\r\n  \"vcImageId\": \"c91e13f7-badb-41ae-bd58-36ea43a1ed8e\",\r\n  \"mecAppDId\" : \"\"\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/abstract-compute-resources",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"abstract-compute-resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allocate compute VIM2 resources",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"affinityOrAntiAffinityConstraints\": [\r\n    {\r\n      \"affinityAntiAffinityResourceGroup\": \"\",\r\n      \"affinityAntiAffinityResourceList\": {\r\n        \"resource\": [\r\n          \"\"\r\n        ]\r\n      },\r\n      \"scope\": \"\",\r\n      \"type\": \"\"\r\n    }\r\n  ],\r\n  \"computeFlavourId\": \"b74c8a98-d710-41e8-90f0-549c5b81f1e9\",\r\n  \"computeName\": \"compute-vim-T2-test-fip\",\r\n  \"interfaceData\": [\r\n    {\r\n\t\t\"ipAddress\" : \"172.168.120.20\",\r\n\t\t\"macAddress\" : \"\"\r\n\t\t}\r\n  ],\r\n  \"locationConstraints\": \"\",\r\n  \"metadata\": [\r\n    {\r\n      \"key\": \"ServiceId\",\r\n      \"value\": \"5\"\r\n    },\r\n    {\r\n      \"key\": \"AbstractNfviPopId\",\r\n      \"value\": \"21\"\r\n    }\r\n  ],\r\n  \"reservationId\": \"\",\r\n  \"resourceGroupId\": \"\",\r\n  \"userData\": {\r\n    \"content\": \"null\",\r\n    \"method\": \"null\"\r\n  },\r\n  \"vcImageId\": \"89e01633-9777-49a3-a377-d269839eb206\",\r\n  \"mecAppDId\" : \"\"\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/abstract-compute-resources",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"abstract-compute-resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compute operate resources",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"computeId\": \"1\",\r\n  \"ComputeOperation\": \"start\"\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/abstract_compute_operate_resources",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"abstract_compute_operate_resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete interPoP network resources",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/abstract-network-resources?networkId =1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"abstract-network-resources"
+							],
+							"query": [
+								{
+									"key": "networkId ",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete intraPoP network resources ",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/network_resources?networkId =1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"network_resources"
+							],
+							"query": [
+								{
+									"key": "networkId ",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete compute resources",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:50000/mtpbase/abstract-compute-resources?computeId=1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "50000",
+							"path": [
+								"mtpbase",
+								"abstract-compute-resources"
+							],
+							"query": [
+								{
+									"key": "computeId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

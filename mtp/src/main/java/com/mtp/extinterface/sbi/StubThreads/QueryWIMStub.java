@@ -850,9 +850,9 @@ public class QueryWIMStub extends Thread {
                 netel.setLinkinfo(linkinfolist.get(j));
                 ev.setNetworkResElem(netel);
                 //create element in map
-                MapResources mapel = new MapResources(Long.valueOf(zonelist.get(i).getNfviPopId()),
-                        Long.valueOf(zonelist.get(i).getZoneId()),
-                        Long.valueOf(netinfolist.get(j).getNetworkResourceTypeId()));
+                MapResources mapel = new MapResources(zonelist.get(i).getNfviPopId(),
+                        zonelist.get(i).getZoneId(),
+                        netinfolist.get(j).getNetworkResourceTypeId());
                 ev.setNetworkMapElem(mapel);
             }//Loop on virtual network resources 
         } //Loop on ZoneList

@@ -29,9 +29,9 @@ group = cfg.OptGroup(
 )
 
 OPTS = [
-    cfg.StrOpt(
+    cfg.IntOpt(
         'nfviPopId',
-        default=os.environ.get('NFVI_POP_ID', 'BCOM'),
+        default=os.environ.get('NFVI_POP_ID', 321),
         help="Identification of the NFVI-PoP."),
     cfg.IntOpt(
         'vimId',
@@ -45,9 +45,20 @@ OPTS = [
         'networkConnectivityEndpoint',
         default=os.environ.get('NET_ENDPOINT', 'stuff'),
         help="Information about network connectivity endpoints to the NFVI-PoP"),
-]
+    cfg.StrOpt(
+        'floating_network',
+        default=os.environ.get('NET_ENDPOINT', 'stuff'),
+        help="Information about floating network name"),
+    cfg.StrOpt(
+        'inter_pop_physical_network',
+        default=os.environ.get('NET_ENDPOINT', 'stuff'),
+        help="Information about inter pop physical network"),
+    cfg.StrOpt(
+        'inter_pop_vlans',
+        default=os.environ.get('NET_ENDPOINT', 'stuff'),
+        help="Information about inter pop vlans"),
 
-nfvi_pop_param = { 'nfviPopId' : 'DEF_POPID', 'vimId' : 654321, 'geographicalLocationInfo' : 'DEF_GEO', 'networkConnectivityEndpoint' : 'default_stuff'}
+]
 
 def register_opts(conf):
     conf.register_opts(OPTS, group=group)

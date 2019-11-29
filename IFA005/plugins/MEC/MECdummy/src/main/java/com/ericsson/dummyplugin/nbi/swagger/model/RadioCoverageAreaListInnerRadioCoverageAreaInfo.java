@@ -1,6 +1,7 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
 import io.swagger.annotations.ApiModel;
+import com.ericsson.dummyplugin.nbi.swagger.model.LocationInfo;
 import java.math.BigDecimal;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -33,7 +34,7 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
 
   
   @ApiModelProperty(required = true, value = "(numbered) Identifier of the Radio Coverage Area")
-  @JsonProperty("CoverageAreaId")
+  @JsonProperty("coverageAreaId")
   @NotNull
   public String getCoverageAreaId() {
     return coverageAreaId;
@@ -52,7 +53,7 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
 
   
   @ApiModelProperty(value = "Identifier of the Radio Coverage Area Geographical Information")
-  @JsonProperty("CoverageAreaGoegraphicalInfo")
+  @JsonProperty("coverageAreaGoegraphicalInfo")
   public String getCoverageAreaGoegraphicalInfo() {
     return coverageAreaGoegraphicalInfo;
   }
@@ -70,7 +71,7 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
 
   
   @ApiModelProperty(required = true, value = "Minimum Bandwidth of the Radio Coverage Area")
-  @JsonProperty("CoverageAreaMinBandwidth")
+  @JsonProperty("coverageAreaMinBandwidth")
   @NotNull
   public BigDecimal getCoverageAreaMinBandwidth() {
     return coverageAreaMinBandwidth;
@@ -89,7 +90,7 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
 
   
   @ApiModelProperty(required = true, value = "Maximum Bandwidth of the Radio Coverage Area")
-  @JsonProperty("CoverageAreaMaxBandwidth")
+  @JsonProperty("coverageAreaMaxBandwidth")
   @NotNull
   public BigDecimal getCoverageAreaMaxBandwidth() {
     return coverageAreaMaxBandwidth;
@@ -108,7 +109,7 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
 
   
   @ApiModelProperty(required = true, value = "Minimum delay supported by the Radio Coverage Area.")
-  @JsonProperty("CoverageAreaDelay")
+  @JsonProperty("coverageAreaDelay")
   @NotNull
   public BigDecimal getCoverageAreaDelay() {
     return coverageAreaDelay;
@@ -126,7 +127,7 @@ public class RadioCoverageAreaListInnerRadioCoverageAreaInfo   {
 
   
   @ApiModelProperty(required = true, value = "")
-  @JsonProperty("LocationInfo")
+  @JsonProperty("locationInfo")
   @NotNull
   public LocationInfo getLocationInfo() {
     return locationInfo;

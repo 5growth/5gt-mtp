@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * VirtualNetwork
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-05-28T11:44:14.596Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2019-08-05T11:05:49.089Z")
 public class VirtualNetwork {
   @SerializedName("bandwidth")
   private BigDecimal bandwidth = null;
@@ -65,7 +65,7 @@ public class VirtualNetwork {
   private String sharingCriteria = null;
 
   @SerializedName("subnet")
-  private String subnet = null;
+  private List<String> subnet = new ArrayList<String>();
 
   @SerializedName("zoneId")
   private String zoneId = null;
@@ -260,8 +260,13 @@ public class VirtualNetwork {
     this.sharingCriteria = sharingCriteria;
   }
 
-  public VirtualNetwork subnet(String subnet) {
+  public VirtualNetwork subnet(List<String> subnet) {
     this.subnet = subnet;
+    return this;
+  }
+
+  public VirtualNetwork addSubnetItem(String subnetItem) {
+    this.subnet.add(subnetItem);
     return this;
   }
 
@@ -270,11 +275,11 @@ public class VirtualNetwork {
    * @return subnet
   **/
   @ApiModelProperty(required = true, value = "Only present if the network provides layer 3 connectivity.")
-  public String getSubnet() {
+  public List<String> getSubnet() {
     return subnet;
   }
 
-  public void setSubnet(String subnet) {
+  public void setSubnet(List<String> subnet) {
     this.subnet = subnet;
   }
 

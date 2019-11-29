@@ -20,20 +20,23 @@ import com.ericsson.dummyplugin.events.allocate.ComputeAllocateReply;
 import com.ericsson.dummyplugin.events.allocate.ComputeAllocateRequest;
 import com.ericsson.dummyplugin.events.allocate.ComputeOperateReply;
 import com.ericsson.dummyplugin.events.allocate.ComputeOperateRequest;
+import com.ericsson.dummyplugin.events.allocate.FreeVlanReply;
+import com.ericsson.dummyplugin.events.allocate.FreeVlanRequest;
 import com.ericsson.dummyplugin.events.allocate.VirtualNetworkAllocateReply;
 import com.ericsson.dummyplugin.events.allocate.VirtualNetworkAllocateRequest;
 import com.ericsson.dummyplugin.events.terminate.ComputeTerminateReply;
 import com.ericsson.dummyplugin.events.terminate.ComputeTerminateRequest;
 import com.ericsson.dummyplugin.events.terminate.VirtualNetworkTerminateReply;
 import com.ericsson.dummyplugin.events.terminate.VirtualNetworkTerminateRequest;
+import com.ericsson.dummyplugin.nbi.swagger.model.AllocateNetworkRequest;
 import com.ericsson.dummyplugin.nbi.swagger.model.AllocateNetworkResult;
 import com.ericsson.dummyplugin.nbi.swagger.model.AllocateNetworkResultNetworkData;
+import com.ericsson.dummyplugin.nbi.swagger.model.AllocateNetworkResultNetworkPortData;
 import com.ericsson.dummyplugin.nbi.swagger.model.AllocateNetworkResultSubnetData;
 import com.ericsson.dummyplugin.nbi.swagger.model.CapacityInformation;
 import com.ericsson.dummyplugin.nbi.swagger.model.MetaDataInner;
 import com.ericsson.dummyplugin.nbi.swagger.model.NfviPop;
 import com.ericsson.dummyplugin.nbi.swagger.model.ResourceZone;
-import com.ericsson.dummyplugin.nbi.swagger.model.SubnetData;
 import com.ericsson.dummyplugin.nbi.swagger.model.VIMAllocateComputeRequest;
 import com.ericsson.dummyplugin.nbi.swagger.model.VIMVirtualCompute;
 import com.ericsson.dummyplugin.nbi.swagger.model.VirtualComputeResourceInformation;
@@ -50,6 +53,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -59,23 +63,31 @@ public class XenIF {
     private List<NFVIPop> poplist;
     private List<Zone> zonelist;
     private HashMap<String, ComputeResource> compreslist;
-    private HashMap<String, NetworkService> netservlist;
-    private HashMap<String, AllocateNetworkResult> intranetservlist;
+    private HashMap<String, String> nettypemap;
+    private HashMap<String, String> netidmap;
+    private HashMap<String, String> netportmap;
+    private HashMap<String, String> netvlanmap;
     private HashMap<String, VIMVirtualCompute> compservlist;
+    private List<Boolean> vlanlist;
     private int netservcounter;
-    private int intranetservcounter;
     private int compservcounter;
     
     public XenIF() {
         poplist = new ArrayList();
         zonelist = new ArrayList();
         compreslist = new HashMap();
-        netservlist = new HashMap();
+        nettypemap = new HashMap();
+        netidmap = new HashMap();
+        netportmap = new HashMap();
+        netvlanmap = new HashMap();
         compservlist = new HashMap();
-        intranetservlist = new HashMap();
+        vlanlist = new ArrayList();
         netservcounter = 1;
         compservcounter = 1;
-        intranetservcounter = 1000;
+        //Set vlanid from 10 to 100
+        for (int i = 0; i < 100; i++) {
+            vlanlist.add(Boolean.TRUE);
+        }
     }
     
     
@@ -94,6 +106,23 @@ public class XenIF {
     }
     
 
+        @Subscribe
+    public void handle_FreeVlanRequest(FreeVlanRequest vlanreq) {
+        System.out.println("XenIF ---> free vlan request" );
+        List<BigDecimal> freevlans = new ArrayList<BigDecimal>();
+        
+        for (int i = 0; i < vlanlist.size(); i++) {
+            if (vlanlist.get(i) == true) {
+                BigDecimal vlanel = new BigDecimal(i);
+                freevlans.add(vlanel);
+            }
+        }
+        FreeVlanReply vlanrep = new FreeVlanReply(vlanreq.getReqid(),
+                    freevlans);
+        System.out.println("XenIF ---> post ComputeAllocateReply");
+        SingletonEventBus.getBus().post(vlanrep);
+    }
+    
     @Subscribe
     public void handle_ComputeAllocateRequest(ComputeAllocateRequest servallreq) {
         System.out.println("XenIF ---> allocate compute service request" );
@@ -184,88 +213,251 @@ public class XenIF {
          }
    }
    
+    public AllocateNetworkResult AllocateNetworkData(AllocateNetworkRequest netdatareq) {
+        AllocateNetworkResult resp = new AllocateNetworkResult();
+        boolean vlanflag = false;
+        String vlanid = ""; 
+        //check if the network is for a vlan allocation or not
+        for (int i = 0; (i < netdatareq.getMetadata().size()) && (vlanflag == false); i++) {
+            if (netdatareq.getMetadata().get(i).getKey().compareTo("interpop_vlan") == 0) {
+              vlanflag = true;
+              vlanid = netdatareq.getMetadata().get(i).getValue();
+            }                
+        }
+        //create identifiers for subnet and network 
+        String netid = "datanet" + netservcounter;
+        netservcounter++;
+        String subnetid = "subnet" + netservcounter;
+        netservcounter++;
+        
+        if (vlanflag == true) {
+            System.out.println("XenIF ---> network for vlan allocation");
+            //create vlan type entry
+            nettypemap.put(subnetid, "VLAN");
+            //create netid  entry
+            netidmap.put(subnetid, netid);
+            //create vlan entry
+            netvlanmap.put(subnetid, vlanid);
+            //set vlanid to false in freevlan list
+            //vlanlist.put(vlanid, false);
+            //format response
+            AllocateNetworkResultNetworkData respnetdata = new AllocateNetworkResultNetworkData();
+            respnetdata.setNetworkResourceName(netdatareq.getNetworkResourceName());
+            respnetdata.setNetworkResourceId(netid);
+            respnetdata.segmentType("");
+            respnetdata.setBandwidth(BigDecimal.ONE);
+            respnetdata.setIsShared(true);
+            respnetdata.setNetworkType("network");
+            respnetdata.setOperationalState("");
+            respnetdata.setSegmentType("");
+            respnetdata.setSharingCriteria("");
+            respnetdata.setZoneId("");
+            resp.setNetworkData(respnetdata);
+            
+        } else {
+            System.out.println("XenIF ---> network for vxlan or private allocation");
+            System.out.println("XenIF ---> network for vlan allocation");
+            //create vxlan type entry. Change if it is request an IP in the next subnet request
+            nettypemap.put(subnetid, "PRIVATE");
+            //create netid  entry
+            netidmap.put(subnetid, netid);
+            
+            //format response
+            AllocateNetworkResultNetworkData respnetdata = new AllocateNetworkResultNetworkData();
+            respnetdata.setNetworkResourceName(netdatareq.getNetworkResourceName());
+            respnetdata.setNetworkResourceId(netid);
+            resp.setNetworkData(respnetdata);
+        }
+        return resp;
+    } 
+    
+    public AllocateNetworkResult AllocateSubnetData(AllocateNetworkRequest netdatareq) {
+        AllocateNetworkResult resp = new AllocateNetworkResult();
+        //search subnetid from netid
+        String subnetid = "";
+        String nettype = "";
+        for (Map.Entry<String, String> entry : netidmap.entrySet()) {
+            if (entry.getValue().compareTo(netdatareq.getTypeSubnetData().getNetworkId())==0) {
+                subnetid = entry.getKey();
+                break;
+            }
+        }
+        if (subnetid.compareTo("") ==0) {
+            System.out.println("XenIF ---> error subnet id not found for netid " + netdatareq.getTypeSubnetData().getNetworkId());
+            return resp;
+        }
+        for (Map.Entry<String, String> entry : nettypemap.entrySet()) {
+            if (entry.getKey().compareTo(subnetid)==0) {
+                nettype =entry.getValue();
+                break;
+            }
+        }
+        if (nettype.compareTo("VLAN") == 0) {
+            //format subnet request
+            AllocateNetworkResultSubnetData subnetdata = new AllocateNetworkResultSubnetData();
+            //copy subnet data
+            subnetdata.setAddressPool(netdatareq.getTypeSubnetData().getAddressPool());
+            subnetdata.setCidr(netdatareq.getTypeSubnetData().getCidr());
+            subnetdata.setGatewayIp(netdatareq.getTypeSubnetData().getGatewayIp());
+            subnetdata.setIpVersion(netdatareq.getTypeSubnetData().getIpVersion());
+            subnetdata.setIsDhcpEnabled(netdatareq.getTypeSubnetData().isIsDhcpEnabled());
+            subnetdata.setResourceId(netdatareq.getTypeSubnetData().getResourceId());
+            subnetdata.setOperationalState("enabled");
+            //set subnetid
+            subnetdata.setNetworkId(subnetid);
+            resp.setSubnetData(subnetdata);
+            
+        } else {
+            boolean vxlanflag = false;
+
+            //check if it is present the floating_required field in metadata
+            for (int i = 0; (i < netdatareq.getMetadata().size()) && (vxlanflag == false); i++) {
+                if (netdatareq.getMetadata().get(i).getKey().compareTo("floating_required") == 0) {
+                    vxlanflag = true;
+                    //change nettypemap to vlan
+                    nettypemap.put(subnetid, "VXLAN");
+                }
+            }
+
+            //format subnet request
+            AllocateNetworkResultSubnetData subnetdata = new AllocateNetworkResultSubnetData();
+            //copy subnet data
+            subnetdata.setAddressPool(netdatareq.getTypeSubnetData().getAddressPool());
+            subnetdata.setCidr(netdatareq.getTypeSubnetData().getCidr());
+            subnetdata.setGatewayIp(netdatareq.getTypeSubnetData().getGatewayIp());
+            subnetdata.setIpVersion(netdatareq.getTypeSubnetData().getIpVersion());
+            subnetdata.setIsDhcpEnabled(netdatareq.getTypeSubnetData().isIsDhcpEnabled());
+            subnetdata.setResourceId(netdatareq.getTypeSubnetData().getResourceId());
+            subnetdata.setOperationalState("enabled");
+            //set subnetid
+            subnetdata.setNetworkId(subnetid);
+            resp.setSubnetData(subnetdata);
+        }
+        return resp;
+    } 
+    
+    public AllocateNetworkResult AllocatePortData(AllocateNetworkRequest netdatareq) {
+        AllocateNetworkResult resp = new AllocateNetworkResult();
+        //only happen for VXLAN
+        //set port entry
+        String portid = "port" + netservcounter;
+        netservcounter++;
+        //search subnet_id in metadata
+        boolean subnetflag = false;
+        String subnetid = "";
+        
+        for (int i = 0; (i < netdatareq.getMetadata().size()) && (subnetflag == false); i++) {
+            if (netdatareq.getMetadata().get(i).getKey().compareTo("subnet_id") ==0) {
+                subnetflag = true;
+                subnetid = netdatareq.getMetadata().get(i).getValue();
+            }
+        }
+        if (subnetflag == false) {
+            System.out.println("XenIF ---> error subnet id not found in metadata");
+            return resp;
+        }
+        netportmap.put(subnetid , portid);
+        
+        //Create metadata entry for floating ip
+        String floatingip = "10.10.10.10";
+        
+        List<MetaDataInner> metadata = new ArrayList();
+        MetaDataInner ipentry = new MetaDataInner();
+        ipentry.setKey("floating_ip");
+        ipentry.setValue(floatingip);
+        metadata.add(ipentry);
+        
+        //set port data
+        AllocateNetworkResultNetworkPortData portdata = new AllocateNetworkResultNetworkPortData();
+        portdata.setNetworkId(portid);
+        portdata.setOperationalState("enabled");
+        //set floating ip in metadata
+        portdata.setMetadata(metadata);
+        resp.setNetworkPortData(portdata);
+        return resp;
+    } 
     
     @Subscribe
     public void handle_VirtualNetworkAllocateRequest(VirtualNetworkAllocateRequest servallreq) {
         System.out.println("XenIF ---> allocate network service request" );
+        AllocateNetworkResult resp = new AllocateNetworkResult();
+        switch (servallreq.getE2ewimelem().getNetworkResourceType()) {
+            case "network" :
+                resp = AllocateNetworkData(servallreq.getE2ewimelem());
+                break;
+            case "subnet" :
+                resp = AllocateSubnetData(servallreq.getE2ewimelem());
+                break;
+            case "port" :
+                resp = AllocatePortData(servallreq.getE2ewimelem());
+                break;
+            //understand if request is for a VLAN or not
+        }    
         
-        
-        List<MetaDataInner> inputdata = servallreq.getE2ewimelem().getMetadata();
-        
-        String servid = new String("-1"), nettype = new String(""), netinfo = new String("");
-        
-        for (int i = 0; i < inputdata.size(); i++) {
-            if(inputdata.get(i).getKey().compareTo("ServiceId") == 0) {
-                servid = inputdata.get(i).getValue();
-            } else if (inputdata.get(i).getKey().compareTo("NetworkType") == 0) {
-                nettype = inputdata.get(i).getValue();
-            } else if (inputdata.get(i).getKey().compareTo("SegmentType") == 0) {
-                netinfo = inputdata.get(i).getValue();
-            }
-        }
-        if (netinfo == "") {
-            //intraPoP API
-            AllocateNetworkResult resp = new AllocateNetworkResult();
-            AllocateNetworkResultSubnetData networkSubnetData = new AllocateNetworkResultSubnetData();
-            SubnetData inputsubnetdata = servallreq.getE2ewimelem().getTypeSubnetData();
-            networkSubnetData.setAddressPool(inputsubnetdata.getAddressPool());
-            networkSubnetData.setCidr(inputsubnetdata.getCidr());
-            networkSubnetData.setGatewayIp(inputsubnetdata.getGatewayIp());
-            networkSubnetData.setIpVersion(inputsubnetdata.getIpVersion());
-            networkSubnetData.setIsDhcpEnabled(inputsubnetdata.isIsDhcpEnabled());
-            networkSubnetData.setMetadata(inputsubnetdata.getMetadata());
-            networkSubnetData.setNetworkId(inputsubnetdata.getNetworkId());
-            networkSubnetData.setOperationalState("enabled");
-            networkSubnetData.setResourceId(Integer.toString(intranetservcounter));
-            resp.setSubnetData(networkSubnetData);
-            intranetservlist.put(Integer.toString(intranetservcounter), resp);
-            intranetservcounter++;
-            VirtualNetworkAllocateReply servallrep = new VirtualNetworkAllocateReply(servallreq.getReqid(),
+        VirtualNetworkAllocateReply servallrep = new VirtualNetworkAllocateReply(servallreq.getReqid(),
                     resp);
-            System.out.println("XenIF ---> post VirtualNetworkAllocateReply");
-            SingletonEventBus.getBus().post(servallrep); 
-        } else {
-            NetworkService el = new NetworkService(servid, nettype, netinfo);
-            netservlist.put(Integer.toString(netservcounter), el);
-
-            AllocateNetworkResult resp = new AllocateNetworkResult();
-            AllocateNetworkResultNetworkData networkData = new AllocateNetworkResultNetworkData();
-            //put id in the reply
-            networkData.setNetworkResourceId(Integer.toString(netservcounter));
-            networkData.setNetworkResourceName("XenNetService" + Integer.toString(netservcounter));
-            networkData.bandwidth(BigDecimal.ONE);
-            networkData.setSegmentType(nettype);
-            networkData.setSegmentType(netinfo);
-            networkData.setIsShared(Boolean.TRUE);
-            networkData.setOperationalState("enabled");
-            resp.setNetworkData(networkData);
-            netservcounter++;
-            VirtualNetworkAllocateReply servallrep = new VirtualNetworkAllocateReply(servallreq.getReqid(),
-                    resp);
-            System.out.println("XenIF ---> post VirtualNetworkAllocateReply");
-            SingletonEventBus.getBus().post(servallrep);
-        }
+        System.out.println("XenIF ---> post VirtualNetworkAllocateReply");
+        SingletonEventBus.getBus().post(servallrep);
+        
     }
     
     @Subscribe
     public void handle_VirtualNetworkTerminateRequest(VirtualNetworkTerminateRequest servtermreq) {
         System.out.println("XenIF ---> terminate network service request" );
-        List<String> resplist = new ArrayList();
-        for (int i = 0; i < servtermreq.getE2EWIMElem().size(); i++) {
-            String key = servtermreq.getE2EWIMElem().get(i);
-            if (Integer.valueOf(key) >= 1000) {
-                AllocateNetworkResult intraservel = intranetservlist.get(key);
-                if (intraservel != null) {
-                    intranetservlist.remove(key);
-                    resplist.add(key);
+        List<String> resplist = new ArrayList<String>();
+        for ( int i = 0; i < servtermreq.getE2EWIMElem().size(); i++) {
+            if (servtermreq.getE2EWIMElem().get(i).contains("datanet") == true) {
+                //remove entry nettypemap, netidmap and vlanmap if vlan connetion is set
+                String subnetid = "";
+                //find subnetid
+                for (Map.Entry<String, String> entry : netidmap.entrySet()) {
+                    if (entry.getValue().compareTo(servtermreq.getE2EWIMElem().get(i)) == 0) {
+                        subnetid = entry.getValue();
+                        break;
+                    }
                 }
+                if (subnetid.compareTo("") == 0) {
+                    System.out.println("XenIF ---> error subnet not found for delete datanet");
+                    return;
+                } 
+                String nettype = nettypemap.get(subnetid);
+                if (nettype == null) {
+                    System.out.println("XenIF ---> error nettype not found for delete datanet");
+                    return;
+                }
+                if (nettype.compareTo("VLAN") == 0) {
+                    //remove
+                    System.out.println("XenIF ---> remove entry for vlan");
+                    nettypemap.remove(subnetid);
+                    netidmap.remove(subnetid);
+                    netvlanmap.remove(subnetid);
+                } else {
+                   nettypemap.remove(subnetid);
+                   netidmap.remove(subnetid); 
+                }
+                
+                
+            } else if (servtermreq.getE2EWIMElem().get(i).contains("subnet") == true) {
+                //nothing to do
+            } else if (servtermreq.getE2EWIMElem().get(i).contains("port") == true) {
+                String subnetid = "";
+                //find subnetid
+                for (Map.Entry<String, String> entry : netportmap.entrySet()) {
+                    if (entry.getValue().compareTo(servtermreq.getE2EWIMElem().get(i)) == 0) {
+                        subnetid = entry.getValue();
+                        break;
+                    }
+                }
+                if (subnetid.compareTo("") == 0) {
+                    System.out.println("XenIF ---> error subnet not found for delete port");
+                    return;
+                }
+                netportmap.remove(subnetid);
             } else {
-                NetworkService servel = netservlist.get(key);
-                if (servel != null) {
-                    netservlist.remove(key);
-                    resplist.add(key);
-                }
+                System.out.println("XenIF ---> no datanet, subnet, port to remove. Nothing to do" );
             }
+
+            resplist.add(servtermreq.getE2EWIMElem().get(i));
         }
         
         VirtualNetworkTerminateReply servtermrep = new VirtualNetworkTerminateReply(servtermreq.getReqId(),resplist);

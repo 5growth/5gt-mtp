@@ -39,6 +39,7 @@ blueprint = flask.Blueprint('flavour_resources', __name__)
 
 def extract_flavour(flavour):
     return {
+        'name': flavour.name,
         'flavourId': flavour.id,
         'accelerationCapability': '',
         'virtualMemory': {
@@ -226,7 +227,7 @@ class ComputeFlavourQueryAPI(SwaggerView):
 
         filtered_flavor = []
         for flavor in flavours:
-            match = False
+            match = True
             for item in filter_list:
                 # Get param value from flavor
                 try:

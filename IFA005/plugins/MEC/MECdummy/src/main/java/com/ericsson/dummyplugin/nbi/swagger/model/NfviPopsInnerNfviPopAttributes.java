@@ -1,5 +1,9 @@
 package com.ericsson.dummyplugin.nbi.swagger.model;
 
+import com.ericsson.dummyplugin.nbi.swagger.model.MECRegionInfo;
+import com.ericsson.dummyplugin.nbi.swagger.model.NfviPopsInnerNfviPopAttributesNetworkConnectivityEndpoint;
+import com.ericsson.dummyplugin.nbi.swagger.model.NfviPopsInnerNfviPopAttributesRadioCoverageAreas;
+import com.ericsson.dummyplugin.nbi.swagger.model.NfviPopsInnerNfviPopAttributesResourceZoneAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.*;

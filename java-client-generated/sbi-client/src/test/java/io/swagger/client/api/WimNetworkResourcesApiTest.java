@@ -13,17 +13,20 @@
 
 package io.swagger.client.api;
 
+import io.swagger.client.ApiException;
 import com.mtp.extinterface.nbi.swagger.model.AllocateParameters;
 import com.mtp.extinterface.nbi.swagger.model.AllocateReply;
 import com.mtp.extinterface.nbi.swagger.model.Filter;
 import com.mtp.extinterface.nbi.swagger.model.InlineResponse2002;
 import com.mtp.extinterface.nbi.swagger.model.NetworkIds;
 import com.mtp.extinterface.nbi.swagger.model.VirtualNetwork;
-import io.swagger.client.ApiException;
 import org.junit.Test;
 import org.junit.Ignore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * API tests for WimNetworkResourcesApi

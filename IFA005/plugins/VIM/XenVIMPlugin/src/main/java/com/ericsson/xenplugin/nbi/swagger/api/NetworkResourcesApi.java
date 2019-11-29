@@ -2,23 +2,27 @@ package com.ericsson.xenplugin.nbi.swagger.api;
 
 
 
+
 import com.ericsson.xenplugin.SingletonEventBus;
 import com.ericsson.xenplugin.events.allocate.VirtualNetworkAllocateReply;
 import com.ericsson.xenplugin.events.allocate.VirtualNetworkAllocateRequest;
 import com.ericsson.xenplugin.events.terminate.VirtualNetworkTerminateReply;
 import com.ericsson.xenplugin.events.terminate.VirtualNetworkTerminateRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.AllocateNetworkRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.AllocateNetworkResult;
+import com.ericsson.xenplugin.nbi.swagger.model.CapacityInformation;
+import com.ericsson.xenplugin.nbi.swagger.model.Filter;
+import com.ericsson.xenplugin.nbi.swagger.model.NfviPop;
+import com.ericsson.xenplugin.nbi.swagger.model.QueryNetworkCapacityRequest;
+import com.ericsson.xenplugin.nbi.swagger.model.VLANInfo;
+import com.ericsson.xenplugin.nbi.swagger.model.VirtualNetwork;
 import com.google.common.eventbus.Subscribe;
-import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkRequest;
-import com.mtp.extinterface.nbi.swagger.model.AllocateNetworkResult;
-import com.mtp.extinterface.nbi.swagger.model.CapacityInformation;
-import com.mtp.extinterface.nbi.swagger.model.Filter;
-import com.mtp.extinterface.nbi.swagger.model.NfviPop;
-import com.mtp.extinterface.nbi.swagger.model.QueryNetworkCapacityRequest;
-import com.mtp.extinterface.nbi.swagger.model.VirtualNetwork;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 import io.swagger.annotations.*;
+import java.math.BigDecimal;
+
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +34,8 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.server.ManagedAsync;
 
+
+//TODO: Handle IntraPoP API
 @Path("/network_resources")
 @Api(description = "the network_resources API")
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2018-11-27T12:43:31.935Z")
@@ -41,7 +47,19 @@ public class NetworkResourcesApi {
         //reqid = 0;
 
     }
-    
+    @GET
+    @Path("/free_vlan")
+    @Produces({ "application/json" })
+    @ApiOperation(value = "Retrieve free vlan tag from VIM domain", notes = "Retrieve free vlan tag from VIM domain", response = BigDecimal.class, responseContainer = "List", tags={ "VIMNetworkResources",  })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "The filtered information that has been retrieved. The cardinality can be 0 if no matching information exist.", response = VLANInfo.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Bad request", response = Void.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)
+    })
+    public Response freeVlan() {
+        return Response.ok().entity("Not Implemented!").build();
+    }
     
     @POST
     @ManagedAsync
@@ -54,7 +72,7 @@ public class NetworkResourcesApi {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 409, message = "network already added", response = Void.class) })
-    public void allocateNetwork(@Suspended final AsyncResponse ar, @Valid AllocateNetworkRequest params) {
+    public void vIMallocateNetwork(@Suspended final AsyncResponse ar, @Valid AllocateNetworkRequest params) {
         //return Response.ok().entity("Not Implemented!").build();
         System.out.println("allocateVirtualNetwork ----> query nfvipop suspended");
         System.out.println("allocateVirtualNetwork ----> Calling post");
@@ -102,7 +120,7 @@ public class NetworkResourcesApi {
         @ApiResponse(code = 400, message = "Bad request", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
-    public Response queryNetworks(@Valid Filter networkQueryFilter) {
+    public Response vIMqueryNetworks(@Valid Filter networkQueryFilter) {
         return Response.ok().entity("Not Implemented!").build();
     }
 
@@ -116,7 +134,7 @@ public class NetworkResourcesApi {
         @ApiResponse(code = 400, message = "Bad request", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
-    public void terminateNetworks(@Suspended final AsyncResponse ar, @QueryParam("networkResourceId") @NotNull   @ApiParam("Identifier of the virtualised network resource(s) to be terminated.")  List<String> networkResourceId) {
+    public void vIMterminateNetworks(@Suspended final AsyncResponse ar, @QueryParam("networkResourceId") @NotNull   @ApiParam("Identifier of the virtualised network resource(s) to be terminated.")  List<String> networkResourceId) {
         //return Response.ok().entity("Not Implemented!").build();
         System.out.println("terminateVirtualNetwork ----> query nfvipop suspended");
         System.out.println("terminateVirtualNetwork ----> Calling post");
