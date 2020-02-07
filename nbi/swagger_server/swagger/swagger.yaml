@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "REST-API server for the North Bound Interface (NBI) of the 5GT-SO.\
     \ Find more at http://5g-transformer.eu"
-  version: "1.5"
+  version: "1.7"
   title: "5GT-MTP NBI"
   termsOfService: "/tos"
   contact:
@@ -264,9 +264,6 @@ definitions:
         $ref: "#/definitions/interNfviPopNetworkType"
       metaData:
         $ref: "#/definitions/metaData"
-  interNfviPopConnnectivityId:
-    type: "string"
-    description: "Identifier provided by the MTP to identify the inter-Nfvi-Pop connectivity."
   metaData:
     type: "array"
     description: "metaData information used to carry ionformat metadata."
@@ -286,6 +283,9 @@ definitions:
         $ref: "#/definitions/interNfviPopConnnectivityIdList"
       metaData:
         $ref: "#/definitions/metaData"
+  interNfviPopConnnectivityId:
+    type: "string"
+    description: "Identifier provided by the MTP to identify the inter-Nfvi-Pop connectivity."
   logicalLinkAttributes:
     type: "object"
     required:
@@ -495,7 +495,7 @@ definitions:
         type: "string"
         description: "The binary software image file."
       typeSubnetData:
-        $ref: "#/definitions/typeSubnetData"
+        $ref: "#/definitions/SubnetData"
     example:
       networkResourceType: "networkResourceType"
       metadata:
@@ -508,7 +508,9 @@ definitions:
         metadata: ""
         ipVersion: "ipVersion"
         isDhcpEnabled: true
-        addressPool: "addressPool"
+        addressPool:
+        - 0
+        - 0
         networkId: "networkId"
         gatewayIp: "gatewayIp"
         cidr: "cidr"
@@ -519,50 +521,6 @@ definitions:
       locationConstraints: "locationConstraints"
       resourceGroupId: "resourceGroupId"
       typeNetworkData: "typeNetworkData"
-  typeSubnetData:
-    type: "object"
-    required:
-    - "addressPool"
-    - "cidr"
-    - "gatewayIp"
-    - "ipVersion"
-    - "isDhcpEnabled"
-    - "metadata"
-    - "networkId"
-    - "resourceId"
-    properties:
-      resourceId:
-        type: "string"
-        description: "Identifiers of the network Resource"
-      networkId:
-        type: "string"
-        description: "Network identifier the subnetwork Resource"
-      ipVersion:
-        type: "string"
-        description: "IP version of the subnetwork Resource"
-      gatewayIp:
-        type: "string"
-        description: "gateway of the subnetwork Resource"
-      cidr:
-        type: "string"
-        description: "cidr of the subnetwork Resource"
-      isDhcpEnabled:
-        type: "boolean"
-        description: "enable if dhcp of the network Resource"
-      addressPool:
-        type: "string"
-        description: "Address Pool of the subnetwork Resource"
-      metadata:
-        $ref: "#/definitions/metaData"
-    example:
-      resourceId: "resourceId"
-      metadata: ""
-      ipVersion: "ipVersion"
-      isDhcpEnabled: true
-      addressPool: "addressPool"
-      networkId: "networkId"
-      gatewayIp: "gatewayIp"
-      cidr: "cidr"
   AllocateNetworkResult:
     type: "object"
     required:
@@ -578,9 +536,16 @@ definitions:
         $ref: "#/definitions/AllocateNetworkResult_subnetData"
     example:
       networkData:
-        subnet: "subnet"
-        networkResourceName: "networkResourceName"
+        subnet:
+        - "subnet"
+        - "subnet"
+        metadata:
+        - value: "value"
+          key: "key"
+        - value: "value"
+          key: "key"
         bandwidth: 0.80082819046101150206595775671303272247314453125
+        networkResourceName: "networkResourceName"
         networkQoS:
         - qosName: "qosName"
           qosValue: "qosValue"
@@ -627,7 +592,9 @@ definitions:
         resourceId: "resourceId"
         ipVersion: "ipVersion"
         isDhcpEnabled: true
-        addressPool: "addressPool"
+        addressPool:
+        - 1
+        - 1
         cidr: "cidr"
         gatewayIp: "gatewayIp"
         networkId: "networkId"
@@ -645,6 +612,54 @@ definitions:
         networkId: "networkId"
         operationalState: "operationalState"
         attachedResourceId: "attachedResourceId"
+  SubnetData:
+    type: "object"
+    required:
+    - "addressPool"
+    - "cidr"
+    - "gatewayIp"
+    - "ipVersion"
+    - "isDhcpEnabled"
+    - "metadata"
+    - "networkId"
+    - "resourceId"
+    properties:
+      resourceId:
+        type: "string"
+        description: "Identifiers of the network Resource"
+      networkId:
+        type: "string"
+        description: "Network identifier the subnetwork Resource"
+      ipVersion:
+        type: "string"
+        description: "IP version of the subnetwork Resource"
+      gatewayIp:
+        type: "string"
+        description: "gateway of the subnetwork Resource"
+      cidr:
+        type: "string"
+        description: "cidr of the subnetwork Resource"
+      isDhcpEnabled:
+        type: "boolean"
+        description: "enable if dhcp of the network Resource"
+      addressPool:
+        type: "array"
+        description: "Address Pool format as range of valid address"
+        items:
+          type: "integer"
+      metadata:
+        $ref: "#/definitions/metaData"
+    example:
+      resourceId: "resourceId"
+      metadata: ""
+      ipVersion: "ipVersion"
+      isDhcpEnabled: true
+      addressPool:
+      - 0
+      - 0
+      networkId: "networkId"
+      gatewayIp: "gatewayIp"
+      cidr: "cidr"
   inline_response_200:
     properties:
       NfviPops:
@@ -998,6 +1013,7 @@ definitions:
     required:
     - "bandwidth"
     - "isShared"
+    - "metadata"
     - "networkPort"
     - "networkQoS"
     - "networkResourceId"
@@ -1054,19 +1070,34 @@ definitions:
         description: "Only present for shared networks. Indicate the sharing criteria\
           \ for this network. This criteria might be a list of authorized consumers."
       subnet:
-        type: "string"
+        type: "array"
         description: "Only present if the network provides layer 3 connectivity."
+        items:
+          type: "string"
       zoneId:
         type: "string"
         description: "If present, it identifies the Resource Zone where the virtual\
           \ network resources have been allocated."
+      metadata:
+        type: "array"
+        description: "List of metadata key-value pairs used by the consumer to\n \
+          \ associate meaningful metadata to the related virtualised resource."
+        items:
+          $ref: "#/definitions/metaData_inner"
     description: "If network types are created satisfactorily, it contains the data\
       \ relative to the instantiated virtualised network resource. Cardinality can\
       \ be \"0\" if the request did not include creation of such type of resource."
     example:
-      subnet: "subnet"
-      networkResourceName: "networkResourceName"
+      subnet:
+      - "subnet"
+      - "subnet"
+      metadata:
+      - value: "value"
+        key: "key"
+      - value: "value"
+        key: "key"
       bandwidth: 0.80082819046101150206595775671303272247314453125
+      networkResourceName: "networkResourceName"
       networkQoS:
       - qosName: "qosName"
         qosValue: "qosValue"
@@ -1180,10 +1211,12 @@ definitions:
     - "resourceId"
     properties:
       addressPool:
-        type: "string"
+        type: "array"
         description: "Address pools for the network/subnetwork. The cardinality can\
           \ be 0 when VIM is allowed to allocate all addresses in the CIDR except\
           \ for the address of the network/subnetwork gateway."
+        items:
+          type: "integer"
       cidr:
         type: "string"
         description: "The CIDR of the network/subnetwork, i.e. network address and\
@@ -1228,7 +1261,9 @@ definitions:
       resourceId: "resourceId"
       ipVersion: "ipVersion"
       isDhcpEnabled: true
-      addressPool: "addressPool"
+      addressPool:
+      - 1
+      - 1
       cidr: "cidr"
       gatewayIp: "gatewayIp"
       networkId: "networkId"

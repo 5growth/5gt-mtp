@@ -7,7 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
 from swagger_server.models.meta_data_inner import MetaDataInner  # noqa: F401,E501
-from swagger_server.models.type_subnet_data import TypeSubnetData  # noqa: F401,E501
+from swagger_server.models.subnet_data import SubnetData  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -17,7 +17,7 @@ class AllocateNetworkRequest(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, affinity_or_anti_affinity_constraints: str=None, location_constraints: str=None, metadata: List[MetaDataInner]=None, network_resource_name: str=None, network_resource_type: str=None, reservation_id: str=None, resource_group_id: str=None, type_network_data: str=None, type_network_port_data: str=None, type_subnet_data: TypeSubnetData=None):  # noqa: E501
+    def __init__(self, affinity_or_anti_affinity_constraints: str=None, location_constraints: str=None, metadata: List[MetaDataInner]=None, network_resource_name: str=None, network_resource_type: str=None, reservation_id: str=None, resource_group_id: str=None, type_network_data: str=None, type_network_port_data: str=None, type_subnet_data: SubnetData=None):  # noqa: E501
         """AllocateNetworkRequest - a model defined in Swagger
 
         :param affinity_or_anti_affinity_constraints: The affinity_or_anti_affinity_constraints of this AllocateNetworkRequest.  # noqa: E501
@@ -39,7 +39,7 @@ class AllocateNetworkRequest(Model):
         :param type_network_port_data: The type_network_port_data of this AllocateNetworkRequest.  # noqa: E501
         :type type_network_port_data: str
         :param type_subnet_data: The type_subnet_data of this AllocateNetworkRequest.  # noqa: E501
-        :type type_subnet_data: TypeSubnetData
+        :type type_subnet_data: SubnetData
         """
         self.swagger_types = {
             'affinity_or_anti_affinity_constraints': str,
@@ -51,7 +51,7 @@ class AllocateNetworkRequest(Model):
             'resource_group_id': str,
             'type_network_data': str,
             'type_network_port_data': str,
-            'type_subnet_data': TypeSubnetData
+            'type_subnet_data': SubnetData
         }
 
         self.attribute_map = {
@@ -315,22 +315,22 @@ class AllocateNetworkRequest(Model):
         self._type_network_port_data = type_network_port_data
 
     @property
-    def type_subnet_data(self) -> TypeSubnetData:
+    def type_subnet_data(self) -> SubnetData:
         """Gets the type_subnet_data of this AllocateNetworkRequest.
 
 
         :return: The type_subnet_data of this AllocateNetworkRequest.
-        :rtype: TypeSubnetData
+        :rtype: SubnetData
         """
         return self._type_subnet_data
 
     @type_subnet_data.setter
-    def type_subnet_data(self, type_subnet_data: TypeSubnetData):
+    def type_subnet_data(self, type_subnet_data: SubnetData):
         """Sets the type_subnet_data of this AllocateNetworkRequest.
 
 
         :param type_subnet_data: The type_subnet_data of this AllocateNetworkRequest.
-        :type type_subnet_data: TypeSubnetData
+        :type type_subnet_data: SubnetData
         """
         if type_subnet_data is None:
             raise ValueError("Invalid value for `type_subnet_data`, must not be `None`")  # noqa: E501

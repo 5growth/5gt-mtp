@@ -27,6 +27,7 @@
                         <th>Username</th>
                         <th>Password</th>
                         <th>Tenant Name</th>
+                        <th>Monitoring Endpoint</th>
                         <th></th>
                     </tr>
                     {% endif %}
@@ -43,6 +44,7 @@
                         <td>{{ dict_item.username }}</td>
                         <td>************</td>
                         <td>{{ dict_item.tenantName }}</td>
+                        <td>{{ dict_item.monitoringEndpoint }}</td>
                         <td>
                             <button class="btn btn-default" data-toggle="modal"
                                     data-target="#domainModal{{ dict_item.id }}" title="Modify Domain Entry"><span
@@ -428,16 +430,39 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="btn-toolbar">
+                    <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#newStitchingModal">New
+                        Entry
+                    </button>
+                    <form action="{{ url_for('remove_all_elements') }}" method="POST">
+                        <input type="hidden" name="table_to_choose" value="stitching">
+                        <button type="submit" class="btn btn-danger pull-right">Delete all rows</button>
+                    </form>
+                </div>
                 <!-- /.table-responsive -->
-                <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#newStitchingModal">New
-                    Entry
-                </button>
             </div>
             <!-- /.panel-body -->
         </div>
         <!-- /.panel -->
     </div>
     <!-- /.col-lg-8 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="well">
+            <div class="form-group">
+                <label> Upload a Stitching file</label>
+                <form action="{{ url_for('add_element_from_file') }}" method="POST" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <input type="file" class="form-control-file" name="file_to_add" required>
+                        <input type="hidden" name="table_to_choose" value="stitching">
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endif %}
 
@@ -621,6 +646,10 @@
                             <div class="form-group">
                                 <label>Tenant Name</label>
                                 <input class="form-control" name="tenantName" value="{{ dict_item.tenantName }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Monitoring Endpoint</label>
+                                <input class="form-control" name="monitoringEndpoint" value="{{ dict_item.monitoringEndpoint }}">
                             </div>
                             <input type="hidden" name="id" value="{{ dict_item.id }}">
                             <input type="hidden" name="table_to_choose" value="domainlist">
@@ -1186,6 +1215,10 @@
                                 <label>Tenant Name</label>
                                 <input class="form-control" name="tenantName">
                             </div>
+                            <div class="form-group">
+                                <label>Monitoring EndPoint</label>
+                                <input class="form-control" name="monitoringEndpoint">
+                            </div>
                             <input type="hidden" name="table_to_choose" value="domainlist">
                         </div>
                     </div>
@@ -1503,19 +1536,19 @@
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label>Service Id</label>
-                                <input class="form-control" name="serviceId">
+                                <input class="form-control" name="serviceId" required>
                             </div>
                             <div class="form-group">
                                 <label>Name</label>
-                                <input class="form-control" name="vlName">
+                                <input class="form-control" name="vlName" required>
                             </div>
                             <div class="form-group">
                                 <label>Network ID</label>
-                                <input class="form-control" name="networkId">
+                                <input class="form-control" name="networkId" required>
                             </div>
                             <div class="form-group">
                                 <label>Vim Id</label>
-                                <input class="form-control" name="vimId">
+                                <input class="form-control" name="vimId" required>
                             </div>
                             <div class="form-group">
                                 <label>Floating IP</label>
@@ -1526,15 +1559,15 @@
                             </div>
                             <div class="form-group">
                                 <label>CIDR</label>
-                                <input class="form-control" name="cidr">
+                                <input class="form-control" name="cidr" required>
                             </div>
                             <div class="form-group">
                                 <label>VLAN Id</label>
-                                <input class="form-control" name="vlanId">
+                                <input class="form-control" name="vlanId" required>
                             </div>
                             <div class="form-group">
                                 <label>Pool</label>
-                                <input class="form-control" name="pool">
+                                <input class="form-control" name="pool" required>
                             </div>
                             <input type="hidden" name="table_to_choose" value="virtuallinks">
                         </div>

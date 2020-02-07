@@ -13,17 +13,9 @@
 # limitations under the License.
 
 # Author: Luca Vettori
-
-import json
-
-from nbi.nbi_server import db_session
-from db.db_models import *
 from orchestrator.domResLogic import decompose_stitching, decompose_wim, add_call_to_graph
 import networkx as nx
 from networkx.readwrite import json_graph
-from pprint import pprint
-
-from sbi import cop_connector
 
 
 def resource_view(call_id=None):

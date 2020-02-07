@@ -14,9 +14,7 @@
 
 # Author: Luca Vettori
 import traceback
-
 import connexion
-import six
 
 from nbi.swagger_server.models.allocate_network_request import AllocateNetworkRequest  # noqa: E501
 from nbi.swagger_server.models.allocate_network_result import AllocateNetworkResult  # noqa: E501
@@ -24,8 +22,6 @@ from nbi.swagger_server.models.allocate_network_result_network_data import Alloc
 from nbi.swagger_server.models.allocate_network_result_subnet_data import AllocateNetworkResultSubnetData
 from nbi.swagger_server.models.meta_data_inner import MetaDataInner
 from nbi.swagger_server.models.filter import Filter  # noqa: E501
-from nbi.swagger_server.models.virtual_network import VirtualNetwork  # noqa: E501
-from nbi.swagger_server import util
 from nbi.swagger_server.models.http_errors import *
 import logging
 from orchestrator import orch
@@ -57,22 +53,34 @@ def vi_mallocate_network(params):  # noqa: E501
         else:
             return error400(str(e))
     return AllocateNetworkResult(network_data=
-                                 AllocateNetworkResultNetworkData(network_resource_name=params.network_resource_name,
+                                 AllocateNetworkResultNetworkData(bandwidth=0,
                                                                   is_shared=True,
+                                                                  network_port=[],
+                                                                  network_qo_s=[],
                                                                   network_resource_id=response['network_id'],
-                                                                  network_type="",
-                                                                  operational_state="Up",
-                                                                  subnet=params.network_resource_name + "-subnet",
-                                                                  zone_id=""),
+                                                                  network_resource_name=params.network_resource_name,
+                                                                  # network_type=params.type_network_data,  # TODO implement logic
+                                                                  network_type="vlan",
+                                                                  operational_state="enabled",
+                                                                  segment_type=str(response['vlan_id']),
+                                                                  sharing_criteria="",
+                                                                  subnet=[params.network_resource_name + "-subnet"],
+                                                                  zone_id="",
+                                                                  metadata=[
+                                                                      MetaDataInner(key='provider:segmentation_id',
+                                                                                    value=str(response['vlan_id']))]),
+                                 network_port_data=None,
                                  subnet_data=
-                                 AllocateNetworkResultSubnetData(address_pool=response['pool'],
+                                 AllocateNetworkResultSubnetData(address_pool=[response['pool']],
                                                                  cidr="192.168.{}.0/24".format(response['CIDR']),
                                                                  gateway_ip="192.168.{}.1".format(response['CIDR']),
                                                                  ip_version="IPv4",
                                                                  is_dhcp_enabled=True,
+                                                                 metadata=[],
                                                                  network_id=response['subnet_id'],
-                                                                 metadata=[MetaDataInner(key='SegmentationID',
-                                                                                         value=response['vlan_id'])])
+                                                                 operational_state="enabled",
+                                                                 resource_id=response['subnet_id']
+                                                                 )
                                  ), 201
 
 
@@ -87,7 +95,7 @@ def vi_mquery_networks(networkQueryFilter):  # noqa: E501
     :rtype: List[VirtualNetwork]
     """
     if connexion.request.is_json:
-        networkQueryFilter = Filter.from_dict(connexion.request.get_json())  # noqa: E501
+        network_query_filter = Filter.from_dict(connexion.request.get_json())  # noqa: E501
     return error501('Not implemented yet.')
 
 

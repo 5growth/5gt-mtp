@@ -149,7 +149,11 @@ def decompose_wim(wim_id, g):
     images = {
         "OF": "/static/images/switch.png",
         "OF-W": "/static/images/w-switch.png",
-        "GMPLS": "/static/images/oxc.png"
+        "GMPLS": "/static/images/oxc.png",
+        "accessPE": "/static/images/router.png",
+        "access_metroPE": "/static/images/router.png",
+        "metro_corePE": "/static/images/router.png",
+        "corePE": "/static/images/router.png"
     }
     # g = nx.DiGraph()
     result = db_session.query(Dbdomainlist).filter_by(type="WIM", id=wim_id).first()

@@ -13,17 +13,13 @@
 # limitations under the License.
 
 # Author: Luca Vettori
-
+import csv
 import hashlib
 import ipaddress
-import json
-from datetime import timedelta
-
 import connexion
-import yaml
 
 from nbi.swagger_server import encoder
-from os import path
+from os import path, getenv
 from log.log import configure_log
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -40,10 +36,13 @@ from nbi.login_module.server_login import login_passed
 log_file = 'mtp_log.log'
 config_pa_file = path.realpath(path.join(path.dirname(path.realpath(__file__)), '../pa.properties'))
 pa_client = PaClient(filename=config_pa_file)
-# name_db_models = '/home/cttc/5gt-cttc-mtp/db/mtp_db.db'
 name_db_models = path.realpath(path.join(path.dirname(path.realpath(__file__)), '../db/mtp_db.db'))
 engine = create_engine('sqlite:///' + name_db_models, convert_unicode=True, connect_args={'check_same_thread': False})
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+# get the env variable OPTION_PA_ALGORITHM
+# allowed values are OPTION_A and OPTION_B (default value is set to OPTION_B)
+# TODO control if the value is OPTION_A or OPTION_B
+OPTION_PA_ALGORITHM = getenv("OPTION_PA_ALGORITHM", "OPTION_B")
 
 local_swagger_ui_path = path.join(path.dirname(path.realpath(__file__)), 'swagger_server/swagger-ui-cttc')
 options = {'swagger_path': local_swagger_ui_path}
@@ -298,6 +297,58 @@ def create_element():
         return redirect(request.referrer)
 
 
+@app.route('/add_elements', methods=['POST'])
+@login_passed
+def add_element_from_file():
+    """
+    This function just responds to the browser Url
+    :return: redirect to the previous page
+    """
+    if request.method == 'POST':
+        try:
+            table_to_choose = request.form['table_to_choose']
+            f = request.files['file_to_add']
+            if table_to_choose == "stitching":
+                csvfile = f.read().decode('utf-8').splitlines()
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    db_session.add(get_class_by_tablename(table_to_choose)(**row))
+                db_session.commit()
+            else:
+                message = {'Error': 'Database not accessible'}
+                logger.error('Tried to add file to not alllowed table')
+                flash(message['Error'], 'danger')
+        except (IntegrityError, StatementError, ValueError) as e:
+            db_session.rollback()
+            message = {'Error': 'Error in database operation'}
+            logger.error(e)
+            flash(message['Error'], 'danger')
+        return redirect(request.referrer)
+
+
+@app.route('/remove_all_elements', methods=['POST'])
+@login_passed
+def remove_all_elements():
+    """
+    This function just responds to the browser Url
+    :return: redirect to the previous page
+    """
+    if request.method == 'POST':
+
+        table_to_choose = request.form['table_to_choose']
+        try:
+            if table_to_choose == "stitching":
+                rows_deleteted = db_session.query(get_class_by_tablename(table_to_choose)).delete()
+                logger.info("Deleted {} rows in {} table".format(rows_deleteted, table_to_choose))
+                db_session.commit()
+        except (IntegrityError, StatementError, ValueError) as e:
+            db_session.rollback()
+            message = {'Error': 'Error in database operation'}
+            logger.error(e)
+            flash(message['Error'], 'danger')
+        return redirect(request.referrer)
+
+
 @app.route('/res_view')
 @login_passed
 def res_view():
@@ -533,6 +584,7 @@ def display_logs_popup():
 
 if __name__ == '__main__':
     logger = configure_log(log_file)
+    logger.info("MTP using '{}' Architecture!".format(OPTION_PA_ALGORITHM))
     logger.info("Starting MTP NBI server.")
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api('swagger.yaml', arguments={'title': '5GT-MTP NBI'}, strict_validation=True)

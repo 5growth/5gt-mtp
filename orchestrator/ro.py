@@ -17,26 +17,16 @@
 from random import randint
 from ipaddress import ip_address, ip_network
 
-import networkx as nx
-from networkx.readwrite import json_graph
-
 from nbi.nbi_server import db_session
 from db.db_models import *
 from sbi import openstack_connector, cop_connector
 import logging
-import orchestrator.domResLogic as domResLogic
-import orchestrator.absLogic as absLogic
-from requests.exceptions import InvalidURL
-from sqlalchemy.exc import IntegrityError
-from pprint import pprint
 from nbi.nbi_server import pa_client
-from pa.swagger_client.models import CompRouteInput, CompRouteInputInterWanLinks, CompRouteInputNetwLinkQoS, \
-    CompRouteInputAbsWanTopo, CompRouteInputNodes, CompRouteInputEdges, CompRouteInputQosCons
 
 
-def instantiate_connectivity(connectivity_id, inner_graph, src_pe, dst_pe, src_vnf_ip, dst_vnf_ip, metadata_call, req_bw, req_delay):
+def calculate_connectivity(connectivity_id, inner_graph, src_pe, dst_pe, req_bw, req_delay):
     """
-    Instantiation of the inter-NFVI-PoP connectivity
+    Calculating of the inter-NFVI-PoP connectivity
 
     :param connectivity_id
     :type connectivity_id: str
@@ -46,27 +36,19 @@ def instantiate_connectivity(connectivity_id, inner_graph, src_pe, dst_pe, src_v
     :type src_pe: str
     :param dst_pe:
     :type dst_pe: str
-    :param src_vnf_ip:
-    :type src_vnf_ip: string
-    :param dst_vnf_ip:
-    :type dst_vnf_ip: string
-    :param metadata_call
-    :type metadata_call: dict
     :param req_bw:
     :type req_bw: int
     :param req_delay:
     :type req_delay: int
     :rtype: List[object]
     """
-    logger = logging.getLogger('cttc_mtp.ro.inst_connectivity')
-
+    logger = logging.getLogger('cttc_mtp.ro.calculate_connectivity')
     # list_of_wim is a parameter to be sent with connectivity_id to the ServiceDB
     list_of_wim_id = []
     for i, node in inner_graph.nodes(data=True):
         if node['type'] == "WIM":
             list_of_wim_id.append(node['name'])
     # print('List_of_wim: {}'.format(list_of_wim_id))
-
     # find the list of interWan and Gw2Pe links
     list_of_inter_wan_link = []
     list_of_gw_to_pe_link = []
@@ -79,7 +61,6 @@ def instantiate_connectivity(connectivity_id, inner_graph, src_pe, dst_pe, src_v
             list_of_gw_to_pe_link.append(edge)
     logger.debug("List of interWanLinks: {}".format(list_of_inter_wan_link))
     logger.info("Retrieved list of interWanLinks")
-
     # retrieve the list of WIM (id of MTP) involved in the LL
     topologies = []
     for wim in list_of_wim_id:
@@ -96,16 +77,39 @@ def instantiate_connectivity(connectivity_id, inner_graph, src_pe, dst_pe, src_v
                                          req_delay)
     logger.info("PA Response: {}".format(str(pa_response)))
     # TODO check the number of kpaths output of PA, in the following we consider the first path of list
+    return pa_response, list_of_gw_to_pe_link
+
+
+def instantiate_connectivity(path, gw_pe_links, connectivity_id, src_vnf_ip, dst_vnf_ip, metadata_call, req_bw):
+    """
+    Instantiation of the inter-NFVI-PoP connectivity
+
+    :param path
+    :type object
+    :param gw_pe_links
+    :param connectivity_id
+    :type connectivity_id: str
+    :param src_vnf_ip:
+    :type src_vnf_ip: string
+    :param dst_vnf_ip:
+    :type dst_vnf_ip: string
+    :param metadata_call
+    :type metadata_call: dict
+    :param req_bw:
+    :type req_bw: int
+    :rtype: List[object]
+    """
+    logger = logging.getLogger('cttc_mtp.ro.instantiate_connectivity')
     # create the list of links for the call in order to be depicted in the Resource Viewer
     list_links_call = []
     # inter_wan_links used in the call
-    if pa_response.comp_route_output.comp_routes[0].inter_wan_links is not None:
-        for interwanlink in pa_response.comp_route_output.comp_routes[0].inter_wan_links:
+    if path.comp_route_output.comp_routes[0].inter_wan_links is not None:
+        for interwanlink in path.comp_route_output.comp_routes[0].inter_wan_links:
             list_links_call.append({"source": interwanlink.a_pe_id,
                                     "destination": interwanlink.z_pe_id,
                                     "inter_link_type": "interWanLink"})
     # intrawan_links used in the call
-    for intrawanlink in pa_response.comp_route_output.comp_routes[0].wan_paths:
+    for intrawanlink in path.comp_route_output.comp_routes[0].wan_paths:
         for element in intrawanlink.wan_path_elements:
             list_links_call.append({"source": element.a_node_id,
                                     "destination": element.z_node_id,
@@ -135,14 +139,14 @@ def instantiate_connectivity(connectivity_id, inner_graph, src_pe, dst_pe, src_v
     list_new_call_id = create_new_call_ids(list_used_call_id)
     # Creating Overall calls for WIM in the PA Response
     list_of_involved_wim = []
-    for wan in pa_response.comp_route_output.comp_routes[0].wan_paths:
+    for wan in path.comp_route_output.comp_routes[0].wan_paths:
         # print(wan.wim_id)
         list_of_involved_wim.append(wan.wim_id)
         cop_response = cop_connector.create_call(wim=wan.wim_id,
                                                  callId=list_new_call_id,
                                                  internal_path=wan.wan_path_elements,
-                                                 inter_wan_path=pa_response.comp_route_output.comp_routes[0].inter_wan_links,
-                                                 edge_paths=list_of_gw_to_pe_link,
+                                                 inter_wan_path=path.comp_route_output.comp_routes[0].inter_wan_links,
+                                                 edge_paths=gw_pe_links,
                                                  src_ip=src_vnf_ip,
                                                  dst_ip=dst_vnf_ip,
                                                  metadata_call=metadata_call,
@@ -193,6 +197,11 @@ def create_intrapop_net(body_request, metadata_in_body, network_in_db):
     :return body_create_net: dict
     """
     logger = logging.getLogger('cttc_mtp.ro.create_intrapop_net')
+    # create dictionary of metadata from subnet request
+    metadata_subnet = {}
+    for element in body_request.type_subnet_data.metadata:
+        metadata_subnet[element['key']] = element['value']
+    # print("metadata subnet: {}".format(metadata_subnet))
     # list of vlan and cidr already used in Db (removed the duplicates)
     list_of_vlan = list(set([n.vlanId for n in network_in_db]))
     list_of_cidr = list(set([n.cidr for n in network_in_db]))
@@ -205,8 +214,11 @@ def create_intrapop_net(body_request, metadata_in_body, network_in_db):
     body_create_net = {
         "name": body_request.network_resource_name,
         "vimId": metadata_in_body['vimId'],
-        "floating_ips": eval(metadata_in_body['floating_required'])  # converting str to bool (True/False)
+        "floating_ips": eval(metadata_subnet['ip-floating-required'])  # converting str to bool (True/False)
     }
+    # create a static route for network
+    if "mon_cidr" in metadata_subnet:
+        logger.info("'Monitoring CIDR' in the request. Static route is going to be created in the Network")
     pool_index = []
     if networks_filtered:
         # case of network with same name/serviceId is already present in the DB.
@@ -223,9 +235,9 @@ def create_intrapop_net(body_request, metadata_in_body, network_in_db):
             raise KeyError("Error in 'create_intrapop_net'. CIDR in request does not correspond in the MTP db.")
         cidr_id = networks_filtered[0].cidr
         if bool(body_request.type_subnet_data.address_pool):
-            net_pool_to_avoid_by_request = eval(body_request.type_subnet_data.address_pool)
+            net_pool_to_avoid_by_request = body_request.type_subnet_data.address_pool
             logger.debug("Pool to avoid {}".format(net_pool_to_avoid_by_request))
-            pool_index.extend((eval(body_request.type_subnet_data.address_pool)))
+            pool_index.extend(body_request.type_subnet_data.address_pool)
         pool_index = sorted(pool_index)
         # loop to create the Pool index ID value
         while True:
@@ -247,7 +259,7 @@ def create_intrapop_net(body_request, metadata_in_body, network_in_db):
         else:
             cidr = create_unique_net_cidr(list_of_cidr)
         if bool(body_request.type_subnet_data.address_pool):
-            # Update for Federation: added CIDR in intrapop network creation
+            # Update for Federation: added Adress Pool in intrapop network creation
             net_pool_to_avoid_by_request = eval(body_request.type_subnet_data.address_pool)
             logger.debug("Pool to avoid {}".format(net_pool_to_avoid_by_request))
             pool_index.extend((eval(body_request.type_subnet_data.address_pool)))
@@ -263,7 +275,7 @@ def create_intrapop_net(body_request, metadata_in_body, network_in_db):
         body_create_net["vlan_id"] = vlan
         body_create_net["CIDR"] = cidr
         body_create_net['pool'] = new_pool_index
-    net_ids = openstack_connector.create_os_networks(body_create_net)
+    net_ids = openstack_connector.create_os_networks(body_create_net, metadata_subnet)
     body_create_net['subnet_id'] = net_ids['subnet_id']
     body_create_net['router_id'] = net_ids['router_id']
     body_create_net['network_id'] = net_ids['network_id']

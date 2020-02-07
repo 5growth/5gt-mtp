@@ -41,6 +41,7 @@ class Dbdomainlist(Base):
     username = Column(Text)
     userpassword = Column(Text)
     tenantName = Column(Text)
+    monitoringEndpoint = Column(Text)
 
     # def __repr__(self):
     #     return '<DomainList %r>' % self.name
@@ -85,6 +86,7 @@ class Dbllinternfvipops(Base):
     networkLayer = Column(Text)
     interNfviPopNetworkType = Column(Text)
     interNfviPopNetworkTopology = Column(Text)
+    pathLL = Column(Text)
 
     def __repr__(self):
         return '<Logical Links Inter Nfvi Pops %r>' % self.logicalLinkId

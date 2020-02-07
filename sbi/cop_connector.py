@@ -163,7 +163,7 @@ def create_call(wim, callId, internal_path, inter_wan_path, edge_paths, src_ip, 
     for i, component in enumerate(topo_components_back):
         component['endpointId'] = str(i)
     metadata_call_back = {'srcMacAddr': metadata_call['dstMacAddr'], 'dstMacAddr': metadata_call['srcMacAddr']}
-    # in case of Federation also the vlanId parameter is presetn
+    # in case of Federation also the vlanId parameter is present
     if "vlanId" in metadata_call:
         metadata_call_back['vlanId'] = metadata_call['vlanId']
     # print("Backward: {}, {}, {}, {}".format(a_end_back, z_end_back, topo_components_back, metadata_call_back))

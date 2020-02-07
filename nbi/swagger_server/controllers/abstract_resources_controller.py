@@ -14,31 +14,17 @@
 
 # Author: Luca Vettori
 import datetime
-from uuid import uuid4
 import connexion
-import six
 import traceback
 
 from urllib3.exceptions import NewConnectionError
 
 from nbi.swagger_server.models.delete_inter_nfvi_pop_connectivity_request import DeleteInterNfviPopConnectivityRequest  # noqa: E501
 from nbi.swagger_server.models.inline_response200 import InlineResponse200  # noqa: E501
-from nbi.swagger_server.models.inline_response201 import InlineResponse201
 from nbi.swagger_server.models.inter_nfvi_pop_connectivity_request import InterNfviPopConnectivityRequest  # noqa: E501
-from nbi.swagger_server.models.inter_nfvi_pop_connnectivity_id_list import InterNfviPopConnnectivityIdList
-from nbi.swagger_server.models.inter_nfvi_pop_connnectivity_id import InterNfviPopConnnectivityId
-from nbi.swagger_server.models.inter_nfvi_pop_network_segment_type import InterNfviPopNetworkSegmentType
-from nbi.swagger_server.models.inter_nfvi_pop_connnectivity_id_list_inner import InterNfviPopConnnectivityIdListInner
-from nbi.swagger_server import util
 from nbi.swagger_server.models.http_errors import *
 
-from orchestrator import orch, ro
-
-from sqlalchemy.exc import IntegrityError
-from nbi.nbi_server import db_session
-from db.db_models import *
-from sbi.openstack_connector import *
-
+from orchestrator import orch
 import logging
 
 

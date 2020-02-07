@@ -18,7 +18,7 @@ import time
 from random import randint
 from uuid import uuid4
 
-from nbi.nbi_server import db_session
+from nbi.nbi_server import db_session, OPTION_PA_ALGORITHM
 from db.db_models import *
 from nbi.swagger_server.models.inter_nfvi_pop_connnectivity_id_list_inner import InterNfviPopConnnectivityIdListInner
 from sbi import openstack_connector, cop_connector
@@ -122,84 +122,99 @@ def create_connectivity(body):
     ll_attributes = body.logical_link_path_list
     net_layer = body.network_layer
     net_type = body.inter_nfvi_pop_network_type
+    if net_layer.upper() != 'VLAN':
+        raise KeyError("'networkLayer' parameter should be 'VLAN'. No other options implemented yet.")
     for ll_attr in ll_attributes:
-        # decompose the LL to retrieve NfviPoP and GW involved
-        ll_endpoint = absLogic.decompose_ll(ll_attr)
-        # decompose the stitching table in order to retrieve the internal PEs and WIMs
-        # creating a nx graph from stitching table
-        total_graph = domResLogic.decompose_stitching()
-        # Reducing the graph between Src Gw and Dst Gw
-        src_gw = ll_endpoint[1]
-        dst_gw = ll_endpoint[3]
-        # Reducing the graph between the two GWs (in order to remove the NFVIPOP connected to the GW
-        # In this way it remains only one adjacent node connected to the GW (and for assumption is a PE)
-        inner_graph = domResLogic.reducing_graph(total_graph, src_gw, dst_gw)
-        # retrieve the index of source and destination GWs in the graph
-        node_src_gw = [x for x, y in inner_graph.nodes(data=True) if y['name'] == src_gw]
-        node_dst_gw = [x for x, y in inner_graph.nodes(data=True) if y['name'] == dst_gw]
-        # find adjacents node (PEs) of SRC and DST GW -> having reduced the graph is only one node i.e. a PE
-        adjacents_to_src_gw = [n for n in inner_graph.neighbors(node_src_gw[0])]
-        adjacents_to_dst_gw = [n for n in inner_graph.neighbors(node_dst_gw[0])]
-        # ASSUMPTION: ONE PE CONNECTED TO ONE GW
-        src_pe_id = inner_graph.node[adjacents_to_src_gw[0]]['name']
-        dst_pe_id = inner_graph.node[adjacents_to_dst_gw[0]]['name']
-        # print(src_pe_id, dst_pe_id)
-        # retrieve the ServiceID related to the LL
-        meta_data = body.meta_data
-        service_id_in_metadata = (False, '')
-        for meta_data_element in meta_data:
-            if meta_data_element['key'] == "ServiceId":
-                service_id_in_metadata = (True, meta_data_element['value'])
-                logger.info("ServiceId in the request: '{}'".format(service_id_in_metadata[1]))
-
-        if not service_id_in_metadata[0]:
-            # case of ServiceId not defined in the request
-            logger.error("ServiceId wrong in the request")
-            raise KeyError("Check the ServiceId in the request")
-        # retrieve the IP address
-        src_vnf_ip = ''
-        dst_vnf_ip = ''
-        src_mac_add = ''
-        dst_mac_add = ''
-        vlan_federation = None
-        for metadata_vnf in ll_attr['metaData']:
-            if metadata_vnf['key'] == "srcVnfIpAddress":
-                src_vnf_ip = metadata_vnf['value']
-            if metadata_vnf['key'] == "dstVnfIpAddress":
-                dst_vnf_ip = metadata_vnf['value']
-            if metadata_vnf['key'] == "srcVnfMacAddress":
-                src_mac_add = metadata_vnf['value']
-            if metadata_vnf['key'] == "dstVnfMacAddress":
-                dst_mac_add = metadata_vnf['value']
-            # vlanId paramter in metadata sent in case of Federation
-            if metadata_vnf['key'] == "vlanId":
-                vlan_federation = int(metadata_vnf['value'])
-        # TODO check if the previous values are ip/mac complaint
-        if not src_vnf_ip or not dst_vnf_ip or not src_mac_add or not dst_mac_add:
-            err = "'srcVnfIpAddress', 'dstVnfIpAddress', " \
-                  "'srcVnfMacAddress' and 'dstVnfMacAddress' are mandatory parameters"
-            logger.error(err)
-            raise KeyError(err)
-        logger.info('VNF IP ADDRESS (SRC) (DST): {} {}'.format(src_vnf_ip, dst_vnf_ip))
-        logger.info('VNF MAC ADDRESS (SRC) (DST): {} {}'.format(src_mac_add, dst_mac_add))
-        # creating metadata for call request on mac addresses
-        metadata_call = {"srcMacAddr": src_mac_add, "dstMacAddr": dst_mac_add}
-        # add the vlanId parameter to metadata of COP call in case of Federation
-        if vlan_federation is not None:
-            logger.info("VLAN Id to be used for Federation Issue: {}".format(vlan_federation))
-            metadata_call['vlanId'] = vlan_federation
         # Creating id for inter NfviPop connectivity
         connectivity_id = create_connectivity_id()
-        # instantiation of the new Inter-NFVIPoP Connectivity in the RO package
-        list_of_wim, list_links_call, list_new_call_ids = ro.instantiate_connectivity(connectivity_id=connectivity_id,
-                                                                                      inner_graph=total_graph,
-                                                                                      src_pe=src_pe_id,
-                                                                                      dst_pe=dst_pe_id,
+        if OPTION_PA_ALGORITHM == "OPTION_B":
+            # decompose the LL to retrieve NfviPoP and GW involved
+            ll_endpoint = absLogic.decompose_ll(ll_attr)
+            # decompose the stitching table in order to retrieve the internal PEs and WIMs
+            # creating a nx graph from stitching table
+            total_graph = domResLogic.decompose_stitching()
+            # Reducing the graph between Src Gw and Dst Gw
+            src_gw = ll_endpoint[1]
+            dst_gw = ll_endpoint[3]
+            # Reducing the graph between the two GWs (in order to remove the NFVIPOP connected to the GW
+            # In this way it remains only one adjacent node connected to the GW (and for assumption is a PE)
+            inner_graph = domResLogic.reducing_graph(total_graph, src_gw, dst_gw)
+            # retrieve the index of source and destination GWs in the graph
+            node_src_gw = [x for x, y in inner_graph.nodes(data=True) if y['name'] == src_gw]
+            node_dst_gw = [x for x, y in inner_graph.nodes(data=True) if y['name'] == dst_gw]
+            # find adjacents node (PEs) of SRC and DST GW -> having reduced the graph is only one node i.e. a PE
+            adjacents_to_src_gw = [n for n in inner_graph.neighbors(node_src_gw[0])]
+            adjacents_to_dst_gw = [n for n in inner_graph.neighbors(node_dst_gw[0])]
+            # ASSUMPTION: ONE PE CONNECTED TO ONE GW
+            src_pe_id = inner_graph.node[adjacents_to_src_gw[0]]['name']
+            dst_pe_id = inner_graph.node[adjacents_to_dst_gw[0]]['name']
+            # print(src_pe_id, dst_pe_id)
+            # retrieve the ServiceID related to the LL
+            meta_data = body.meta_data
+            service_id_in_metadata = (False, '')
+            for meta_data_element in meta_data:
+                if meta_data_element['key'] == "ServiceId":
+                    service_id_in_metadata = (True, meta_data_element['value'])
+                    logger.info("ServiceId in the request: '{}'".format(service_id_in_metadata[1]))
+
+            if not service_id_in_metadata[0]:
+                # case of ServiceId not defined in the request
+                logger.error("ServiceId wrong in the request")
+                raise KeyError("Check the ServiceId in the request")
+            # retrieve the IP address
+            src_vnf_ip = ''
+            dst_vnf_ip = ''
+            src_mac_add = ''
+            dst_mac_add = ''
+            vlan_federation = None
+            for metadata_vnf in ll_attr['metaData']:
+                if metadata_vnf['key'] == "srcVnfIpAddress":
+                    src_vnf_ip = metadata_vnf['value']
+                if metadata_vnf['key'] == "dstVnfIpAddress":
+                    dst_vnf_ip = metadata_vnf['value']
+                if metadata_vnf['key'] == "srcVnfMacAddress":
+                    src_mac_add = metadata_vnf['value']
+                if metadata_vnf['key'] == "dstVnfMacAddress":
+                    dst_mac_add = metadata_vnf['value']
+                # vlanId parameter in metadata sent in case of Federation
+                if metadata_vnf['key'] == "vlanId":
+                    vlan_federation = int(metadata_vnf['value'])
+            # TODO check if the previous values are ip/mac complaint
+            if not src_vnf_ip or not dst_vnf_ip or not src_mac_add or not dst_mac_add:
+                err = "'srcVnfIpAddress', 'dstVnfIpAddress', " \
+                      "'srcVnfMacAddress' and 'dstVnfMacAddress' are mandatory parameters"
+                logger.error(err)
+                raise KeyError(err)
+            logger.info("VNF SRC IP ADD: '{}', VNF DST IP ADD: '{}'".format(src_vnf_ip, dst_vnf_ip))
+            logger.info("VNF SRC MAC ADD: '{}', VNF DST MAC ADD: '{}'".format(src_mac_add, dst_mac_add))
+            # creating metadata for call request on mac addresses
+            metadata_call = {"srcMacAddr": src_mac_add, "dstMacAddr": dst_mac_add}
+            # add the vlanId parameter to metadata of COP call in case of Federation
+            if vlan_federation is not None:
+                logger.info("VLAN Id to be used for Federation Issue: {}".format(vlan_federation))
+                metadata_call['vlanId'] = vlan_federation
+            # instantiation of the new Inter-NFVIPoP Connectivity in the RO package
+            computed_path, gw_pe_links = ro.calculate_connectivity(connectivity_id=connectivity_id,
+                                                                   inner_graph=total_graph,
+                                                                   src_pe=src_pe_id,
+                                                                   dst_pe=dst_pe_id,
+                                                                   req_bw=ll_attr['reqBandwidth'],
+                                                                   req_delay=ll_attr['reqLatency'])
+        else:
+            # adding dummy parameter
+            computed_path = []
+            gw_pe_links = []
+            src_vnf_ip = ''
+            dst_vnf_ip = ''
+            metadata_call = []
+            pass  # TODO implement Option_A
+        list_of_wim, list_links_call, list_new_call_ids = ro.instantiate_connectivity(path=computed_path,
+                                                                                      gw_pe_links=gw_pe_links,
+                                                                                      connectivity_id=connectivity_id,
                                                                                       src_vnf_ip=src_vnf_ip,
                                                                                       dst_vnf_ip=dst_vnf_ip,
                                                                                       metadata_call=metadata_call,
-                                                                                      req_bw=ll_attr['reqBandwidth'],
-                                                                                      req_delay=ll_attr['reqLatency'])
+                                                                                      req_bw=ll_attr['reqBandwidth'])
 
         # append the links between GW-PE of source and destination of the LL
         # The following lines represent the call from GWs to PEs elements,
@@ -224,9 +239,11 @@ def create_connectivity(body):
             wimInvolved=list_of_wim,
             pathCall=str(list_links_call)
         ))
+        if OPTION_PA_ALGORITHM == "OPTION_A":
+            pass  # TODO implement Option_A
         logger.info("Created interNfviPop Connectivity with id: {}".format(connectivity_id))
         conn_list.append(InlineResponse201(inter_nfvi_pop_connnectivity_id=connectivity_id,
-                                           inter_nfvi_pop_network_segment_type='p2p'))
+                                           inter_nfvi_pop_network_segment_type=body.inter_nfvi_pop_network_type))
         # time.sleep(5)
         db_session.commit()
 
@@ -414,6 +431,8 @@ def delete_connectivity(body):
                 try:
                     db_session.delete(element)
                     db_session.commit()
+                    if OPTION_PA_ALGORITHM == "OPTION_A":
+                        pass  # TODO implement OPTION_A
                     logger.info("Removed the entry in ServiceId Table")
                 except IntegrityError:
                     db_session.rollback()
@@ -437,27 +456,41 @@ def create_vl_network(body):
     :param body: request
     """
     logger = logging.getLogger('cttc_mtp.orch.create_vl_network')
-    # print(body)
+    if body.network_resource_type != 'subnet-vlan':
+        raise KeyError(
+            "The value in 'typeNetworkData' parameter only can be 'subnet-vlan'. No other technologies implemented yet")
+    # create dictionary of metadata from body of request
     metadata = {}
     for element in body.metadata:
         metadata[element.key] = element.value
-    # check if "ServiceId", "floating_required" and "vimId" are in the metadata
-    if "vimId" not in metadata or "serviceId" not in metadata or "floating_required" not in metadata:
-        raise KeyError("'serviceId', 'floating_required' and 'vimId' parameters are mandatory in metadata.")
-    # check if the selected VIM is inside the Domain DB
-    vim_exist = db_session.query(Dbdomainlist).filter_by(id=metadata['vimId']).first()
-    if vim_exist is None or vim_exist.type == "WIM":
-        raise KeyError("vimId not exist or does not correspond to a VIM")
-    logger.info("Request to create vl network '{}' for serviceid '{}' in VIM '{}'".format(body.network_resource_name,
-                                                                                          metadata['serviceId'],
-                                                                                          metadata['vimId']))
+    # check if "ServiceId", "AbstractNfviPoPId" and "vimId" are in the metadata
+    if "vimId" not in metadata or "ServiceId" not in metadata or "AbstractNfviPoPId" not in metadata:
+        raise KeyError("'ServiceId', 'AbstractNfviPoPId' and 'vimId' parameters are mandatory in metadata.")
+    # check if "ip-floating-required" parameter is in typeSubnetData's metadata
+    metadata_subnet = {}
+    for element in body.type_subnet_data.metadata:
+        metadata_subnet[element['key']] = element['value']
+    if "ip-floating-required" not in metadata_subnet:
+        raise KeyError("'ip-floating-required' parameter is mandatory in 'typeSubnetData/metadata' field")
+    # check if the selected VIM and NFVI-PoP are inside the NFVI-PoP DB
+    # vim_exist = db_session.query(Dbdomainlist).filter_by(id=metadata['vimId']).first()
+    # if vim_exist is None or vim_exist.type == "WIM":
+    #     raise KeyError("vimId not exist or does not correspond to a VIM")
+    vim_exist = db_session.query(Dbnfvipops).filter_by(vimId=metadata['vimId'], nfviPopId=metadata['AbstractNfviPoPId'])
+    if vim_exist is None:
+        raise KeyError("vimId and AbstractNfviPoPId do not correspond to any registered entity!")
+    logger.info("Request to create vl network '{}' for serviceid '{}' in VIM/NFVI-PoP '{}/{}'".format(
+        body.network_resource_name,
+        metadata['ServiceId'],
+        metadata['vimId'],
+        metadata['AbstractNfviPoPId']))
     # network_in_db = db_session.query(Dbvirtuallinks).all()
     net_created = ro.create_intrapop_net(body, metadata, db_session.query(Dbvirtuallinks).all())
     logger.info("VL network '{}' created.".format(body.network_resource_name))
     # updating the DB
     try:
         db_session.add(Dbvirtuallinks(vlName=net_created['name'],
-                                      serviceId=metadata['serviceId'],
+                                      serviceId=metadata['ServiceId'],
                                       vimId=net_created['vimId'],
                                       floatingIp=net_created['floating_ips'],
                                       networkId=net_created['network_id'],

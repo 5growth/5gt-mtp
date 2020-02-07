@@ -14,7 +14,7 @@
 
 # Author: Luca Vettori
 
-from logging import getLogger, Formatter, StreamHandler, INFO, DEBUG
+from logging import getLogger, Formatter, StreamHandler, INFO
 from logging.handlers import RotatingFileHandler
 
 

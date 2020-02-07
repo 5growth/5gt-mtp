@@ -22,6 +22,7 @@ Implements some utils function for Openstack
 import time
 
 from future.moves.urllib.parse import urlparse  # python3 compatible
+from ipaddress import ip_address, ip_network
 import requests
 import json
 import logging
@@ -29,6 +30,18 @@ from nbi.nbi_server import db_session
 from db.db_models import *
 
 logger = logging.getLogger('cttc_mtp.sbi.openstack_connector')
+
+
+def get_endpoints(catalog):
+    """
+    Retrieve main endpoints of Openstack (compute, volume3, network)
+    :param catalog: catalog of Endpoints (in Token response)
+    :return: tuple with compute, volume3, network endpoints
+    """
+    compute_endpoint = list(filter(lambda x: x['type'] == 'compute', catalog))[0]['endpoints'][0]['url']
+    volume3_endpoint = list(filter(lambda x: x['type'] == 'volumev3', catalog))[0]['endpoints'][0]['url']
+    network_endpoint = list(filter(lambda x: x['type'] == 'network', catalog))[0]['endpoints'][0]['url']
+    return compute_endpoint, volume3_endpoint, network_endpoint
 
 
 def query_resources(vim_values, start_time, end_time):
@@ -42,28 +55,30 @@ def query_resources(vim_values, start_time, end_time):
     if vim_values is None:
         raise AttributeError('Openstack not well configured')
     else:
-        project_id, token = token_request(vim_values)
+        token_response, project_id, token = token_request(vim_values)
         headers = {'X-Auth-Token': token}
-        vim_url = urlparse(vim_values.url)
+        # retrieve all the endpoints for services module of Openstack from Token response
+        catalog_endpoint = json.loads(token_response.content.decode('utf-8'))['token']['catalog']
+        compute_endpoint_url, volume_endpoint_url, network_endpoint_url = get_endpoints(catalog_endpoint)
+        logger.info("Compute url: {}".format(compute_endpoint_url))
+        logger.info("Volume url: {}".format(volume_endpoint_url))
+        logger.info("Network url: {}".format(network_endpoint_url))
         # request of info to Nova Module of Openstack
-        # nova_resource = get('http://{}/compute/v2.1/os-hypervisors/detail'.format(vim_url.netloc), headers=headers)
-        nova_resource = requests.get('http://{}/compute/v2.1/{}/limits'.format(vim_url.netloc, project_id),
-                                     headers=headers)
-        nova_resource_statistic = requests.get(
-            'http://{}/compute/v2.1/os-hypervisors/statistics'.format(vim_url.netloc),
-            headers={'X-Auth-Token': token})
-        # request of info to Volume Module of Openstack
-        volume3_resource = requests.get('http://{}/volume/v3/{}/limits'.format(vim_url.netloc, project_id),
-                                        headers=headers)
+        nova_resource = requests.get('{}/{}/limits'.format(compute_endpoint_url, project_id), headers=headers)
+        nova_resource_statistic = requests.get('{}/os-hypervisors/statistics'.format(compute_endpoint_url),
+                                               headers=headers)
         if start_time is None and end_time is None:
-            simple_tenant_usage_resource_url = ('http://{}/compute/v2.1/{}/os-simple-tenant-usage/{}'
-                                                .format(vim_url.netloc, project_id, project_id))
+            simple_tenant_usage_resource_url = ('{}/{}/os-simple-tenant-usage/{}'.format(compute_endpoint_url,
+                                                                                         project_id, project_id))
         else:
-            simple_tenant_usage_resource_url = ('http://{}/compute/v2.1/{}/os-simple-tenant-usage/{}?start={}&end={}'
-                                                .format(vim_url.netloc, project_id, project_id, start_time, end_time))
+            simple_tenant_usage_resource_url = ('{}/{}/os-simple-tenant-usage/{}?start={}&end={}'
+                                                .format(compute_endpoint_url,
+                                                        project_id, project_id, start_time, end_time))
         simple_tenant_usage_resource = requests.get(simple_tenant_usage_resource_url, headers=headers)
-        network = requests.get('http://' + vim_url.netloc + ':9696/v2.0/networks',
-                               headers=headers)
+        # request of info to Volume Module of Openstack
+        volume3_resource = requests.get('{}/limits'.format(volume_endpoint_url), headers=headers)
+        # request of info to Network Module of Openstack
+        network = requests.get('{}v2.0/networks'.format(network_endpoint_url), headers=headers)
 
         return nova_resource, volume3_resource, simple_tenant_usage_resource, network, nova_resource_statistic
 
@@ -72,7 +87,7 @@ def token_request(vim_values):
     """
     Retrieve token of an Openstack
     :param vim_values: vim data from database
-    :return: tuple with project_id, token.
+    :return: tuple with token_response, project_id, token.
     """
     # Request for a Token to an Openstack server
     # Header of the request
@@ -112,7 +127,7 @@ def token_request(vim_values):
     logger.info('Token retrieved')
     # internal Openstack id for  the project related to the VIM
     project_id = json.loads(token_response.content.decode('utf-8'))['token']['project']['id']
-    return project_id, token
+    return token_response, project_id, token
 
 
 def retrieve_resource(vim):
@@ -122,27 +137,26 @@ def retrieve_resource(vim):
     :return: dict with mem/cpu/storage.
     """
     mem = {}
+    cpu = {}
+    storage = {}
     resources = query_resources(vim, None, None)
     nova_res = json.loads(resources[0].content)['limits']['absolute']
+    volume_res = json.loads(resources[1].content)['limits']['absolute']
+    # memory section
     mem['allocated'] = nova_res['totalRAMUsed']
     mem['total'] = nova_res['maxTotalRAMSize']
     mem['available'] = nova_res['maxTotalRAMSize'] - nova_res['totalRAMUsed']
-    # TODO check reserved item
-    mem['reserved'] = 0
-    cpu = {}
-    nova_res = json.loads(resources[0].content)['limits']['absolute']
+    mem['reserved'] = 0  # TODO check reserved item
+    # cpu section
     cpu['allocated'] = nova_res['totalCoresUsed']
     cpu['total'] = nova_res['maxTotalCores']
     cpu['available'] = nova_res['maxTotalCores'] - nova_res['totalCoresUsed']
-    # TODO check reserved item
-    cpu['reserved'] = 0
-    storage = {}
-    volume_res = json.loads(resources[1].content)['limits']['absolute']
+    cpu['reserved'] = 0  # TODO check reserved item
+    # storage section
     storage['allocated'] = volume_res['totalGigabytesUsed']
     storage['total'] = volume_res['maxTotalVolumeGigabytes']
     storage['available'] = volume_res['maxTotalVolumeGigabytes'] - volume_res['totalGigabytesUsed']
-    # TODO check reserved item
-    storage['reserved'] = 0
+    storage['reserved'] = 0  # TODO check reserved item
     logger.info('Resources retrieved!')
     return {'mem': mem,
             'cpu': cpu,
@@ -157,14 +171,15 @@ def get_status_os_network(info):
     """
     vim_values = db_session.query(Dbdomainlist).filter_by(id=info['vimId']).first()
     # retrieve the token for OS
-    project_id, token = token_request(vim_values)
+    token_response, project_id, token = token_request(vim_values)
+    catalog_endpoint = json.loads(token_response.content.decode('utf-8'))['token']['catalog']
+    compute_endpoint_url, volume_endpoint_url, network_endpoint_url = get_endpoints(catalog_endpoint)
     headers = {
         "X-Auth-Token": token,
         "Content-Type": "application/json",
         'Accept': 'application/json'
     }
-    vim_url = urlparse(vim_values.url)
-    network_response = requests.get('http://{}:9696/v2.0/networks/{}'.format(vim_url.netloc, info['netId']),
+    network_response = requests.get('{}v2.0/networks/{}'.format(network_endpoint_url, info['netId']),
                                     headers=headers)
     if network_response.status_code == 200:
         network_response = network_response.json()
@@ -177,29 +192,30 @@ def get_status_os_network(info):
         return False, network_response.json()['NeutronError']
 
 
-def create_os_networks(info_to_create_networks):
+def create_os_networks(info_to_create_networks, metadata_subnet=None):
     """
     Create a network on a provider network in Openstack
     :param info_to_create_networks: dict
+    :param metadata_subnet: dict
     :return: dict (of ids)
     """
     vim_values = db_session.query(Dbdomainlist).filter_by(
         id=info_to_create_networks['vimId']).first()  # to be done in MTP more internal
     # retrieve the token for OS
-    project_id, token = token_request(vim_values)
+    token_response, project_id, token = token_request(vim_values)
+    catalog_endpoint = json.loads(token_response.content.decode('utf-8'))['token']['catalog']
+    compute_endpoint_url, volume_endpoint_url, network_endpoint_url = get_endpoints(catalog_endpoint)
     headers = {
         "X-Auth-Token": token,
         "Content-Type": "application/json",
         'Accept': 'application/json'
     }
-    vim_url = urlparse(vim_values.url)
-
     # find uuid of provider_network
     provider_network = 'public'  # it could be other name
     # provider_network_floating = 'publicFloating'
     provider_network_floating = 'public'
     provider_network_uuid = ''
-    network_response = requests.get('http://' + vim_url.netloc + ':9696/v2.0/networks', headers=headers)
+    network_response = requests.get('{}v2.0/networks'.format(network_endpoint_url), headers=headers)
     if network_response.status_code == 200:
         network_response = network_response.json()
     else:
@@ -222,8 +238,8 @@ def create_os_networks(info_to_create_networks):
             "router:external": "true"
         }
     }
-
-    response_network = requests.post("http://{}:9696/v2.0/networks".format(vim_url.netloc),
+    logger.info("Request of Network Creation: POST, URL: {}, Body: {} ".format("{}v2.0/networks".format(network_endpoint_url), body_network))
+    response_network = requests.post("{}v2.0/networks".format(network_endpoint_url),
                                      data=json.dumps(body_network),
                                      headers=headers)
     if response_network.status_code == 201:
@@ -261,8 +277,8 @@ def create_os_networks(info_to_create_networks):
             "enable_dhcp": 'true'
         }
     }
-
-    response_subnet = requests.post("http://{}:9696/v2.0/subnets".format(vim_url.netloc),
+    logger.info("Request of SubNetwork Creation: POST, URL: {}, Body: {} ".format("{}v2.0/subnets".format(network_endpoint_url), body_subnet))
+    response_subnet = requests.post("{}v2.0/subnets".format(network_endpoint_url),
                                     data=json.dumps(body_subnet),
                                     headers=headers)
     if response_subnet.status_code == 201:
@@ -290,7 +306,10 @@ def create_os_networks(info_to_create_networks):
                              "admin_state_up": "true"
                             }
                }
-        response_router = requests.post("http://{}:9696/v2.0/routers".format(vim_url.netloc),
+        logger.info("Request of Router Creation: POST, URL: {}, Body: {} ".format("{}v2.0/routers"
+                                                                                  .format(network_endpoint_url),
+                                                                                  body_router))
+        response_router = requests.post("{}v2.0/routers".format(network_endpoint_url),
                                         data=json.dumps(body_router),
                                         headers=headers)
         if response_router.status_code == 201:
@@ -304,14 +323,39 @@ def create_os_networks(info_to_create_networks):
         body_subnet_router = {
             "subnet_id": subnet_id
         }
+        logger.info("Request of Router to be added to Subnet: PUT, URL: {}, Body: {} "
+                    .format("{}v2.0/routers/{}/add_router_interface".format(network_endpoint_url, router_id),
+                            body_subnet_router))
         response_subnet_router = requests.put(
-            "http://{}:9696/v2.0/routers/{}/add_router_interface".format(vim_url.netloc, router_id),
+            "{}v2.0/routers/{}/add_router_interface".format(network_endpoint_url, router_id),
             data=json.dumps(body_subnet_router), headers=headers)
         if response_subnet_router.status_code == 200:
             logger.info("Add subnet '{}' to router '{}'".format(body_subnet['subnet']['name'],
                                                                 body_router['router']['name']))
         else:
             raise KeyError("Error in adding subnet to router")
+        if 'mon_cidr' in metadata_subnet:
+            if vim_values.monitoringEndpoint:
+                # write static routes in the router
+                body_static_routes = {
+                    "router": {
+                        "routes": [
+                            {
+                                "destination": metadata_subnet['mon_cidr'],
+                                "nexthop": vim_values.monitoringEndpoint
+                            }
+                        ]
+                    }
+                }
+                response_static_routes = requests.put(
+                    "{}v2.0/routers/{}".format(network_endpoint_url, router_id),
+                    data=json.dumps(body_static_routes), headers=headers)
+                if response_static_routes.status_code == 200:
+                    logger.info("Add static route to router '{}'".format(body_router['router']['name']))
+                else:
+                    raise KeyError("Error in adding static routes to to router")
+            else:
+                logger.info("Could not add static route because 'Monitoring Endpoint' not in the Domain List Field")
     # finishing creating the router
     return {"subnet_id": subnet_id, "router_id": router_id, "network_id": network_id}
 
@@ -325,16 +369,16 @@ def delete_os_networks(info_to_delete_networks):
     vim_values = db_session.query(Dbdomainlist).filter_by(
         id=info_to_delete_networks['vimId']).first()  # to be done in MTP more internal
     # retrieve the token for OS
-    project_id, token = token_request(vim_values)
+    token_response, project_id, token = token_request(vim_values)
+    catalog_endpoint = json.loads(token_response.content.decode('utf-8'))['token']['catalog']
+    compute_endpoint_url, volume_endpoint_url, network_endpoint_url = get_endpoints(catalog_endpoint)
     headers = {
         "X-Auth-Token": token,
         "Content-Type": "application/json",
         'Accept': 'application/json'
     }
-    vim_url = urlparse(vim_values.url)
-
     # retrieve the network_id of the network created
-    network_response = requests.get('http://' + vim_url.netloc + ':9696/v2.0/networks', headers=headers)
+    network_response = requests.get('{}v2.0/networks'.format(network_endpoint_url), headers=headers)
     if network_response.status_code == 200:
         network_response = network_response.json()
     else:
@@ -354,20 +398,24 @@ def delete_os_networks(info_to_delete_networks):
                 "subnet_id": info_to_delete_networks['subnet_id']
         }
         remove_subnet_from_router = requests.put(
-            "http://{}:9696/v2.0/routers/{}/remove_router_interface".format(vim_url.netloc, router_id),
+            "{}v2.0/routers/{}/remove_router_interface".format(network_endpoint_url, router_id),
             data=json.dumps(body_remove_subnet), headers=headers)
-        delete_router = requests.delete("http://{}:9696/v2.0/routers/{}".format(vim_url.netloc, router_id),
+        delete_router = requests.delete("{}v2.0/routers/{}".format(network_endpoint_url, router_id),
                                         headers=headers)
         if delete_router.status_code != 204:
             logger.error("Something went wrong in deleting network: '{}'".format(delete_router.json()['NeutronError']))
             return False
+        else:
+            logger.info("Removed router with id: {}".format(info_to_delete_networks['router_id']))
         time.sleep(5)  # it takes time to remove a router
 
-    response_delete_net = requests.delete("http://{}:9696/v2.0/networks/{}".format(vim_url.netloc, network_id),
+    response_delete_net = requests.delete("{}v2.0/networks/{}".format(network_endpoint_url, network_id),
                                           headers=headers)
     if response_delete_net.status_code != 204:
         logger.error("Something went wrong in deleting network: '{}'".format(
             response_delete_net.json()['NeutronError']))
         return False
     else:
+        logger.info("Deleted VL '{}' from VIM '{}'".format(info_to_delete_networks['name'],
+                                                         info_to_delete_networks['vimId']))
         return True

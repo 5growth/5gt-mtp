@@ -14,7 +14,7 @@
 
 # Author: Luca Vettori
 
-from nbi.nbi_server import db_session
+from nbi.nbi_server import db_session, OPTION_PA_ALGORITHM
 from db.db_models import *
 import logging
 
@@ -52,6 +52,8 @@ def get_abstraction():
     # define a list of GW that belongs to "local" domain of MTP
     list_gw_not_federated = [net_gw.net_gw_ip_address for pop in nfvi_pops for net_gw in pop.nfvi_pop_attributes.
         network_connectivity_endpoint]
+    if OPTION_PA_ALGORITHM == "OPTION_A":
+        pass  # TODO implement OPTION_A
     # logicalLinkInterNfviPops part
     lls_list = []
     lls = db_session.query(Dbllinternfvipops).all()

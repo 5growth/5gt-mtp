@@ -158,7 +158,9 @@
                 href="http://cerca.cat/" target="_blank">CERCA</a> 2019. All rights reserved. </p>
     </div>
     <!-- /#page-wrapper -->
-
+    <br>
+    <br>
+    <br>
     <div id="footer" class="container">
         <nav class="navbar navbar-default navbar-fixed-bottom">
             <div class="navbar-inner navbar-content-center">
@@ -180,6 +182,9 @@ $('#openlog').click(function(){
     "MTP Logs", "left=200,top=200,width=800,height=600,toolbar=0,resizable=0");
 });
 
+$(".alert").fadeTo(2500, 500).slideUp(500, function(){
+    $(this).remove();
+});
 </script>
 
 <!-- jQuery -->

@@ -22,7 +22,6 @@ import pa.swagger_client
 from pa.swagger_client.rest import ApiException
 from pa.swagger_client.models import CompRouteInput, CompRouteInputInterWanLinks, CompRouteInputNetwLinkQoS, \
     CompRouteInputAbsWanTopo, CompRouteInputNodes, CompRouteInputEdges, CompRouteInputQosCons
-from pprint import pprint
 import logging
 
 
