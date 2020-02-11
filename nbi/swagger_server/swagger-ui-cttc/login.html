@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="LV">
-    <title>5GT/MTP CTTC Login Page</title>
+    <title>5Growth/MTP CTTC Login Page</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -35,15 +35,20 @@
             {% endfor %}
             {% endif %}
             {% endwith %}
+            <div class ="text-center">
+            <a href="http://5growth.eu/" target="_blank">
+                <img src="/static/images/5Growth_rgb_horizontal.png" alt="5Growth"
+                     style="width:60%"/>
+            </a> <br> powered by
             <a href="http://5g-transformer.eu/" target="_blank">
-                <img src="/static/images/Transformer_full.png" class="mx-auto d-block" alt="5G-Transformer"
+                <img src="/static/images/Transformer_full.png" alt="5G-Transformer"
                      style="width:50%"/>
             </a>
+            </div>
             <br>
             <a href="http://www.cttc.es/" target="_blank">
                 <img src="/static/images/Logo_cttc.jpg" class="mx-auto d-block" alt="cttc" style="width:18%"/>
             </a>
-
 
             <form action="/login" method="POST">
                 <div class="login">
@@ -96,5 +101,11 @@
 <p class="text-center"> Copyright <a href="http://www.cttc.es" target="_blank">CTTC</a>/<a href="http://cerca.cat/"
                                                                                            target="_blank">CERCA</a>
     2019. All rights reserved. </p>
+
+<script type="text/javascript">
+$(".alert").fadeTo(2500, 500).slideUp(500, function(){
+    $(this).remove();
+});
+</script>
 </body>
 </html>
